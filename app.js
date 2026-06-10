@@ -39,8 +39,52 @@ function login(){
   alert("Login será conectado ao Firebase");
 }
 
-function cadastrar(){
-  alert("Cadastro será conectado ao Firebase");
+async function cadastrar(){
+
+  const nome =
+    document.getElementById("nome").value.trim();
+
+  const empresa =
+    document.getElementById("empresa").value;
+
+  const filial =
+    document.getElementById("filial").value;
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const senha =
+    document.getElementById("senha").value.trim();
+
+  const termo =
+    document.getElementById("termo").checked;
+
+  if(!nome || !empresa || !filial || !email || !senha){
+
+    alert("Preencha todos os campos.");
+
+    return;
+
+  }
+
+  if(!termo){
+
+    alert("Aceite o regulamento.");
+
+    return;
+
+  }
+
+  alert("Cadastro validado!");
+
+  console.log({
+    nome,
+    empresa,
+    filial,
+    email,
+    senha
+  });
+
 }
 
 function salvarExtras(){
