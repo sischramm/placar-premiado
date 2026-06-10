@@ -409,3 +409,11 @@ window.login = login;
 window.sair = sair;
 window.toggleSenha = toggleSenha;
 window.carregarFiliais = carregarFiliais;
+
+async function importarJogos(){
+
+  alert("Importação iniciada");
+
+}
+
+window.importarJogos = importarJogos;
