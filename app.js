@@ -1,8 +1,11 @@
 import {
   collection,
   addDoc,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+  getDocs,
+  doc,
+  setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { db } from "./firebase.js";
 
@@ -204,18 +207,23 @@ async function cadastrar(){
 
   try {
 
-    await addDoc(
-      collection(db, "usuarios"),
-      {
-        nome,
-        empresa,
-        filial,
-        email,
-        senha,
-        pontos: 0,
-        criadoEm: new Date()
-      }
-    );
+const idPalpite =
+  usuario.email + "_" + idJogo;
+
+await setDoc(
+  doc(
+    db,
+    "palpites",
+    idPalpite
+  ),
+  {
+    usuario: usuario.email,
+    jogoId: idJogo,
+    placarA,
+    placarB,
+    atualizadoEm: new Date()
+  }
+);
 
     alert("Cadastro realizado com sucesso!");
 
@@ -475,6 +483,18 @@ async function carregarJogos(){
 
     const jogo = doc.data();
 
+    const agora =
+  new Date();
+
+const dataJogo =
+  new Date(
+    jogo.dataHora
+      .replace(" ","T")
+  );
+
+const bloqueado =
+  agora >= dataJogo;
+
     lista.innerHTML += `
     
       <div
@@ -531,9 +551,18 @@ X
 
 <br><br>
 
-<button onclick="salvarPalpite(${jogo.id})">
-  Salvar Palpite
+${bloqueado
+? `
+<button disabled>
+Encerrado
 </button>
+`
+: `
+<button onclick="salvarPalpite(${jogo.id})">
+Salvar Palpite
+</button>
+`
+}
 
       </div>
 
@@ -612,20 +641,25 @@ if(
 
   try{
 
-    await addDoc(
-      collection(db,"palpites"),
-      {
-        usuario: usuario.email,
-        jogoId: idJogo,
-        placarA,
-        placarB,
-        criadoEm: new Date()
-      }
-    );
+    const idPalpite =
+  usuario.email + "_" + idJogo;
 
-    alert(
-      "Palpite salvo!"
-    );
+await setDoc(
+  doc(
+    db,
+    "palpites",
+    idPalpite
+  ),
+  {
+    usuario: usuario.email,
+    jogoId: idJogo,
+    placarA,
+    placarB,
+    atualizadoEm: new Date()
+  }
+);
+
+    alert("Palpite salvo/atualizado!");
 
   }catch(erro){
 
