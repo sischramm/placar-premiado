@@ -46,6 +46,7 @@ if(usuario){
     usuario.pontos || 0;
 
 }
+  carregarJogos();
 
 };
 
@@ -453,3 +454,77 @@ async function importarJogos(){
 }
 
 window.importarJogos = importarJogos;
+
+async function carregarJogos(){
+
+  const lista =
+    document.getElementById(
+      "listaJogos"
+    );
+
+  if(!lista) return;
+
+  lista.innerHTML = "";
+
+  const snapshot =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  snapshot.forEach(doc => {
+
+    const jogo = doc.data();
+
+    lista.innerHTML += `
+    
+      <div
+        style="
+          border:1px solid #ddd;
+          padding:15px;
+          margin-bottom:15px;
+          border-radius:10px;
+          background:#fff;
+          color:#000;
+        "
+      >
+
+        <h3>
+          ${jogo.timeA}
+          X
+          ${jogo.timeB}
+        </h3>
+
+        <div>
+          Grupo:
+          ${jogo.grupo}
+        </div>
+
+        <div>
+          ${jogo.dataHora}
+        </div>
+
+        <br>
+
+        <input
+          type="number"
+          min="0"
+          placeholder="0"
+          style="width:70px;"
+        >
+
+        X
+
+        <input
+          type="number"
+          min="0"
+          placeholder="0"
+          style="width:70px;"
+        >
+
+      </div>
+
+    `;
+
+  });
+
+}
