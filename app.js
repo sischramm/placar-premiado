@@ -1,6 +1,7 @@
 import {
   collection,
-  addDoc
+  addDoc,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { db } from "./firebase.js";
@@ -17,6 +18,35 @@ window.onload = function() {
   if(topo) topo.style.display = "none";
   if(sistema) sistema.style.display = "none";
 
+  const usuario =
+JSON.parse(
+  localStorage.getItem(
+    "usuarioLogado"
+  )
+);
+
+if(usuario){
+
+  home.style.display = "none";
+
+  login.style.display = "none";
+
+  document.getElementById(
+    "painel"
+  ).style.display = "block";
+
+  document.getElementById(
+    "nomeUsuario"
+  ).innerHTML =
+    usuario.nome;
+
+  document.getElementById(
+    "pontosUsuario"
+  ).innerHTML =
+    usuario.pontos || 0;
+
+}
+
 };
 
 function abrirAba(nome){
@@ -24,8 +54,13 @@ function abrirAba(nome){
 }
 
 function sair(){
-  localStorage.clear();
+
+  localStorage.removeItem(
+    "usuarioLogado"
+  );
+
   location.reload();
+
 }
 
 function toggleSenha(id, botao){
@@ -42,8 +77,92 @@ function toggleSenha(id, botao){
   }
 }
 
-function login(){
-  alert("Login será conectado ao Firebase");
+async function login(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const senha =
+    document.getElementById("loginSenha").value.trim();
+
+  if(!email || !senha){
+
+    alert("Informe e-mail e senha.");
+
+    return;
+
+  }
+
+  try{
+
+    const usuarios =
+      await getDocs(
+        collection(db,"usuarios")
+      );
+
+    let usuarioEncontrado = null;
+
+    usuarios.forEach(doc => {
+
+      const dados = doc.data();
+
+      if(
+        dados.email === email &&
+        dados.senha === senha
+      ){
+        usuarioEncontrado = dados;
+      }
+
+    });
+
+    if(!usuarioEncontrado){
+
+      alert("Usuário ou senha inválidos.");
+
+      return;
+
+    }
+
+    localStorage.setItem(
+      "usuarioLogado",
+      JSON.stringify(usuarioEncontrado)
+    );
+
+    document.getElementById(
+      "loginSistema"
+    ).style.display = "none";
+
+    document.getElementById(
+      "homeInicial"
+    ).style.display = "none";
+
+    document.getElementById(
+      "painel"
+    ).style.display = "block";
+
+    document.getElementById(
+      "nomeUsuario"
+    ).innerHTML =
+      usuarioEncontrado.nome;
+
+    document.getElementById(
+      "pontosUsuario"
+    ).innerHTML =
+      usuarioEncontrado.pontos || 0;
+
+    alert(
+      "Bem-vindo " +
+      usuarioEncontrado.nome
+    );
+
+  }catch(erro){
+
+    console.error(erro);
+
+    alert("Erro ao realizar login.");
+
+  }
+
 }
 
 async function cadastrar(){
