@@ -506,20 +506,28 @@ async function carregarJogos(){
         <br>
 
         <input
-          type="number"
-          min="0"
-          placeholder="0"
-          style="width:70px;"
-        >
+  id="a_${jogo.id}"
+  type="number"
+  min="0"
+  value="0"
+  style="width:70px;"
+>
 
-        X
+X
 
-        <input
-          type="number"
-          min="0"
-          placeholder="0"
-          style="width:70px;"
-        >
+<input
+  id="b_${jogo.id}"
+  type="number"
+  min="0"
+  value="0"
+  style="width:70px;"
+>
+
+<br><br>
+
+<button onclick="salvarPalpite(${jogo.id})">
+  Salvar Palpite
+</button>
 
       </div>
 
@@ -528,3 +536,58 @@ async function carregarJogos(){
   });
 
 }
+
+async function salvarPalpite(idJogo){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  const placarA =
+    Number(
+      document.getElementById(
+        `a_${idJogo}`
+      ).value
+    );
+
+  const placarB =
+    Number(
+      document.getElementById(
+        `b_${idJogo}`
+      ).value
+    );
+
+  try{
+
+    await addDoc(
+      collection(db,"palpites"),
+      {
+        usuario: usuario.email,
+        jogoId: idJogo,
+        placarA,
+        placarB,
+        criadoEm: new Date()
+      }
+    );
+
+    alert(
+      "Palpite salvo!"
+    );
+
+  }catch(erro){
+
+    console.error(erro);
+
+    alert(
+      "Erro ao salvar."
+    );
+
+  }
+
+}
+
+window.salvarPalpite =
+  salvarPalpite;
