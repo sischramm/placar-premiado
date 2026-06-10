@@ -57,6 +57,10 @@ function abrirLogin() {
 
   document.getElementById("loginSistema").style.display = "grid";
 
+  document.getElementById("login").style.display = "block";
+
+  document.getElementById("cadastro").style.display = "none";
+
 }
 
 function abrirCadastro() {
@@ -65,8 +69,16 @@ function abrirCadastro() {
 
   document.getElementById("loginSistema").style.display = "grid";
 
-  setTimeout(() => {
-    document.getElementById("nome").focus();
-  }, 100);
+  document.getElementById("login").style.display = "none";
+
+  document.getElementById("cadastro").style.display = "block";
+
+}
+
+function voltarHome(){
+
+  document.getElementById("homeInicial").style.display = "flex";
+
+  document.getElementById("loginSistema").style.display = "none";
 
 }
