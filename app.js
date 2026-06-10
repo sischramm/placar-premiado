@@ -3,7 +3,8 @@ import {
   addDoc,
   getDocs,
   doc,
-  setDoc
+  setDoc,
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
@@ -483,6 +484,42 @@ async function carregarJogos(){
 
     const jogo = doc.data();
 
+    const usuario =
+JSON.parse(
+  localStorage.getItem(
+    "usuarioLogado"
+  )
+);
+
+let placarA = "";
+let placarB = "";
+
+if(usuario){
+
+  const palpiteRef =
+    await getDoc(
+      doc(
+        db,
+        "palpites",
+        usuario.email + "_" + jogo.id
+      )
+    );
+
+  if(palpiteRef.exists()){
+
+    const p =
+      palpiteRef.data();
+
+    placarA =
+      p.placarA;
+
+    placarB =
+      p.placarB;
+
+  }
+
+}
+
     const agora =
   new Date();
 
@@ -531,7 +568,7 @@ const bloqueado =
   min="0"
   max="99"
   step="1"
-  value="0"
+  value="${placarA}"
   oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
@@ -544,7 +581,7 @@ X
   min="0"
   max="99"
   step="1"
-  value="0"
+  value="${placarB}"
   oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
