@@ -412,8 +412,8 @@ window.carregarFiliais = carregarFiliais;
 
 async function importarJogos(){
 
-  alert("Importação iniciada");
+  alert(
+    "CSV recebido. Próximo passo: gerar importação completa dos 72 jogos."
+  );
 
 }
-
-window.importarJogos = importarJogos;
