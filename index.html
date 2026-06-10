@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Placar Premiado Grupo Shark</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#0b2447;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+.card{
+max-width:500px;
+margin:auto;
+background:white;
+color:#333;
+padding:30px;
+border-radius:15px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+}
+
+button{
+background:#00a651;
+color:white;
+border:none;
+padding:12px 20px;
+cursor:pointer;
+width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏆 Placar Premiado Grupo Shark</h1>
+
+<div class="card">
+
+<h2>Cadastro</h2>
+
+<input id="nome" placeholder="Nome">
+
+<input id="email" placeholder="E-mail">
+
+<input id="senha" type="password" placeholder="Senha">
+
+<button onclick="cadastrar()">
+Cadastrar
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyC4PWHWsENLuUPnBVIzo8U8nkDXVA2fTqI",
+authDomain: "novo-placar-premiado.firebaseapp.com",
+projectId: "novo-placar-premiado",
+storageBucket: "novo-placar-premiado.firebasestorage.app",
+messagingSenderId: "597865499198",
+appId: "1:597865499198:web:fe2274064f70f681bd5f6f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.cadastrar = async ()=>{
+
+const nome =
+document.getElementById("nome").value;
+
+const email =
+document.getElementById("email").value;
+
+const senha =
+document.getElementById("senha").value;
+
+await addDoc(
+collection(db,"usuarios"),
+{
+nome,
+email,
+senha,
+pontos:0
+}
+);
+
+alert("Cadastro realizado!");
+};
+
+</script>
+
+</body>
+</html>
