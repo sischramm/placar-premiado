@@ -36,3 +36,20 @@ function salvarExtras(){
 function recalcularRanking(){
   alert("Admin");
 }
+function abrirLogin() {
+
+  document.getElementById("homeInicial").style.display = "none";
+
+  document.getElementById("loginSistema").style.display = "grid";
+
+}
+
+function abrirCadastro() {
+
+  document.getElementById("homeInicial").style.display = "none";
+
+  document.getElementById("loginSistema").style.display = "grid";
+
+  document.getElementById("nome").focus();
+
+}
