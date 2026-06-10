@@ -282,4 +282,11 @@ function carregarFiliais() {
 
 }
 
-
+window.abrirLogin = abrirLogin;
+window.abrirCadastro = abrirCadastro;
+window.voltarHome = voltarHome;
+window.cadastrar = cadastrar;
+window.login = login;
+window.sair = sair;
+window.toggleSenha = toggleSenha;
+window.carregarFiliais = carregarFiliais;
