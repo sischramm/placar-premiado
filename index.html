@@ -1,112 +1,843 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Placar Premiado Grupo Shark</title>
 
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#0b2447;
-color:white;
-text-align:center;
-padding:40px;
-}
 
-.card{
-max-width:500px;
-margin:auto;
-background:white;
-color:#333;
-padding:30px;
-border-radius:15px;
-}
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-}
+  <link rel="stylesheet" href="style.css">
 
-button{
-background:#00a651;
-color:white;
-border:none;
-padding:12px 20px;
-cursor:pointer;
-width:100%;
-}
-</style>
 </head>
 
 <body>
 
-<h1>🏆 Placar Premiado Grupo Shark</h1>
+  <!-- LOADING -->
 
-<div class="card">
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
 
-<h2>Cadastro</h2>
+<div id="home"></div>
 
-<input id="nome" placeholder="Nome">
+  <!-- TOPO -->
 
-<input id="email" placeholder="E-mail">
+  <div
+  class="topo"
+  id="topoSistema"
+  style="display:none;"
+>
 
-<input id="senha" type="password" placeholder="Senha">
+    <div class="container">
 
-<button onclick="cadastrar()">
-Cadastrar
-</button>
+      <div style="
+        display:flex;
+        align-items:center;
+        gap:20px;
+      ">
+
+   <img
+  src="logo.png"
+  alt="Grupo Shark"
+  style="height:80px;"
+>
+
+        <div>
+
+          <h1>
+            Placar Premiado 2026
+          </h1>
+
+          <div style="
+            opacity:0.8;
+            margin-top:5px;
+          ">
+
+            Grupo Shark Oficial
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CONTAINER -->
+
+    <!-- LOGIN / CADASTRO -->
+
+ id="loginSistema"
+style="display:flex;"
+
+      <!-- LOGIN -->
+
+      <div class="card" id="login">
+
+        <h2>Entrar</h2>
+
+        <input
+type="email"
+id="loginEmail"
+placeholder="E-mail Corporativo"
+autocomplete="email"
+        >
+
+        <div style="
+          position:relative;
+        ">
+
+          <input
+            type="password"
+            id="loginSenha"
+            placeholder="Senha"
+          >
+
+          <button
+            type="button"
+            onclick="toggleSenha('loginSenha', this)"
+
+            style="
+              position:absolute;
+              right:10px;
+              top:50%;
+              transform:translateY(-50%);
+              background:none;
+              border:none;
+              cursor:pointer;
+              font-size:18px;
+              color:#666;
+              padding:0;
+            "
+          >
+
+            👁
+
+          </button>
+
+        </div>
+
+        <button onclick="login()">
+          Entrar
+        </button>
+
+      </div>
+
+      <!-- CADASTRO -->
+
+      <div class="card" id="cadastro">
+
+        <h2>Criar Conta</h2>
+
+        <input
+          type="text"
+          id="nome"
+          placeholder="Nome"
+        >
+
+<select
+  id="empresa"
+  onchange="carregarFiliais()"
+  style="margin-bottom:15px;"
+>
+
+  <option value="">
+    Selecione a Empresa
+  </option>
+
+</select>
+
+<select
+  id="filial"
+  style="margin-bottom:15px;"
+>
+
+  <option value="">
+    Selecione a Filial
+  </option>
+
+</select>
+
+<input
+  type="email"
+  id="email"
+  placeholder="E-mail Corporativo"
+  autocomplete="email"
+>
+
+        <div style="
+          position:relative;
+        ">
+
+          <input
+            type="password"
+            id="senha"
+            placeholder="Senha"
+          >
+
+          <button
+            type="button"
+            onclick="toggleSenha('senha', this)"
+
+            style="
+              position:absolute;
+              right:10px;
+              top:50%;
+              transform:translateY(-50%);
+              background:none;
+              border:none;
+              cursor:pointer;
+              font-size:18px;
+              color:#666;
+              padding:0;
+            "
+          >
+
+            👁
+
+          </button>
+
+        </div>
+
+<div class="termo-box">
+
+  <label class="termo-label">
+
+    <input
+      type="checkbox"
+      id="termo"
+    >
+
+    <span>
+      Li e aceito o regulamento.
+    </span>
+
+  </label>
+
+  <div style="
+    margin-left:28px;
+    margin-top:5px;
+    font-size:14px;
+  ">
+
+    <a
+      href="https://drive.google.com/file/d/1PS3NDMi-_gBYf_qlf_UFnSKgVjApN7nP/view"
+      target="_blank"
+      class="link-regulamento"
+    >
+      Consultar regulamento completo
+    </a>
+
+  </div>
 
 </div>
 
-<script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        <button onclick="cadastrar()">
+          Criar Conta
+        </button>
 
-import {
-getFirestore,
-collection,
-addDoc
-} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+      </div>
 
-const firebaseConfig = {
-apiKey: "AIzaSyC4PWHWsENLuUPnBVIzo8U8nkDXVA2fTqI",
-authDomain: "novo-placar-premiado.firebaseapp.com",
-projectId: "novo-placar-premiado",
-storageBucket: "novo-placar-premiado.firebasestorage.app",
-messagingSenderId: "597865499198",
-appId: "1:597865499198:web:fe2274064f70f681bd5f6f"
-};
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    <!-- PAINEL -->
 
-window.cadastrar = async ()=>{
+    <div id="painel" style="display:none;">
 
-const nome =
-document.getElementById("nome").value;
+      <!-- MENU -->
 
-const email =
-document.getElementById("email").value;
+<div class="card" id="usuarioResumo">
 
-const senha =
-document.getElementById("senha").value;
+  <h2>👋 Bem-vindo</h2>
 
-await addDoc(
-collection(db,"usuarios"),
-{
-nome,
-email,
-senha,
-pontos:0
-}
-);
+  <div id="nomeUsuario">
+    Usuário
+  </div>
 
-alert("Cadastro realizado!");
-};
+  <div style="margin-top:10px;">
+    🏆 Pontos:
+    <strong id="pontosUsuario">
+      0
+    </strong>
+  </div>
 
-</script>
+</div>
+
+      <div class="menu">
+
+  <button onclick="abrirAba('palpites')">
+    ⚽ Palpites
+  </button>
+
+  <button onclick="abrirAba('extras')">
+    ⭐ Extras
+  </button>
+
+  <button onclick="abrirAba('mata')">
+    🏆 Mata-Mata
+  </button>
+
+  <button onclick="abrirAba('ranking')">
+    🏅 Ranking
+  </button>
+
+  <button onclick="abrirAba('empresa')">
+    🏢 Empresas
+  </button>
+
+  <button onclick="abrirAba('classificacao')">
+    📊 Classificação
+  </button>
+
+  <button onclick="abrirAba('estatisticas')">
+    📈 Estatísticas
+  </button>
+
+<button onclick="abrirAba('premiacao')">
+  🏆 Premiações
+</button>
+
+  <button onclick="abrirAba('regulamento')">
+    📜 Regulamento
+  </button>
+
+  <button onclick="abrirAba('perfil')">
+    👤 Perfil
+  </button>
+
+  <button onclick="sair()">
+    🚪 Sair
+  </button>
+
+  <button
+    id="menuAdmin"
+    onclick="abrirAba('admin')"
+    style="display:none;"
+  >
+    ⚙️ Admin
+  </button>
+
+</div>
+
+      <!-- ABA PALPITES -->
+
+      <div id="abaPalpites">
+
+        <div class="card">
+
+          <h2>
+            ⚽ Palpites
+          </h2>
+
+          <div id="listaJogos"></div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA RANKING -->
+
+      <div id="abaRanking" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            🏅 Ranking Atual
+          </h2>
+
+          <div id="rankingTop5"></div>
+
+          <hr style="margin:25px 0;">
+
+          <div id="rankingCompleto"></div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA CLASSIFICACAO -->
+
+      <div id="abaClassificacao" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            📊 Classificação
+          </h2>
+
+          <div id="classificacaoTabela"></div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA MATA MATA -->
+
+      <div id="abaMata" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            🏆 Mata-Mata
+          </h2>
+
+          <div id="mataMataTabela"></div>
+
+          <hr style="margin:30px 0;">
+
+          <h2>
+            🎯 Meus Palpites Mata-Mata
+          </h2>
+
+          <div id="palpitesMata"></div>
+
+        </div>
+
+      </div>
+
+         <!-- ABA EMPRESAS -->
+
+      <div id="abaEmpresa" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            🏢 Ranking Empresas
+          </h2>
+
+          <div id="rankingEmpresaTabela"></div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA ESTATISTICAS -->
+
+      <div id="abaEstatisticas" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            📈 Estatísticas
+          </h2>
+
+          <div id="estatisticasPainel"></div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA PERFIL -->
+
+<div id="abaPerfil" style="display:none;">
+
+  <div class="card">
+
+    <h2>👤 Meu Perfil</h2>
+
+    <div id="perfilDados"></div>
+
+  </div>
+
+</div>
+
+      <!-- ABA EXTRAS -->
+
+      <div id="abaExtras" style="display:none;">
+
+        <div class="card">
+
+<h2 style="
+  color:#fff;
+  font-size:34px;
+  font-weight:900;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
+">
+  ⭐ Palpites Extras
+</h2>
+
+          <div style="
+            display:grid;
+            gap:15px;
+          ">
+
+          <div style="
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:20px;
+  color:#fff;
+">
+
+  <div style="
+    font-weight:bold;
+    margin-bottom:10px;
+  ">
+    🎯 Pontuação Extras
+  </div>
+
+  <div>🏆 Campeão: 20 pts</div>
+  <div>⚽ Artilheiro: 15 pts</div>
+  <div>🇧🇷 Gols do Brasil: 10 pts</div>
+  <div>📈 Fase do Brasil: 10 pts</div>
+
+</div>
+
+<select id="extraCampeao">
+  <option value="">
+    Selecione o Campeão
+  </option>
+</select>
+
+<select id="extraVice">
+  <option value="">
+    Selecione o Vice Campeão
+  </option>
+</select>
+
+            <input
+              type="text"
+              id="extraArtilheiro"
+              placeholder="Artilheiro da Copa"
+            >
+
+            <input
+  type="number"
+  id="extraGolsBrasil"
+  placeholder="Gols do Brasil"
+  min="0"
+  max="99"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  onwheel="this.blur()"
+
+  oninput="
+    this.value =
+    this.value.replace(/[^0-9]/g,'');
+
+    if(this.value < 0){
+      this.value = 0;
+    }
+
+    if(this.value > 99){
+      this.value = 99;
+    }
+  "
+>
+
+            <select id="extraFaseBrasil">
+
+              <option value="" disabled>
+               Até onde o Brasil chega?
+                </option>
+
+              <option>Fase de Grupos</option>
+              <option>Oitavas</option>
+              <option>Quartas</option>
+              <option>Semifinal</option>
+              <option>Vice</option>
+              <option>Campeão</option>
+
+            </select>
+
+            <button
+  onclick="salvarExtras()"
+  style="
+    background:linear-gradient(
+      135deg,
+      #00a651,
+      #19d36b
+    );
+    font-size:16px;
+    font-weight:bold;
+    padding:14px;
+  "
+>
+  💾 Salvar Palpites Extras
+</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ABA PREMIAÇÃO -->
+
+<div id="abaPremiacao" style="display:none;">
+
+  <div class="card">
+
+    <h2 style="
+      color:#fff;
+      font-size:34px;
+      font-weight:900;
+      text-shadow:0 2px 8px rgba(0,0,0,.6);
+      margin-bottom:10px;
+    ">
+      🏆 Premiações Oficiais 2026
+    </h2>
+
+    <p style="
+      color:#fff;
+      margin-bottom:30px;
+      font-size:16px;
+    ">
+      Os 5 melhores colocados do Placar Premiado 2026 serão premiados ao final da competição.
+    </p>
+
+<div class="premios-topo">
+
+  <!-- 1º -->
+  <div class="premio-card ouro">
+
+ <img
+  class="premio-img"
+  src="https://drive.google.com/thumbnail?id=1xjoeijI4HsZRKF4_Lb2f9Xv_wfAf15pj&sz=w1000"
+>
+
+    <div class="premio-posicao">
+      🥇 1º Lugar
+    </div>
+
+    <p>
+      💰 R$ 800
+      <br>
+      👕 Camisa Brasil
+      <br>
+      ⚽ Bola Oficial Copa 2026
+    </p>
+
+  </div>
+
+  <!-- 2º -->
+  <div class="premio-card prata">
+
+   <img
+  class="premio-img"
+  src="https://drive.google.com/thumbnail?id=1xoJK-Ldt8BtE2P0AxJ2QsGItSTSFhUtp&sz=w1000"
+>
+
+    <div class="premio-posicao">
+      🥈 2º Lugar
+    </div>
+
+    <p>
+      💰 R$ 400
+      <br>
+      👕 Camisa Brasil
+      <br>
+      ⚽ Mini Bola Oficial Copa 2026
+    </p>
+
+  </div>
+
+  <!-- 3º -->
+  <div class="premio-card bronze">
+
+<img
+  class="premio-img"
+  src="https://drive.google.com/thumbnail?id=1guiOo2zt7ydovaR5Ra4tXStmCmt9jRh8&sz=w1000"
+>
+
+    <div class="premio-posicao">
+      🥉 3º Lugar
+    </div>
+
+    <p>
+      👕 Camisa Brasil
+      <br>
+      ⚽ Mini Bola Oficial Copa <br>2026
+    </p>
+
+  </div>
+
+</div>
+
+<div class="premios-baixo">
+
+  <!-- 4º -->
+  <div class="premio-card">
+
+  <img
+  class="premio-img"
+  src="https://drive.google.com/thumbnail?id=1uMbxY-rtHPYxQiz9A96us7vNVuca2aq3&sz=w1000"
+>
+
+    <div class="premio-posicao">
+      🎁 4º Lugar
+    </div>
+
+    <p>
+      ⚽ Bola Oficial Copa 2026
+      <br>
+      📖 20 Pacotes de Figurinhas
+    </p>
+
+  </div>
+
+  <!-- 5º -->
+  <div class="premio-card">
+
+   <img
+  class="premio-img"
+  src="https://drive.google.com/thumbnail?id=1WRfPVVpAB0koxxO1xHlP4wY5KuX3Hndz&sz=w1000"
+>
+
+    <div class="premio-posicao">
+      🎁 5º Lugar
+    </div>
+
+    <p>
+      ⚽ Mini Bola Oficial Copa 2026
+    </p>
+
+  </div>
+
+</div>
+
+    <div style="
+      margin-top:30px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:16px;
+      padding:18px;
+      color:#fff;
+      text-align:center;
+    ">
+
+      ⭐ Serão aplicados os critérios de desempate, de acordo com o regulamento, na definiçãos dos cinco primeiros colocados.
+      Imagem meramente ilustrativa
+
+    </div>
+
+  </div>
+
+</div>
+
+      <!-- ABA REGULAMENTO -->
+      
+<div id="abaRegulamento" style="display:none;">
+
+  <div class="card">
+      
+  <h2 style="
+    color:#fff;
+    font-size:34px;
+    font-weight:900;
+    text-shadow:0 2px 8px rgba(0,0,0,.6);
+  ">
+    🏆 Regulamento Copa do Mundo 2026
+  </h2>
+
+  <p style="
+    color:#fff;
+    margin-bottom:25px;
+  ">
+    Consulte abaixo os principais pontos do regulamento e acesse a versão completa.
+  </p>
+
+  <!-- DISPOSIÇÕES GERAIS -->
+
+  <div class="regulamento-bloco">
+
+    <h3>📋 Disposições Gerais</h3>
+
+    <ul>
+
+      <li>✅ Participação: Exclusiva para colaboradores ativos da empresa.</li>
+
+      <li>🏆 Premiação: Exclusiva para colaboradores ativos ao final da Copa do Mundo.</li>
+
+      <li>📢 Transparência: Qualquer tentativa de fraude resultará em desclassificação imediata.</li>
+
+      <li>👥 Comitê: Casos omissos serão decididos pelo RH e Comunicação Interna.</li>
+
+      <li>📢 Dúvidas: Entrar em contato com gabriel.rodrigues@gruposhark.com.br.</li>
+
+    </ul>
+
+  </div>
+
+  <!-- PRAZOS -->
+
+  <div class="regulamento-bloco">
+
+    <h3>📅 Prazos e Envio</h3>
+
+    <ul>
+
+      <li>Todos os palpites devem ser enviados até 24h antes da abertura da Copa.</li>
+
+      <li>Após o início do torneio, apenas fases eliminatórias serão reabertas.</li>
+
+      <li>⚠️ Palpites esquecidos resultam em 0 pontos na rodada.</li>
+
+    </ul>
+
+  </div>
+
+  <a
+  href="https://drive.google.com/file/d/1PS3NDMi-_gBYf_qlf_UFnSKgVjApN7nP/view"
+  target="_blank"
+  class="btn-regulamento"
+>
+  📄 Abrir Regulamento Oficial
+</a>
+
+<div style="
+  margin-top:20px;
+  padding:15px;
+  background:rgba(255,255,255,.12);
+  border-radius:12px;
+  color:#fff;
+  text-align:center;
+">
+
+  ⚠️ Ao participar do Placar Premiado 2026, o participante declara estar ciente e de acordo com todas as regras descritas no regulamento oficial.
+
+</div>
+
+</div>
+
+      <!-- ABA ADMIN -->
+
+      <div id="abaAdmin" style="display:none;">
+
+        <div class="card">
+
+          <h2>
+            ⚙️ Painel Admin
+          </h2>
+
+          <button onclick="recalcularRanking()">
+            🔄 Recalcular Ranking
+          </button>
+
+          <hr style="margin:20px 0;">
+
+          <div id="adminJogos"></div>
+
+          <hr style="margin:30px 0;">
+
+          <h2>
+            🏆 Mata-Mata
+          </h2>
+
+          <div id="adminMataMata"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+<script type="module" src="firebase.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
