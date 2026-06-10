@@ -505,11 +505,14 @@ async function carregarJogos(){
 
         <br>
 
-        <input
+<input
   id="a_${jogo.id}"
   type="number"
   min="0"
+  max="99"
+  step="1"
   value="0"
+  oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
 
@@ -519,7 +522,10 @@ X
   id="b_${jogo.id}"
   type="number"
   min="0"
+  max="99"
+  step="1"
   value="0"
+  oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
 
@@ -559,6 +565,50 @@ async function salvarPalpite(idJogo){
         `b_${idJogo}`
       ).value
     );
+
+  if(
+  document.getElementById(`a_${idJogo}`).value === "" ||
+  document.getElementById(`b_${idJogo}`).value === ""
+){
+
+  alert("Informe os dois placares.");
+
+  return;
+
+}
+
+if(
+  isNaN(placarA) ||
+  isNaN(placarB)
+){
+
+  alert("Digite apenas números.");
+
+  return;
+
+}
+
+if(
+  placarA < 0 ||
+  placarB < 0
+){
+
+  alert("Placar inválido.");
+
+  return;
+
+}
+
+if(
+  placarA > 99 ||
+  placarB > 99
+){
+
+  alert("Máximo permitido: 99 gols.");
+
+  return;
+
+}
 
   try{
 
