@@ -1,3 +1,10 @@
+import {
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+import { db } from "./firebase.js";
+
 window.onload = function() {
 
   const home = document.getElementById("homeInicial");
@@ -75,15 +82,30 @@ async function cadastrar(){
 
   }
 
-  alert("Cadastro validado!");
+  try {
 
-  console.log({
-    nome,
-    empresa,
-    filial,
-    email,
-    senha
-  });
+    await addDoc(
+      collection(db, "usuarios"),
+      {
+        nome,
+        empresa,
+        filial,
+        email,
+        senha,
+        pontos: 0,
+        criadoEm: new Date()
+      }
+    );
+
+    alert("Cadastro realizado com sucesso!");
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert("Erro ao cadastrar.");
+
+  }
 
 }
 
@@ -259,3 +281,5 @@ function carregarFiliais() {
     });
 
 }
+
+
