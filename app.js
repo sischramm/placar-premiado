@@ -998,7 +998,15 @@ async function renderizarDataAtual(){
 
     lista.innerHTML += `
 
-      <div class="card-palpite">
+      <div
+  class="card-palpite"
+  style="
+    width:48%;
+    display:inline-block;
+    vertical-align:top;
+    margin:1%;
+  "
+>
 
         <h3>
           ${jogo.timeA}
