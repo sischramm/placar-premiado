@@ -1135,6 +1135,10 @@ async function carregarRankingEmpresas(){
 
     const u = doc.data();
 
+    if(!u.empresa){
+      return;
+    }
+
     if(!empresas[u.empresa]){
 
       empresas[u.empresa] = 0;
@@ -1148,33 +1152,45 @@ async function carregarRankingEmpresas(){
 
   const ranking =
     Object.entries(empresas)
-      .sort((a,b) => b[1]-a[1]);
+      .sort((a,b) => b[1] - a[1]);
 
   let html = "";
 
-  ranking.forEach(
-    (empresa,index) => {
+  if(ranking.length === 0){
 
-      html += `
+    html = `
+      <div class="ranking-item">
+        Nenhuma empresa encontrada.
+      </div>
+    `;
 
-        <div class="ranking-item">
+  }else{
 
-          ${index + 1}º
+    ranking.forEach(
+      (empresa,index) => {
 
-          -
+        html += `
 
-          ${empresa[0]}
+          <div class="ranking-item">
 
-          <strong>
-            (${empresa[1]} pts)
-          </strong>
+            ${index + 1}º
 
-        </div>
+            -
 
-      `;
+            ${empresa[0]}
 
-    }
-  );
+            <strong>
+              (${empresa[1]} pts)
+            </strong>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+  }
 
   tabela.innerHTML = html;
 
