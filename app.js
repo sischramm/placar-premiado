@@ -5,8 +5,7 @@ import {
   doc,
   setDoc,
   getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { db } from "./firebase.js";
 
@@ -505,6 +504,36 @@ async function carregarJogos(){
 for (const documento of snapshot.docs) {
 
   const jogo = documento.data();
+  const usuario =
+  JSON.parse(
+    localStorage.getItem("usuarioLogado")
+  );
+
+let placarSalvoA = "";
+let placarSalvoB = "";
+
+if(usuario){
+
+  const palpiteRef =
+    await getDoc(
+      doc(
+        db,
+        "palpites",
+        usuario.email + "_" + jogo.id
+      )
+    );
+
+  if(palpiteRef.exists()){
+
+    const palpite =
+      palpiteRef.data();
+
+    placarSalvoA = palpite.placarA;
+    placarSalvoB = palpite.placarB;
+
+  }
+
+}
 
     
 
@@ -556,7 +585,7 @@ const bloqueado =
   min="0"
   max="99"
   step="1"
-  value="0"
+  value="${placarSalvoA}"
   oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
@@ -569,7 +598,7 @@ X
   min="0"
   max="99"
   step="1"
-  value="0"
+  value="${placarSalvoB}"
   oninput="this.value=this.value.replace(/[^0-9]/g,'')"
   style="width:70px;"
 >
