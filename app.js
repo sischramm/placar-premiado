@@ -1,5 +1,3 @@
-
-
 import {
   collection,
   addDoc,
@@ -861,33 +859,22 @@ async function renderizarDataAtual(){
         display:flex;
         justify-content:space-between;
         align-items:center;
-        margin-bottom:30px;
+        margin-bottom:25px;
       "
     >
 
-      <button
-        onclick="dataAnterior()"
-        style="
-          background:#00b050;
-          color:#fff;
-          border:none;
-          padding:12px 20px;
-          border-radius:8px;
-          cursor:pointer;
-          font-weight:bold;
-        "
-      >
+      <button onclick="dataAnterior()">
         ⬅ Anterior
       </button>
 
       <h2
-        class="data-jogo"
         style="
-          margin:0;
           color:#fff;
+          margin:0;
+          font-weight:900;
         "
       >
-        📅 Jogos de ${dataAtual}
+        🗓️ Jogos de ${dataAtual}
       </h2>
 
       ${
@@ -899,15 +886,6 @@ async function renderizarDataAtual(){
         `
         <button
           onclick="abrirAba('extras')"
-          style="
-            background:#00b050;
-            color:#fff;
-            border:none;
-            padding:12px 20px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:bold;
-          "
         >
           ⭐ Extras
         </button>
@@ -918,15 +896,6 @@ async function renderizarDataAtual(){
         `
         <button
           onclick="proximaData()"
-          style="
-            background:#00b050;
-            color:#fff;
-            border:none;
-            padding:12px 20px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:bold;
-          "
         >
           Próximo ➡
         </button>
@@ -934,6 +903,8 @@ async function renderizarDataAtual(){
       }
 
     </div>
+
+    <div class="jogos-grid">
 
   `;
 
@@ -999,22 +970,42 @@ async function renderizarDataAtual(){
     lista.innerHTML += `
 
       <div class="jogo">
-  
+
         <h3>
           ${jogo.timeA}
-          X
+          x
           ${jogo.timeB}
         </h3>
 
-        <div class="info">
+        <p class="info-jogo">
           Grupos - Grupo ${jogo.grupo}
-        </div>
+        </p>
 
-        <div class="info">
-          🕒 ${jogo.dataHora}
-        </div>
+        <p class="info-jogo">
+          🕒 ${jogo.dataHora.split(" ")[1].substring(0,5)}
+        </p>
 
-        <br>
+        ${
+          bloqueado
+
+          ?
+
+          `
+          <p
+            style="
+              color:red;
+              font-weight:bold;
+              margin-top:10px;
+            "
+          >
+            🔒 Palpites encerrados
+          </p>
+          `
+
+          :
+
+          ""
+        }
 
         <div class="inputs-jogo">
 
@@ -1024,6 +1015,7 @@ async function renderizarDataAtual(){
             min="0"
             max="99"
             value="${placarSalvoA}"
+            ${bloqueado ? "disabled" : ""}
           >
 
           <span class="versus">
@@ -1036,27 +1028,25 @@ async function renderizarDataAtual(){
             min="0"
             max="99"
             value="${placarSalvoB}"
+            ${bloqueado ? "disabled" : ""}
           >
 
         </div>
-
-        <br>
 
         ${
           bloqueado
 
           ?
 
-          `
-          <button disabled>
-            🔒 Palpites encerrados
-          </button>
-          `
+          ""
 
           :
 
           `
           <button
+            style="
+              margin-top:15px;
+            "
             onclick="salvarPalpite(${jogo.id})"
           >
             💾 Salvar Palpite
@@ -1069,6 +1059,10 @@ async function renderizarDataAtual(){
     `;
 
   }
+
+  lista.innerHTML += `
+    </div>
+  `;
 
 }
 
