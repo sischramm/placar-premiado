@@ -24,27 +24,34 @@ body{
 
 .topo{
 
-  background:
-    linear-gradient(
-      135deg,
-      #002244,
-      #003d73
-    );
+  background:#002f6c;
 
-  padding:15px 0;
+  border-bottom:3px solid #f7c600;
 
-  border-bottom:4px solid #FFD700;
+  padding:20px 40px;
+
+  width:100%;
+
+  box-sizing:border-box;
 
   box-shadow:
-    0 5px 20px rgba(0,0,0,.25);
+    0 4px 15px rgba(0,0,0,.25);
+
+}
+
+.topo .container{
+
+  max-width:1400px;
+
+  margin:auto;
 
 }
 
 .topo h1{
 
-  color:#fff;
+  color:white;
 
-  font-size:42px;
+  font-size:56px;
 
   font-weight:900;
 
@@ -52,11 +59,9 @@ body{
 
 }
 
-.topo div[style*="opacity"]{
+.topo div{
 
-  color:#dbe7f5;
-
-  font-size:18px;
+  color:white;
 
 }
 
