@@ -548,7 +548,231 @@ window.abrirAba = abrirAba;
 async function importarJogos(){
 
   const jogos = [
-    // COLE AQUI OS 72 JOGOS
+    {
+id:1,fase:"Grupos",grupo:"A",timeA:"México",timeB:"África do Sul",dataHora:"2026-06-11 16:00:00"
+},
+{
+id:2,fase:"Grupos",grupo:"A",timeA:"Coreia do Sul",timeB:"República Tcheca",dataHora:"2026-06-11 23:00:00"
+},
+{
+id:3,fase:"Grupos",grupo:"A",timeA:"República Tcheca",timeB:"África do Sul",dataHora:"2026-06-18 13:00:00"
+},
+{
+id:4,fase:"Grupos",grupo:"A",timeA:"México",timeB:"Coreia do Sul",dataHora:"2026-06-18 22:00:00"
+},
+{
+id:5,fase:"Grupos",grupo:"A",timeA:"República Tcheca",timeB:"México",dataHora:"2026-06-24 22:00:00"
+},
+{
+id:6,fase:"Grupos",grupo:"A",timeA:"África do Sul",timeB:"Coreia do Sul",dataHora:"2026-06-24 22:00:00"
+},
+
+{
+id:7,fase:"Grupos",grupo:"B",timeA:"Canadá",timeB:"Bósnia",dataHora:"2026-06-12 16:00:00"
+},
+{
+id:8,fase:"Grupos",grupo:"B",timeA:"Catar",timeB:"Suíça",dataHora:"2026-06-13 16:00:00"
+},
+{
+id:9,fase:"Grupos",grupo:"B",timeA:"Suíça",timeB:"Bósnia",dataHora:"2026-06-18 16:00:00"
+},
+{
+id:10,fase:"Grupos",grupo:"B",timeA:"Canadá",timeB:"Catar",dataHora:"2026-06-18 19:00:00"
+},
+{
+id:11,fase:"Grupos",grupo:"B",timeA:"Suíça",timeB:"Canadá",dataHora:"2026-06-24 16:00:00"
+},
+{
+id:12,fase:"Grupos",grupo:"B",timeA:"Bósnia",timeB:"Catar",dataHora:"2026-06-24 16:00:00"
+},
+
+{
+id:13,fase:"Grupos",grupo:"C",timeA:"Brasil",timeB:"Marrocos",dataHora:"2026-06-13 19:00:00"
+},
+{
+id:14,fase:"Grupos",grupo:"C",timeA:"Haiti",timeB:"Escócia",dataHora:"2026-06-13 22:00:00"
+},
+{
+id:15,fase:"Grupos",grupo:"C",timeA:"Escócia",timeB:"Marrocos",dataHora:"2026-06-19 19:00:00"
+},
+{
+id:16,fase:"Grupos",grupo:"C",timeA:"Brasil",timeB:"Haiti",dataHora:"2026-06-19 21:30:00"
+},
+{
+id:17,fase:"Grupos",grupo:"C",timeA:"Escócia",timeB:"Brasil",dataHora:"2026-06-24 19:00:00"
+},
+{
+id:18,fase:"Grupos",grupo:"C",timeA:"Marrocos",timeB:"Haiti",dataHora:"2026-06-24 19:00:00"
+},
+{
+id:19,fase:"Grupos",grupo:"D",timeA:"EUA",timeB:"Paraguai",dataHora:"2026-06-12 22:00:00"
+},
+{
+id:20,fase:"Grupos",grupo:"D",timeA:"Austrália",timeB:"Turquia",dataHora:"2026-06-14 01:00:00"
+},
+{
+id:21,fase:"Grupos",grupo:"D",timeA:"EUA",timeB:"Austrália",dataHora:"2026-06-19 16:00:00"
+},
+{
+id:22,fase:"Grupos",grupo:"D",timeA:"Turquia",timeB:"Paraguai",dataHora:"2026-06-20 00:00:00"
+},
+{
+id:23,fase:"Grupos",grupo:"D",timeA:"Paraguai",timeB:"Austrália",dataHora:"2026-06-25 23:00:00"
+},
+{
+id:24,fase:"Grupos",grupo:"D",timeA:"Turquia",timeB:"EUA",dataHora:"2026-06-25 23:00:00"
+},
+
+{
+id:25,fase:"Grupos",grupo:"E",timeA:"Alemanha",timeB:"Curaçao",dataHora:"2026-06-14 14:00:00"
+},
+{
+id:26,fase:"Grupos",grupo:"E",timeA:"Costa do Marfim",timeB:"Equador",dataHora:"2026-06-14 20:00:00"
+},
+{
+id:27,fase:"Grupos",grupo:"E",timeA:"Alemanha",timeB:"Costa do Marfim",dataHora:"2026-06-20 17:00:00"
+},
+{
+id:28,fase:"Grupos",grupo:"E",timeA:"Equador",timeB:"Curaçao",dataHora:"2026-06-20 21:00:00"
+},
+{
+id:29,fase:"Grupos",grupo:"E",timeA:"Equador",timeB:"Alemanha",dataHora:"2026-06-25 17:00:00"
+},
+{
+id:30,fase:"Grupos",grupo:"E",timeA:"Curaçao",timeB:"Costa do Marfim",dataHora:"2026-06-25 17:00:00"
+},
+
+{
+id:31,fase:"Grupos",grupo:"F",timeA:"Holanda",timeB:"Japão",dataHora:"2026-06-14 14:00:00"
+},
+{
+id:32,fase:"Grupos",grupo:"F",timeA:"Suécia",timeB:"Tunísia",dataHora:"2026-06-14 20:00:00"
+},
+{
+id:33,fase:"Grupos",grupo:"F",timeA:"Holanda",timeB:"Suécia",dataHora:"2026-06-20 17:00:00"
+},
+{
+id:34,fase:"Grupos",grupo:"F",timeA:"Tunísia",timeB:"Japão",dataHora:"2026-06-20 21:00:00"
+},
+{
+id:35,fase:"Grupos",grupo:"F",timeA:"Tunísia",timeB:"Holanda",dataHora:"2026-06-25 20:00:00"
+},
+{
+id:36,fase:"Grupos",grupo:"F",timeA:"Japão",timeB:"Suécia",dataHora:"2026-06-25 20:00:00"
+},
+{
+id:37,fase:"Grupos",grupo:"G",timeA:"Bélgica",timeB:"Egito",dataHora:"2026-06-15 16:00:00"
+},
+{
+id:38,fase:"Grupos",grupo:"G",timeA:"Irã",timeB:"Nova Zelândia",dataHora:"2026-06-15 22:00:00"
+},
+{
+id:39,fase:"Grupos",grupo:"G",timeA:"Bélgica",timeB:"Irã",dataHora:"2026-06-21 16:00:00"
+},
+{
+id:40,fase:"Grupos",grupo:"G",timeA:"Nova Zelândia",timeB:"Egito",dataHora:"2026-06-21 22:00:00"
+},
+{
+id:41,fase:"Grupos",grupo:"G",timeA:"Egito",timeB:"Irã",dataHora:"2026-06-27 00:00:00"
+},
+{
+id:42,fase:"Grupos",grupo:"G",timeA:"Nova Zelândia",timeB:"Bélgica",dataHora:"2026-06-27 00:00:00"
+},
+
+{
+id:43,fase:"Grupos",grupo:"H",timeA:"Espanha",timeB:"Cabo Verde",dataHora:"2026-06-15 13:00:00"
+},
+{
+id:44,fase:"Grupos",grupo:"H",timeA:"Arábia Saudita",timeB:"Uruguai",dataHora:"2026-06-15 19:00:00"
+},
+{
+id:45,fase:"Grupos",grupo:"H",timeA:"Espanha",timeB:"Arábia Saudita",dataHora:"2026-06-21 13:00:00"
+},
+{
+id:46,fase:"Grupos",grupo:"H",timeA:"Uruguai",timeB:"Cabo Verde",dataHora:"2026-06-21 19:00:00"
+},
+{
+id:47,fase:"Grupos",grupo:"H",timeA:"Uruguai",timeB:"Espanha",dataHora:"2026-06-26 21:00:00"
+},
+{
+id:48,fase:"Grupos",grupo:"H",timeA:"Cabo Verde",timeB:"Arábia Saudita",dataHora:"2026-06-26 21:00:00"
+},
+
+{
+id:49,fase:"Grupos",grupo:"I",timeA:"França",timeB:"Senegal",dataHora:"2026-06-16 16:00:00"
+},
+{
+id:50,fase:"Grupos",grupo:"I",timeA:"Iraque",timeB:"Noruega",dataHora:"2026-06-16 19:00:00"
+},
+{
+id:51,fase:"Grupos",grupo:"I",timeA:"França",timeB:"Iraque",dataHora:"2026-06-22 18:00:00"
+},
+{
+id:52,fase:"Grupos",grupo:"I",timeA:"Noruega",timeB:"Senegal",dataHora:"2026-06-22 21:00:00"
+},
+{
+id:53,fase:"Grupos",grupo:"I",timeA:"Noruega",timeB:"França",dataHora:"2026-06-26 16:00:00"
+},
+{
+id:54,fase:"Grupos",grupo:"I",timeA:"Senegal",timeB:"Iraque",dataHora:"2026-06-26 16:00:00"
+},
+{
+id:55,fase:"Grupos",grupo:"J",timeA:"Argentina",timeB:"Argélia",dataHora:"2026-06-16 22:00:00"
+},
+{
+id:56,fase:"Grupos",grupo:"J",timeA:"Áustria",timeB:"Jordânia",dataHora:"2026-06-17 01:00:00"
+},
+{
+id:57,fase:"Grupos",grupo:"J",timeA:"Argentina",timeB:"Áustria",dataHora:"2026-06-22 14:00:00"
+},
+{
+id:58,fase:"Grupos",grupo:"J",timeA:"Jordânia",timeB:"Argélia",dataHora:"2026-06-23 00:00:00"
+},
+{
+id:59,fase:"Grupos",grupo:"J",timeA:"Jordânia",timeB:"Argentina",dataHora:"2026-06-27 23:00:00"
+},
+{
+id:60,fase:"Grupos",grupo:"J",timeA:"Argélia",timeB:"Áustria",dataHora:"2026-06-27 23:00:00"
+},
+
+{
+id:61,fase:"Grupos",grupo:"K",timeA:"Portugal",timeB:"RD Congo",dataHora:"2026-06-17 14:00:00"
+},
+{
+id:62,fase:"Grupos",grupo:"K",timeA:"Uzbequistão",timeB:"Colômbia",dataHora:"2026-06-17 23:00:00"
+},
+{
+id:63,fase:"Grupos",grupo:"K",timeA:"Portugal",timeB:"Uzbequistão",dataHora:"2026-06-23 14:00:00"
+},
+{
+id:64,fase:"Grupos",grupo:"K",timeA:"Colômbia",timeB:"RD Congo",dataHora:"2026-06-23 23:00:00"
+},
+{
+id:65,fase:"Grupos",grupo:"K",timeA:"Colômbia",timeB:"Portugal",dataHora:"2026-06-27 20:30:00"
+},
+{
+id:66,fase:"Grupos",grupo:"K",timeA:"RD Congo",timeB:"Uzbequistão",dataHora:"2026-06-27 20:30:00"
+},
+
+{
+id:67,fase:"Grupos",grupo:"L",timeA:"Inglaterra",timeB:"Croácia",dataHora:"2026-06-17 17:00:00"
+},
+{
+id:68,fase:"Grupos",grupo:"L",timeA:"Gana",timeB:"Panamá",dataHora:"2026-06-17 20:00:00"
+},
+{
+id:69,fase:"Grupos",grupo:"L",timeA:"Inglaterra",timeB:"Gana",dataHora:"2026-06-23 17:00:00"
+},
+{
+id:70,fase:"Grupos",grupo:"L",timeA:"Panamá",timeB:"Croácia",dataHora:"2026-06-23 20:00:00"
+},
+{
+id:71,fase:"Grupos",grupo:"L",timeA:"Panamá",timeB:"Inglaterra",dataHora:"2026-06-27 18:00:00"
+},
+{
+id:72,fase:"Grupos",grupo:"L",timeA:"Croácia",timeB:"Gana",dataHora:"2026-06-27 18:00:00"
+}
+];    
   ];
 
   for(const jogo of jogos){
