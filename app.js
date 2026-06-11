@@ -805,12 +805,22 @@ const snapshot =
     collection(db,"jogos")
   );
 
+  const jogosOrdenados =
+  snapshot.docs
+    .map(doc => doc.data())
+    .sort((a,b) =>
+      new Date(
+        a.dataHora.replace(" ","T")
+      ) -
+      new Date(
+        b.dataHora.replace(" ","T")
+      )
+    );
+
 let ultimaData = "";
 
-for (const documento of snapshot.docs) {
-
-  const jogo = documento.data();
-
+for (const jogo of jogosOrdenados) {
+  
   const dataExibicao =
     jogo.dataHora.split(" ")[0];
 
