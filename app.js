@@ -501,53 +501,21 @@ async function carregarJogos(){
       collection(db,"jogos")
     );
 
-for (const documento of snapshot.docs) {
+  for (const documento of snapshot.docs) {
 
-  const jogo = documento.data();
-  const usuario =
-  JSON.parse(
-    localStorage.getItem("usuarioLogado")
-  );
-
-let placarSalvoA = "";
-let placarSalvoB = "";
-
-if(usuario){
-
-  const palpiteRef =
-    await getDoc(
-      doc(
-        db,
-        "palpites",
-        usuario.email + "_" + jogo.id
-      )
-    );
-
-  if(palpiteRef.exists()){
-
-    const palpite =
-      palpiteRef.data();
-
-    placarSalvoA = palpite.placarA;
-    placarSalvoB = palpite.placarB;
-
-  }
-
-}
-
-    
+    const jogo = documento.data();
 
     const agora =
-  new Date();
+      new Date();
 
-const dataJogo =
-  new Date(
-    jogo.dataHora
-      .replace(" ","T")
-  );
+    const dataJogo =
+      new Date(
+        jogo.dataHora
+          .replace(" ","T")
+      );
 
-const bloqueado =
-  agora >= dataJogo;
+    const bloqueado =
+      agora >= dataJogo;
 
     lista.innerHTML += `
     
@@ -579,50 +547,127 @@ const bloqueado =
 
         <br>
 
-<input
-  id="a_${jogo.id}"
-  type="number"
-  min="0"
-  max="99"
-  step="1"
-  value="${placarSalvoA}"
-  oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-  style="width:70px;"
->
+        <input
+          id="a_${jogo.id}"
+          type="number"
+          min="0"
+          max="99"
+          step="1"
+          value="0"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+          style="width:70px;"
+        >
 
-X
+        X
 
-<input
-  id="b_${jogo.id}"
-  type="number"
-  min="0"
-  max="99"
-  step="1"
-  value="${placarSalvoB}"
-  oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-  style="width:70px;"
->
+        <input
+          id="b_${jogo.id}"
+          type="number"
+          min="0"
+          max="99"
+          step="1"
+          value="0"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+          style="width:70px;"
+        >
 
-<br><br>
+        <br><br>
 
-${bloqueado
-? `
-<button disabled>
-Encerrado
-</button>
-`
-: `
-<button onclick="salvarPalpite(${jogo.id})">
-Salvar Palpite
-</button>
-`
-}
+        ${bloqueado
+        ? `
+        <button disabled>
+          Encerrado
+        </button>
+        `
+        : `
+        <button onclick="salvarPalpite(${jogo.id})">
+          Salvar Palpite
+        </button>
+        `
+        }
 
       </div>
 
     `;
 
   }
+
+  await atualizarProgresso();
+
+}
+
+async function atualizarProgresso(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario) return;
+
+  const jogosSnap =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  const palpitesSnap =
+    await getDocs(
+      collection(db,"palpites")
+    );
+
+  const totalJogos =
+    jogosSnap.size;
+
+  let realizados = 0;
+
+  palpitesSnap.forEach(doc => {
+
+    const p = doc.data();
+
+    if(
+      p.usuario === usuario.email
+    ){
+      realizados++;
+    }
+
+  });
+
+  const pendentes =
+    totalJogos - realizados;
+
+  const percentual =
+    totalJogos > 0
+    ? Math.round(
+        (realizados / totalJogos) * 100
+      )
+    : 0;
+
+  document.getElementById(
+    "totalJogos"
+  ).innerHTML =
+    totalJogos + " jogos";
+
+  document.getElementById(
+    "realizados"
+  ).innerHTML =
+    realizados + " realizados";
+
+  document.getElementById(
+    "pendentes"
+  ).innerHTML =
+    pendentes + " pendentes";
+
+  document.getElementById(
+    "percentual"
+  ).innerHTML =
+    percentual + "%";
+
+  document.getElementById(
+    "barraProgresso"
+  ).style.width =
+    percentual + "%";
 
 }
 
