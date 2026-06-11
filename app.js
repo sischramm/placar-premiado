@@ -139,9 +139,15 @@ function abrirAba(nome){
     carregarPerfil();
   }
 
-  if(nome === "extras"){
-    document.getElementById("abaExtras").style.display = "block";
-  }
+if(nome === "extras"){
+
+  document.getElementById(
+    "abaExtras"
+  ).style.display = "block";
+
+  carregarPaisesExtras();
+
+}
 
   if(nome === "premiacao"){
     document.getElementById("abaPremiacao").style.display = "block";
