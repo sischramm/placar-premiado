@@ -1123,7 +1123,6 @@ await setDoc(
 
     alert("Palpite salvo/atualizado!");
 
-    await atualizarProgresso();
 
   }catch(erro){
 
