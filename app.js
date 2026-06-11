@@ -826,15 +826,11 @@ for (const jogo of jogosOrdenados) {
 
   if(dataExibicao !== ultimaData){
 
-    lista.innerHTML += `
-      <h2 style="
-        color:white;
-        margin-top:30px;
-        margin-bottom:15px;
-      ">
-        📅 ${dataExibicao}
-      </h2>
-    `;
+lista.innerHTML += `
+  <h2 class="data-jogo">
+    📅 ${dataExibicao}
+  </h2>
+`;
 
     ultimaData = dataExibicao;
   }
@@ -887,22 +883,9 @@ if(usuario){
     const bloqueado =
       agora >= dataJogo;
 
-   lista.innerHTML += `
+lista.innerHTML += `
 
-<div
-  style="
-    width:48%;
-    display:inline-block;
-    vertical-align:top;
-    border:1px solid #ddd;
-    padding:15px;
-    margin:1%;
-    border-radius:10px;
-    background:#fff;
-    color:#000;
-    box-sizing:border-box;
-  "
->
+<div class="card-palpite">
 
   <h3>
     ${jogo.timeA}
