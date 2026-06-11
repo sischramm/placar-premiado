@@ -1815,77 +1815,72 @@ body::before{
 
 }
 
+@media(max-width:900px){
+    .jogo{
+        width:100%;
+    }
+}
+
 /* ======================================== */
-/* PALPITES COPA */
+/* PALPITES */
 /* ======================================== */
 
-.data-jogo{
+#listaJogos{
 
   width:100%;
-
-  color:#fff;
-
-  font-size:26px;
-
-  font-weight:900;
-
-  margin:30px 0 15px;
-
-  text-shadow:
-    0 2px 8px rgba(0,0,0,.5);
 
 }
 
-.card-palpite{
+.jogo{
 
-  width:100%;
+  width:calc(50% - 10px);
+
+  display:inline-block;
+
+  vertical-align:top;
 
   background:rgba(255,255,255,.92);
 
-  border-radius:16px;
+  border-radius:18px;
 
-  padding:20px;
+  padding:25px;
+
+  margin-bottom:20px;
+
+  box-sizing:border-box;
 
   box-shadow:
-    0 6px 20px rgba(0,0,0,.12);
+    0 8px 20px rgba(0,0,0,.12);
 
 }
 
-.card-palpite h3{
+.jogo h3{
 
   color:#002244;
 
-  font-size:30px;
+  font-size:34px;
 
-  margin-bottom:10px;
+  font-weight:900;
 
-}
-
-.card-palpite .info{
-
-  color:#666;
-
-  margin-bottom:5px;
+  margin-bottom:15px;
 
 }
 
-.card-palpite .placar{
+.jogo p{
 
-  display:flex;
+  color:#555;
 
-  align-items:center;
+  margin-bottom:8px;
 
-  justify-content:center;
-
-  gap:15px;
-
-  margin-top:20px;
+  font-size:16px;
 
 }
 
-.card-palpite .placar input{
+.jogo input{
 
-  width:90px !important;
+  width:100px !important;
+
+  height:55px;
 
   text-align:center;
 
@@ -1893,20 +1888,16 @@ body::before{
 
   font-weight:900;
 
-}
-
-.card-palpite .x{
-
-  font-size:34px;
-
-  font-weight:900;
-
-  color:#002244;
+  margin:0;
 
 }
 
 @media(max-width:900px){
-    .jogo{
-        width:100%;
-    }
+
+  .jogo{
+
+    width:100%;
+
+  }
+
 }
