@@ -1,3 +1,5 @@
+
+
 import {
   collection,
   addDoc,
@@ -6,6 +8,10 @@ import {
   setDoc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+let indiceDataAtual = 0;
+let datasJogos = [];
+let todosJogos = [];
 
 import { db } from "./firebase.js";
 
@@ -800,40 +806,143 @@ async function carregarJogos(){
 
   lista.innerHTML = "";
 
-const snapshot =
-  await getDocs(
-    collection(db,"jogos")
-  );
-
-  const jogosOrdenados =
-  snapshot.docs
-    .map(doc => doc.data())
-    .sort((a,b) =>
-      new Date(
-        a.dataHora.replace(" ","T")
-      ) -
-      new Date(
-        b.dataHora.replace(" ","T")
-      )
+  const snapshot =
+    await getDocs(
+      collection(db,"jogos")
     );
 
-let ultimaData = "";
+  todosJogos =
+    snapshot.docs
+      .map(doc => doc.data())
+      .sort((a,b) =>
+        new Date(
+          a.dataHora.replace(" ","T")
+        ) -
+        new Date(
+          b.dataHora.replace(" ","T")
+        )
+      );
 
-for (const jogo of jogosOrdenados) {
-  
-  const dataExibicao =
-    jogo.dataHora.split(" ")[0];
+  datasJogos = [
+    ...new Set(
+      todosJogos.map(
+        jogo =>
+          jogo.dataHora.split(" ")[0]
+      )
+    )
+  ];
 
-  if(dataExibicao !== ultimaData){
+  indiceDataAtual = 0;
 
-lista.innerHTML += `
-  <h2 class="data-jogo">
-    📅 ${dataExibicao}
-  </h2>
-`;
+  await renderizarDataAtual();
 
-    ultimaData = dataExibicao;
-  }
+  await atualizarProgresso();
+
+}
+
+async function renderizarDataAtual(){
+
+  const lista =
+    document.getElementById(
+      "listaJogos"
+    );
+
+  if(!lista) return;
+
+  lista.innerHTML = "";
+
+  const dataAtual =
+    datasJogos[indiceDataAtual];
+
+  lista.innerHTML += `
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:30px;
+      "
+    >
+
+      <button
+        onclick="dataAnterior()"
+        style="
+          background:#00b050;
+          color:#fff;
+          border:none;
+          padding:12px 20px;
+          border-radius:8px;
+          cursor:pointer;
+          font-weight:bold;
+        "
+      >
+        ⬅ Anterior
+      </button>
+
+      <h2
+        class="data-jogo"
+        style="
+          margin:0;
+          color:#fff;
+        "
+      >
+        📅 Jogos de ${dataAtual}
+      </h2>
+
+      ${
+        indiceDataAtual ===
+        datasJogos.length - 1
+
+        ?
+
+        `
+        <button
+          onclick="abrirAba('extras')"
+          style="
+            background:#00b050;
+            color:#fff;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+          "
+        >
+          ⭐ Extras
+        </button>
+        `
+
+        :
+
+        `
+        <button
+          onclick="proximaData()"
+          style="
+            background:#00b050;
+            color:#fff;
+            border:none;
+            padding:12px 20px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+          "
+        >
+          Próximo ➡
+        </button>
+        `
+      }
+
+    </div>
+
+  `;
+
+  const jogosDoDia =
+    todosJogos.filter(
+      jogo =>
+        jogo.dataHora.split(" ")[0]
+        === dataAtual
+    );
 
   const usuario =
     JSON.parse(
@@ -842,106 +951,153 @@ lista.innerHTML += `
       )
     );
 
-let placarSalvoA = "";
-let placarSalvoB = "";
+  for(const jogo of jogosDoDia){
 
-if(usuario){
+    let placarSalvoA = "";
+    let placarSalvoB = "";
 
-  const palpiteRef =
-    await getDoc(
-      doc(
-        db,
-        "palpites",
-        usuario.email + "_" + jogo.id
-      )
-    );
+    if(usuario){
 
-  if(palpiteRef.exists()){
+      const palpiteRef =
+        await getDoc(
+          doc(
+            db,
+            "palpites",
+            usuario.email + "_" + jogo.id
+          )
+        );
 
-    const palpite =
-      palpiteRef.data();
+      if(palpiteRef.exists()){
 
-    placarSalvoA =
-      palpite.placarA;
+        const palpite =
+          palpiteRef.data();
 
-    placarSalvoB =
-      palpite.placarB;
+        placarSalvoA =
+          palpite.placarA;
 
-  }
+        placarSalvoB =
+          palpite.placarB;
 
-}
+      }
+
+    }
 
     const agora =
       new Date();
 
     const dataJogo =
       new Date(
-        jogo.dataHora
-          .replace(" ","T")
+        jogo.dataHora.replace(
+          " ",
+          "T"
+        )
       );
 
     const bloqueado =
       agora >= dataJogo;
 
-lista.innerHTML += `
+    lista.innerHTML += `
 
-<div class="card-palpite">
+      <div class="card-palpite">
 
-  <h3>
-    ${jogo.timeA}
-    X
-    ${jogo.timeB}
-  </h3>
+        <h3>
+          ${jogo.timeA}
+          X
+          ${jogo.timeB}
+        </h3>
 
-  <div>
-    Grupo: ${jogo.grupo}
-  </div>
+        <div class="info">
+          Grupos - Grupo ${jogo.grupo}
+        </div>
 
-  <div>
-    ${jogo.dataHora}
-  </div>
+        <div class="info">
+          🕒 ${jogo.dataHora}
+        </div>
 
-  <br>
+        <br>
 
-  <input
-    id="a_${jogo.id}"
-    type="number"
-    min="0"
-    max="99"
-    step="1"
-    value="${placarSalvoA}"
-    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-    style="width:70px;"
-  >
+        <div class="placar">
 
-  X
+          <input
+            id="a_${jogo.id}"
+            type="number"
+            min="0"
+            max="99"
+            value="${placarSalvoA}"
+          >
 
-  <input
-    id="b_${jogo.id}"
-    type="number"
-    min="0"
-    max="99"
-    step="1"
-    value="${placarSalvoB}"
-    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-    style="width:70px;"
-  >
+          <span class="x">
+            X
+          </span>
 
-  <br><br>
+          <input
+            id="b_${jogo.id}"
+            type="number"
+            min="0"
+            max="99"
+            value="${placarSalvoB}"
+          >
 
-  ${
-    bloqueado
-      ? `<button disabled>Encerrado</button>`
-      : `<button onclick="salvarPalpite(${jogo.id})">Salvar Palpite</button>`
+        </div>
+
+        <br>
+
+        ${
+          bloqueado
+
+          ?
+
+          `
+          <button disabled>
+            🔒 Palpites encerrados
+          </button>
+          `
+
+          :
+
+          `
+          <button
+            onclick="salvarPalpite(${jogo.id})"
+          >
+            💾 Salvar Palpite
+          </button>
+          `
+        }
+
+      </div>
+
+    `;
+
   }
 
-</div>
+}
 
-`;
+function proximaData(){
+
+  if(
+    indiceDataAtual <
+    datasJogos.length - 1
+  ){
+
+    indiceDataAtual++;
+
+    renderizarDataAtual();
 
   }
 
-  await atualizarProgresso();
+}
+
+function dataAnterior(){
+
+  if(
+    indiceDataAtual > 0
+  ){
+
+    indiceDataAtual--;
+
+    renderizarDataAtual();
+
+  }
 
 }
 
