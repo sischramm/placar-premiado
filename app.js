@@ -57,7 +57,7 @@ if(usuario){
 
     if(
       usuario.email ===
-      "admin@gruposhark.com.br"
+      "simone.schramm@equagril.com.br"
     ){
 
       btnImportar.style.display =
