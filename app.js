@@ -55,66 +55,78 @@ if(usuario){
 
 function abrirAba(nome){
 
-  document.getElementById("abaPalpites").style.display = "none";
-  document.getElementById("abaRanking").style.display = "none";
-  document.getElementById("abaClassificacao").style.display = "none";
-  document.getElementById("abaPerfil").style.display = "none";
-  document.getElementById("abaExtras").style.display = "none";
+  const abas = [
+    "abaPalpites",
+    "abaRanking",
+    "abaClassificacao",
+    "abaMata",
+    "abaEmpresa",
+    "abaEstatisticas",
+    "abaPerfil",
+    "abaExtras",
+    "abaPremiacao",
+    "abaRegulamento",
+    "abaAdmin"
+  ];
+
+  abas.forEach(id => {
+
+    const aba =
+      document.getElementById(id);
+
+    if(aba){
+      aba.style.display = "none";
+    }
+
+  });
 
   if(nome === "palpites"){
     document.getElementById("abaPalpites").style.display = "block";
   }
 
   if(nome === "ranking"){
-
-  document.getElementById(
-    "abaRanking"
-  ).style.display =
-    "block";
-
-  carregarRanking();
-
-}
+    document.getElementById("abaRanking").style.display = "block";
+    carregarRanking();
+  }
 
   if(nome === "classificacao"){
     document.getElementById("abaClassificacao").style.display = "block";
   }
 
+  if(nome === "mata"){
+    document.getElementById("abaMata").style.display = "block";
+  }
+
+  if(nome === "empresa"){
+    document.getElementById("abaEmpresa").style.display = "block";
+    carregarRankingEmpresas();
+  }
+
+  if(nome === "estatisticas"){
+    document.getElementById("abaEstatisticas").style.display = "block";
+  }
+
   if(nome === "perfil"){
-
-  document.getElementById(
-    "abaPerfil"
-  ).style.display =
-    "block";
-
-  carregarPerfil();
-
-}
+    document.getElementById("abaPerfil").style.display = "block";
+    carregarPerfil();
+  }
 
   if(nome === "extras"){
     document.getElementById("abaExtras").style.display = "block";
   }
 
+  if(nome === "premiacao"){
+    document.getElementById("abaPremiacao").style.display = "block";
+  }
+
+  if(nome === "regulamento"){
+    document.getElementById("abaRegulamento").style.display = "block";
+  }
+
   if(nome === "admin"){
-
-  document.getElementById(
-    "abaAdmin"
-  ).style.display = "block";
-
-  carregarAdminJogos();
-
-}
-
-  if(nome === "empresa"){
-
-  document.getElementById(
-    "abaEmpresa"
-  ).style.display =
-    "block";
-
-  carregarRankingEmpresas();
-
-}
+    document.getElementById("abaAdmin").style.display = "block";
+    carregarAdminJogos();
+  }
 
 }
 
