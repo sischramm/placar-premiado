@@ -163,18 +163,6 @@ button:hover{
 
 }
 
-.info-jogo{
-  color:#666;
-}
-
-.inputs-jogo{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:15px;
-  margin-top:25px;
-}
-
 .inputs-jogo input{
   width:120px;
   height:50px;
@@ -541,10 +529,7 @@ body::before{
 
 }
 
-.versus{
-  font-size:34px;
-  font-weight:900;
-}
+
 
 .confronto-copa{
 
@@ -1303,11 +1288,7 @@ body::before{
 
 
 
-  .inputs-jogo{
 
-    gap:8px;
-
-  }
 
   .inputs-jogo input{
 
@@ -1748,11 +1729,6 @@ body::before{
   .inputs-jogo input{
     height:50px;
     font-size:22px;
-  }
-
-  .versus{
-    min-width:25px;
-    font-size:24px;
   }
 
   /* PERFIL */
