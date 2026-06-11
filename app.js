@@ -674,3 +674,12 @@ await setDoc(
 
 window.salvarPalpite =
   salvarPalpite;
+
+window.abrirAba = abrirAba;
+window.abrirLogin = abrirLogin;
+window.abrirCadastro = abrirCadastro;
+window.login = login;
+window.cadastrar = cadastrar;
+window.sair = sair;
+window.carregarFiliais = carregarFiliais;
+window.toggleSenha = toggleSenha;
