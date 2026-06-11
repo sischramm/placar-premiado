@@ -147,6 +147,8 @@ if(nome === "extras"){
 
   carregarPaisesExtras();
 
+  carregarExtras();
+
 }
 
   if(nome === "premiacao"){
@@ -372,8 +374,120 @@ document.getElementById(
 
 }
    
-function salvarExtras(){
-  alert("Extras serão conectados ao Firebase");
+async function salvarExtras(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario){
+
+    alert("Faça login novamente.");
+
+    return;
+
+  }
+
+  await setDoc(
+
+    doc(
+      db,
+      "extras",
+      usuario.email
+    ),
+
+    {
+
+      campeao:
+        document.getElementById(
+          "extraCampeao"
+        ).value,
+
+      vice:
+        document.getElementById(
+          "extraVice"
+        ).value,
+
+      artilheiro:
+        document.getElementById(
+          "extraArtilheiro"
+        ).value,
+
+      golsBrasil:
+        document.getElementById(
+          "extraGolsBrasil"
+        ).value,
+
+      faseBrasil:
+        document.getElementById(
+          "extraFaseBrasil"
+        ).value
+
+    }
+
+  );
+
+  alert(
+    "Palpites extras salvos com sucesso!"
+  );
+
+}
+
+window.salvarExtras = salvarExtras;
+
+async function carregarExtras(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario) return;
+
+  const ref =
+    await getDoc(
+      doc(
+        db,
+        "extras",
+        usuario.email
+      )
+    );
+
+  if(!ref.exists()) return;
+
+  const dados =
+    ref.data();
+
+  document.getElementById(
+    "extraCampeao"
+  ).value =
+    dados.campeao || "";
+
+  document.getElementById(
+    "extraVice"
+  ).value =
+    dados.vice || "";
+
+  document.getElementById(
+    "extraArtilheiro"
+  ).value =
+    dados.artilheiro || "";
+
+  document.getElementById(
+    "extraGolsBrasil"
+  ).value =
+    dados.golsBrasil || "";
+
+  document.getElementById(
+    "extraFaseBrasil"
+  ).value =
+    dados.faseBrasil || "";
+
 }
 
 function recalcularRanking(){
