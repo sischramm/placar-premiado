@@ -1082,10 +1082,7 @@ async function renderizarDataAtual(){
 
 function proximaData(){
 
-  if(
-    indiceDataAtual <
-    datasJogos.length - 1
-  ){
+  if(indiceDataAtual < datasJogos.length - 1){
 
     indiceDataAtual++;
 
@@ -1097,9 +1094,7 @@ function proximaData(){
 
 function dataAnterior(){
 
-  if(
-    indiceDataAtual > 0
-  ){
+  if(indiceDataAtual > 0){
 
     indiceDataAtual--;
 
@@ -1108,6 +1103,9 @@ function dataAnterior(){
   }
 
 }
+
+window.proximaData = proximaData;
+window.dataAnterior = dataAnterior;
 
 async function atualizarProgresso(){
 
