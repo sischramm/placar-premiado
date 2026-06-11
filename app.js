@@ -66,16 +66,30 @@ function abrirAba(nome){
   }
 
   if(nome === "ranking"){
-    document.getElementById("abaRanking").style.display = "block";
-  }
+
+  document.getElementById(
+    "abaRanking"
+  ).style.display =
+    "block";
+
+  carregarRanking();
+
+}
 
   if(nome === "classificacao"){
     document.getElementById("abaClassificacao").style.display = "block";
   }
 
   if(nome === "perfil"){
-    document.getElementById("abaPerfil").style.display = "block";
-  }
+
+  document.getElementById(
+    "abaPerfil"
+  ).style.display =
+    "block";
+
+  carregarPerfil();
+
+}
 
   if(nome === "extras"){
     document.getElementById("abaExtras").style.display = "block";
@@ -88,6 +102,17 @@ function abrirAba(nome){
   ).style.display = "block";
 
   carregarAdminJogos();
+
+}
+
+  if(nome === "empresa"){
+
+  document.getElementById(
+    "abaEmpresa"
+  ).style.display =
+    "block";
+
+  carregarRankingEmpresas();
 
 }
 
@@ -973,3 +998,219 @@ window.carregarAdminJogos =
 
 window.salvarResultado =
   salvarResultado;
+
+async function carregarRanking(){
+
+  const top5 =
+    document.getElementById(
+      "rankingTop5"
+    );
+
+  const rankingCompleto =
+    document.getElementById(
+      "rankingCompleto"
+    );
+
+  if(!top5 || !rankingCompleto)
+    return;
+
+  const snapshot =
+    await getDocs(
+      collection(db,"usuarios")
+    );
+
+  let usuarios = [];
+
+  snapshot.forEach(doc => {
+
+    usuarios.push(
+      doc.data()
+    );
+
+  });
+
+  usuarios.sort(
+    (a,b) =>
+      (b.pontos || 0) -
+      (a.pontos || 0)
+  );
+
+  let htmlTop5 = "";
+  let htmlLista = "";
+
+  usuarios.slice(0,5)
+    .forEach((u,index) => {
+
+      const medalhas = [
+        "🥇",
+        "🥈",
+        "🥉",
+        "🏅",
+        "🏅"
+      ];
+
+      htmlTop5 += `
+
+        <div class="ranking-top">
+
+          <strong>
+            ${medalhas[index]}
+            ${index + 1}º Lugar
+          </strong>
+
+          <br>
+
+          ${u.nome}
+
+          <br>
+
+          ${u.pontos || 0} pts
+
+        </div>
+
+      `;
+
+    });
+
+  usuarios.slice(5,20)
+    .forEach((u,index) => {
+
+      htmlLista += `
+
+        <div class="ranking-item">
+
+          ${index + 6}º
+
+          -
+
+          ${u.nome}
+
+          <strong>
+            (${u.pontos || 0} pts)
+          </strong>
+
+        </div>
+
+      `;
+
+    });
+
+  top5.innerHTML =
+    htmlTop5;
+
+  rankingCompleto.innerHTML =
+    htmlLista;
+
+}
+
+async function carregarRankingEmpresas(){
+
+  const tabela =
+    document.getElementById(
+      "rankingEmpresaTabela"
+    );
+
+  if(!tabela) return;
+
+  const snapshot =
+    await getDocs(
+      collection(db,"usuarios")
+    );
+
+  const empresas = {};
+
+  snapshot.forEach(doc => {
+
+    const u = doc.data();
+
+    if(!empresas[u.empresa]){
+
+      empresas[u.empresa] = 0;
+
+    }
+
+    empresas[u.empresa] +=
+      Number(u.pontos || 0);
+
+  });
+
+  const ranking =
+    Object.entries(empresas)
+      .sort((a,b) => b[1]-a[1]);
+
+  let html = "";
+
+  ranking.forEach(
+    (empresa,index) => {
+
+      html += `
+
+        <div class="ranking-item">
+
+          ${index + 1}º
+
+          -
+
+          ${empresa[0]}
+
+          <strong>
+            (${empresa[1]} pts)
+          </strong>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+  tabela.innerHTML = html;
+
+}
+
+async function carregarPerfil(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario) return;
+
+  const perfil =
+    document.getElementById(
+      "perfilDados"
+    );
+
+  perfil.innerHTML = `
+
+    <div class="perfil-item">
+      <strong>Nome:</strong>
+      ${usuario.nome}
+    </div>
+
+    <div class="perfil-item">
+      <strong>Empresa:</strong>
+      ${usuario.empresa}
+    </div>
+
+    <div class="perfil-item">
+      <strong>Filial:</strong>
+      ${usuario.filial}
+    </div>
+
+    <div class="perfil-item">
+      <strong>E-mail:</strong>
+      ${usuario.email}
+    </div>
+
+    <div class="perfil-item">
+      <strong>Pontos:</strong>
+      ${usuario.pontos || 0}
+    </div>
+
+  `;
+
+}
