@@ -641,7 +641,6 @@ id:29,fase:"Grupos",grupo:"E",timeA:"Equador",timeB:"Alemanha",dataHora:"2026-06
 {
 id:30,fase:"Grupos",grupo:"E",timeA:"Curaçao",timeB:"Costa do Marfim",dataHora:"2026-06-25 17:00:00"
 },
-
 {
 id:31,fase:"Grupos",grupo:"F",timeA:"Holanda",timeB:"Japão",dataHora:"2026-06-14 14:00:00"
 },
@@ -678,7 +677,6 @@ id:41,fase:"Grupos",grupo:"G",timeA:"Egito",timeB:"Irã",dataHora:"2026-06-27 00
 {
 id:42,fase:"Grupos",grupo:"G",timeA:"Nova Zelândia",timeB:"Bélgica",dataHora:"2026-06-27 00:00:00"
 },
-
 {
 id:43,fase:"Grupos",grupo:"H",timeA:"Espanha",timeB:"Cabo Verde",dataHora:"2026-06-15 13:00:00"
 },
@@ -697,7 +695,6 @@ id:47,fase:"Grupos",grupo:"H",timeA:"Uruguai",timeB:"Espanha",dataHora:"2026-06-
 {
 id:48,fase:"Grupos",grupo:"H",timeA:"Cabo Verde",timeB:"Arábia Saudita",dataHora:"2026-06-26 21:00:00"
 },
-
 {
 id:49,fase:"Grupos",grupo:"I",timeA:"França",timeB:"Senegal",dataHora:"2026-06-16 16:00:00"
 },
@@ -734,7 +731,6 @@ id:59,fase:"Grupos",grupo:"J",timeA:"Jordânia",timeB:"Argentina",dataHora:"2026
 {
 id:60,fase:"Grupos",grupo:"J",timeA:"Argélia",timeB:"Áustria",dataHora:"2026-06-27 23:00:00"
 },
-
 {
 id:61,fase:"Grupos",grupo:"K",timeA:"Portugal",timeB:"RD Congo",dataHora:"2026-06-17 14:00:00"
 },
@@ -753,7 +749,6 @@ id:65,fase:"Grupos",grupo:"K",timeA:"Colômbia",timeB:"Portugal",dataHora:"2026-
 {
 id:66,fase:"Grupos",grupo:"K",timeA:"RD Congo",timeB:"Uzbequistão",dataHora:"2026-06-27 20:30:00"
 },
-
 {
 id:67,fase:"Grupos",grupo:"L",timeA:"Inglaterra",timeB:"Croácia",dataHora:"2026-06-17 17:00:00"
 },
