@@ -998,16 +998,8 @@ async function renderizarDataAtual(){
 
     lista.innerHTML += `
 
-      <div
-  class="card-palpite"
-  style="
-    width:48%;
-    display:inline-block;
-    vertical-align:top;
-    margin:1%;
-  "
->
-
+      <div class="jogo">
+  
         <h3>
           ${jogo.timeA}
           X
@@ -1024,7 +1016,7 @@ async function renderizarDataAtual(){
 
         <br>
 
-        <div class="placar">
+        <div class="inputs-jogo">
 
           <input
             id="a_${jogo.id}"
@@ -1034,7 +1026,7 @@ async function renderizarDataAtual(){
             value="${placarSalvoA}"
           >
 
-          <span class="x">
+          <span class="versus">
             X
           </span>
 
