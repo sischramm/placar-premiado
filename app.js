@@ -48,6 +48,30 @@ if(usuario){
   ).innerHTML =
     usuario.pontos || 0;
 
+  const btnImportar =
+    document.getElementById(
+      "btnImportarJogos"
+    );
+
+  if(btnImportar){
+
+    if(
+      usuario.email ===
+      "admin@gruposhark.com.br"
+    ){
+
+      btnImportar.style.display =
+        "inline-block";
+
+    }else{
+
+      btnImportar.style.display =
+        "none";
+
+    }
+
+  }
+
 }
   carregarJogos();
 
