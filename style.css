@@ -1876,17 +1876,12 @@ body::before{
 }
 
 #listaJogos{
-
   display:block;
-
-  grid-template-columns:
-    repeat(auto-fill,minmax(450px,1fr));
-
-  gap:20px;
-
 }
 
 .card-palpite{
+
+  width:100%;
 
   background:rgba(255,255,255,.92);
 
@@ -1896,8 +1891,6 @@ body::before{
 
   box-shadow:
     0 6px 20px rgba(0,0,0,.12);
-
-  border:1px solid rgba(255,255,255,.35);
 
 }
 
