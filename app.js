@@ -548,25 +548,7 @@ window.abrirAba = abrirAba;
 async function importarJogos(){
 
   const jogos = [
-
-    {
-      id:1,
-      fase:"Grupos",
-      grupo:"A",
-      timeA:"México",
-      timeB:"África do Sul",
-      dataHora:"2026-06-11 16:00:00"
-    },
-
-    {
-      id:2,
-      fase:"Grupos",
-      grupo:"A",
-      timeA:"Coreia do Sul",
-      timeB:"República Tcheca",
-      dataHora:"2026-06-11 23:00:00"
-    }
-
+    // COLE AQUI OS 72 JOGOS
   ];
 
   for(const jogo of jogos){
@@ -575,15 +557,15 @@ async function importarJogos(){
       collection(db,"jogos"),
       {
         ...jogo,
-        encerrado:false,
-        placarRealA:null,
-        placarRealB:null
+        placarRealA: null,
+        placarRealB: null,
+        encerrado: false
       }
     );
 
   }
 
-  alert("Jogos importados!");
+  alert("72 jogos importados com sucesso!");
 
 }
 
