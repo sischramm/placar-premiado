@@ -900,13 +900,15 @@ async function renderizarDataAtual(){
 
     </div>
 
-    <div
-      style="
-        display:flex;
-        flex-wrap:wrap;
-        gap:20px;
-      "
-    >
+  <div
+  style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:20px;
+    width:100%;
+  "
+>
 
   `;
 
@@ -971,15 +973,15 @@ async function renderizarDataAtual(){
     lista.innerHTML += `
 
       <div
-        style="
-          flex:1;
-          min-width:500px;
-          background:rgba(255,255,255,.92);
-          border-radius:18px;
-          padding:20px;
-          box-sizing:border-box;
-        "
-      >
+  style="
+    width:48%;
+    max-width:48%;
+    background:rgba(255,255,255,.92);
+    border-radius:18px;
+    padding:20px;
+    box-sizing:border-box;
+  "
+>
 
         <h3>
           ${jogo.timeA} x ${jogo.timeB}
