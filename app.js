@@ -446,15 +446,18 @@ async function importarJogos(){
 
   for(const jogo of jogos){
 
-    await addDoc(
-      collection(db,"jogos"),
-      {
-        ...jogo,
-        encerrado:false,
-        placarRealA:null,
-        placarRealB:null
-      }
-    );
+await addDoc(
+  collection(db, "usuarios"),
+  {
+    nome,
+    empresa,
+    filial,
+    email,
+    senha,
+    pontos: 0,
+    criadoEm: new Date()
+  }
+);
 
   }
 
@@ -480,9 +483,9 @@ async function carregarJogos(){
       collection(db,"jogos")
     );
 
-  snapshot.forEach(doc => {
+for (const documento of snapshot.docs) {
 
-    const jogo = doc.data();
+  const jogo = documento.data();
 
     const usuario =
 JSON.parse(
@@ -605,7 +608,7 @@ Salvar Palpite
 
     `;
 
-  });
+  }
 
 }
 
