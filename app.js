@@ -773,7 +773,6 @@ id:71,fase:"Grupos",grupo:"L",timeA:"Panamá",timeB:"Inglaterra",dataHora:"2026-
 id:72,fase:"Grupos",grupo:"L",timeA:"Croácia",timeB:"Gana",dataHora:"2026-06-27 18:00:00"
 }
 ];    
-  ];
 
   for(const jogo of jogos){
 
