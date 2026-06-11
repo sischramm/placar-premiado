@@ -43,14 +43,8 @@ if(usuario){
   ).style.display = "block";
 
   document.getElementById(
-    "nomeUsuario"
-  ).innerHTML =
-    usuario.nome;
-
-  document.getElementById(
-    "pontosUsuario"
-  ).innerHTML =
-    usuario.pontos || 0;
+    "topoSistema"
+  ).style.display = "block";
 
   const btnImportar =
     document.getElementById(
@@ -385,14 +379,6 @@ document.getElementById(
 document.getElementById(
   "painel"
 ).style.display = "block";
-
-document.getElementById(
-  "nomeUsuario"
-).innerHTML = nome;
-
-document.getElementById(
-  "pontosUsuario"
-).innerHTML = 0;
 
   } catch (erro) {
 
