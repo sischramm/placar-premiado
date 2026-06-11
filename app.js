@@ -878,6 +878,7 @@ if(usuario){
       agora >= dataJogo;
 
    lista.innerHTML += `
+
 <div
   style="
     width:48%;
@@ -891,67 +892,58 @@ if(usuario){
     box-sizing:border-box;
   "
 >
+
+  <h3>
+    ${jogo.timeA}
+    X
+    ${jogo.timeB}
+  </h3>
+
+  <div>
+    Grupo: ${jogo.grupo}
+  </div>
+
+  <div>
+    ${jogo.dataHora}
+  </div>
+
+  <br>
+
+  <input
+    id="a_${jogo.id}"
+    type="number"
+    min="0"
+    max="99"
+    step="1"
+    value="${placarSalvoA}"
+    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+    style="width:70px;"
+  >
+
+  X
+
+  <input
+    id="b_${jogo.id}"
+    type="number"
+    min="0"
+    max="99"
+    step="1"
+    value="${placarSalvoB}"
+    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+    style="width:70px;"
+  >
+
+  <br><br>
+
+  ${
+    bloqueado
+      ? `<button disabled>Encerrado</button>`
+      : `<button onclick="salvarPalpite(${jogo.id})">Salvar Palpite</button>`
+  }
+
+</div>
+
 `;
-
-        <h3>
-          ${jogo.timeA}
-          X
-          ${jogo.timeB}
-        </h3>
-
-        <div>
-          Grupo:
-          ${jogo.grupo}
-        </div>
-
-        <div>
-          ${jogo.dataHora}
-        </div>
-
-        <br>
-
-        <input
-          id="a_${jogo.id}"
-          type="number"
-          min="0"
-          max="99"
-          step="1"
-          value="${placarSalvoA}"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-          style="width:70px;"
-        >
-
-        X
-
-        <input
-          id="b_${jogo.id}"
-          type="number"
-          min="0"
-          max="99"
-          step="1"
-          value="${placarSalvoB}"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-          style="width:70px;"
-        >
-
-        <br><br>
-
-        ${bloqueado
-        ? `
-        <button disabled>
-          Encerrado
-        </button>
-        `
-        : `
-        <button onclick="salvarPalpite(${jogo.id})">
-          Salvar Palpite
-        </button>
-        `
-        }
-
-      </div>
-
-    `;
 
   }
 
@@ -1140,6 +1132,7 @@ await setDoc(
 
     alert("Palpite salvo/atualizado!");
 
+    await atualizarProgresso();
 
   }catch(erro){
 
