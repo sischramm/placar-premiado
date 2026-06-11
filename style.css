@@ -1944,15 +1944,6 @@ body::before{
 
 }
 
-@media(max-width:768px){
-
-  #listaJogos{
-
-    grid-template-columns:1fr;
-
-  }
-
-}
 
 @media(max-width:900px){
   .jogos-grid{
