@@ -81,6 +81,16 @@ function abrirAba(nome){
     document.getElementById("abaExtras").style.display = "block";
   }
 
+  if(nome === "admin"){
+
+  document.getElementById(
+    "abaAdmin"
+  ).style.display = "block";
+
+  carregarAdminJogos();
+
+}
+
 }
 
 function sair(){
@@ -836,3 +846,130 @@ window.cadastrar = cadastrar;
 window.sair = sair;
 window.carregarFiliais = carregarFiliais;
 window.toggleSenha = toggleSenha;
+
+
+async function carregarAdminJogos(){
+
+  const div =
+    document.getElementById(
+      "adminJogos"
+    );
+
+  if(!div) return;
+
+  const snapshot =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  div.innerHTML = "";
+
+  snapshot.forEach(docSnap => {
+
+    const jogo =
+      docSnap.data();
+
+    div.innerHTML += `
+
+      <div style="
+        border:1px solid #ddd;
+        padding:15px;
+        margin-bottom:10px;
+        border-radius:10px;
+      ">
+
+        <strong>
+          ${jogo.timeA}
+          x
+          ${jogo.timeB}
+        </strong>
+
+        <br><br>
+
+        <input
+          id="realA_${jogo.id}"
+          type="number"
+          min="0"
+          style="width:60px;"
+        >
+
+        X
+
+        <input
+          id="realB_${jogo.id}"
+          type="number"
+          min="0"
+          style="width:60px;"
+        >
+
+        <button
+          onclick="salvarResultado(${jogo.id})"
+        >
+          Salvar Resultado
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+async function salvarResultado(idJogo){
+
+  const placarRealA =
+    Number(
+      document.getElementById(
+        `realA_${idJogo}`
+      ).value
+    );
+
+  const placarRealB =
+    Number(
+      document.getElementById(
+        `realB_${idJogo}`
+      ).value
+    );
+
+  const jogos =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  jogos.forEach(async docSnap => {
+
+    const jogo =
+      docSnap.data();
+
+    if(jogo.id === idJogo){
+
+      await setDoc(
+        doc(
+          db,
+          "jogos",
+          docSnap.id
+        ),
+        {
+          ...jogo,
+          placarRealA,
+          placarRealB,
+          encerrado:true
+        }
+      );
+
+    }
+
+  });
+
+  alert(
+    "Resultado salvo!"
+  );
+
+}
+
+window.carregarAdminJogos =
+  carregarAdminJogos;
+
+window.salvarResultado =
+  salvarResultado;
