@@ -969,94 +969,73 @@ async function renderizarDataAtual(){
 
     lista.innerHTML += `
 
-      <div class="jogo">
+<div class="jogo">
 
-        <h3>
-          ${jogo.timeA}
-          x
-          ${jogo.timeB}
-        </h3>
+  <h3>
+    ${jogo.timeA} x ${jogo.timeB}
+  </h3>
 
-        <p class="info-jogo">
-          Grupos - Grupo ${jogo.grupo}
-        </p>
+  <p class="info-jogo">
+    Grupo ${jogo.grupo}
+  </p>
 
-        <p class="info-jogo">
-          🕒 ${jogo.dataHora.split(" ")[1].substring(0,5)}
-        </p>
+  <p class="info-jogo">
+    🕒 ${jogo.dataHora.split(" ")[1].substring(0,5)}
+  </p>
 
-        ${
-          bloqueado
+  ${
+    bloqueado
+    ? `
+      <p style="
+        color:red;
+        font-weight:bold;
+        margin-top:10px;
+      ">
+        🔒 Palpites encerrados
+      </p>
+    `
+    : ""
+  }
 
-          ?
+  <div class="inputs-jogo">
 
-          `
-          <p
-            style="
-              color:red;
-              font-weight:bold;
-              margin-top:10px;
-            "
-          >
-            🔒 Palpites encerrados
-          </p>
-          `
+    <input
+      id="a_${jogo.id}"
+      type="number"
+      min="0"
+      max="99"
+      value="${placarSalvoA}"
+      ${bloqueado ? "disabled" : ""}
+    >
 
-          :
+    <span class="versus">X</span>
 
-          ""
-        }
+    <input
+      id="b_${jogo.id}"
+      type="number"
+      min="0"
+      max="99"
+      value="${placarSalvoB}"
+      ${bloqueado ? "disabled" : ""}
+    >
 
-        <div class="inputs-jogo">
+  </div>
 
-          <input
-            id="a_${jogo.id}"
-            type="number"
-            min="0"
-            max="99"
-            value="${placarSalvoA}"
-            ${bloqueado ? "disabled" : ""}
-          >
+  ${
+    bloqueado
+    ? ""
+    : `
+      <button
+        onclick="salvarPalpite(${jogo.id})"
+      >
+        💾 Salvar Palpite
+      </button>
+    `
+  }
 
-          <span class="versus">
-            X
-          </span>
+</div>
 
-          <input
-            id="b_${jogo.id}"
-            type="number"
-            min="0"
-            max="99"
-            value="${placarSalvoB}"
-            ${bloqueado ? "disabled" : ""}
-          >
-
-        </div>
-
-        ${
-          bloqueado
-
-          ?
-
-          ""
-
-          :
-
-          `
-          <button
-            style="
-              margin-top:15px;
-            "
-            onclick="salvarPalpite(${jogo.id})"
-          >
-            💾 Salvar Palpite
-          </button>
-          `
-        }
-
-      </div>
-
-    `;
+`;
 
   }
 
