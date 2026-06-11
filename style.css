@@ -1897,3 +1897,114 @@ body::before{
   opacity:.85;
 
 }
+
+/* ======================================== */
+/* PALPITES COPA */
+/* ======================================== */
+
+.data-jogo{
+
+  width:100%;
+
+  color:#fff;
+
+  font-size:26px;
+
+  font-weight:900;
+
+  margin:30px 0 15px;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,.5);
+
+}
+
+#listaJogos{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(450px,1fr));
+
+  gap:20px;
+
+}
+
+.card-palpite{
+
+  background:rgba(255,255,255,.92);
+
+  border-radius:16px;
+
+  padding:20px;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.12);
+
+  border:1px solid rgba(255,255,255,.35);
+
+}
+
+.card-palpite h3{
+
+  color:#002244;
+
+  font-size:30px;
+
+  margin-bottom:10px;
+
+}
+
+.card-palpite .info{
+
+  color:#666;
+
+  margin-bottom:5px;
+
+}
+
+.card-palpite .placar{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:15px;
+
+  margin-top:20px;
+
+}
+
+.card-palpite .placar input{
+
+  width:90px !important;
+
+  text-align:center;
+
+  font-size:28px;
+
+  font-weight:900;
+
+}
+
+.card-palpite .x{
+
+  font-size:34px;
+
+  font-weight:900;
+
+  color:#002244;
+
+}
+
+@media(max-width:768px){
+
+  #listaJogos{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
