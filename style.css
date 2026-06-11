@@ -1963,3 +1963,25 @@ body::before{
     grid-template-columns:1fr;
   }
 }
+
+.jogos-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-top:20px;
+}
+
+.jogo{
+  background:rgba(255,255,255,.92);
+  border-radius:18px;
+  padding:20px;
+  min-height:280px;
+}
+
+@media(max-width:900px){
+
+  .jogos-grid{
+    grid-template-columns:1fr;
+  }
+
+}
