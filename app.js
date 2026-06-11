@@ -884,9 +884,7 @@ async function renderizarDataAtual(){
         ?
 
         `
-        <button
-          onclick="abrirAba('extras')"
-        >
+        <button onclick="abrirAba('extras')">
           ⭐ Extras
         </button>
         `
@@ -894,9 +892,7 @@ async function renderizarDataAtual(){
         :
 
         `
-        <button
-          onclick="proximaData()"
-        >
+        <button onclick="proximaData()">
           Próximo ➡
         </button>
         `
@@ -904,7 +900,13 @@ async function renderizarDataAtual(){
 
     </div>
 
-    <div class="jogos-grid">
+    <div
+      style="
+        display:flex;
+        flex-wrap:wrap;
+        gap:20px;
+      "
+    >
 
   `;
 
@@ -953,8 +955,7 @@ async function renderizarDataAtual(){
 
     }
 
-    const agora =
-      new Date();
+    const agora = new Date();
 
     const dataJogo =
       new Date(
@@ -969,73 +970,114 @@ async function renderizarDataAtual(){
 
     lista.innerHTML += `
 
-<div class="jogo">
-
-  <h3>
-    ${jogo.timeA} x ${jogo.timeB}
-  </h3>
-
-  <p class="info-jogo">
-    Grupo ${jogo.grupo}
-  </p>
-
-  <p class="info-jogo">
-    🕒 ${jogo.dataHora.split(" ")[1].substring(0,5)}
-  </p>
-
-  ${
-    bloqueado
-    ? `
-      <p style="
-        color:red;
-        font-weight:bold;
-        margin-top:10px;
-      ">
-        🔒 Palpites encerrados
-      </p>
-    `
-    : ""
-  }
-
-  <div class="inputs-jogo">
-
-    <input
-      id="a_${jogo.id}"
-      type="number"
-      min="0"
-      max="99"
-      value="${placarSalvoA}"
-      ${bloqueado ? "disabled" : ""}
-    >
-
-    <span class="versus">X</span>
-
-    <input
-      id="b_${jogo.id}"
-      type="number"
-      min="0"
-      max="99"
-      value="${placarSalvoB}"
-      ${bloqueado ? "disabled" : ""}
-    >
-
-  </div>
-
-  ${
-    bloqueado
-    ? ""
-    : `
-      <button
-        onclick="salvarPalpite(${jogo.id})"
+      <div
+        style="
+          flex:1;
+          min-width:500px;
+          background:rgba(255,255,255,.92);
+          border-radius:18px;
+          padding:20px;
+          box-sizing:border-box;
+        "
       >
-        💾 Salvar Palpite
-      </button>
-    `
-  }
 
-</div>
+        <h3>
+          ${jogo.timeA} x ${jogo.timeB}
+        </h3>
 
-`;
+        <p>
+          Grupo ${jogo.grupo}
+        </p>
+
+        <p>
+          🕒 ${jogo.dataHora.split(" ")[1].substring(0,5)}
+        </p>
+
+        ${
+          bloqueado
+          ?
+          `
+          <p style="
+            color:red;
+            font-weight:bold;
+          ">
+            🔒 Palpites encerrados
+          </p>
+          `
+          :
+          ""
+        }
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            margin:25px 0;
+          "
+        >
+
+          <input
+            id="a_${jogo.id}"
+            type="number"
+            min="0"
+            max="99"
+            value="${placarSalvoA}"
+            ${bloqueado ? "disabled" : ""}
+            style="
+              width:100px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+              font-weight:bold;
+            "
+          >
+
+          <span
+            style="
+              font-size:36px;
+              font-weight:900;
+            "
+          >
+            X
+          </span>
+
+          <input
+            id="b_${jogo.id}"
+            type="number"
+            min="0"
+            max="99"
+            value="${placarSalvoB}"
+            ${bloqueado ? "disabled" : ""}
+            style="
+              width:100px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+              font-weight:bold;
+            "
+          >
+
+        </div>
+
+        ${
+          bloqueado
+          ?
+          ""
+          :
+          `
+          <button
+            onclick="salvarPalpite(${jogo.id})"
+          >
+            💾 Salvar Palpite
+          </button>
+          `
+        }
+
+      </div>
+
+    `;
 
   }
 
