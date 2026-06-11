@@ -505,6 +505,42 @@ async function carregarJogos(){
 
     const jogo = documento.data();
 
+    const usuario =
+  JSON.parse(
+    localStorage.getItem(
+      "usuarioLogado"
+    )
+  );
+
+let placarSalvoA = "";
+let placarSalvoB = "";
+
+if(usuario){
+
+  const palpiteRef =
+    await getDoc(
+      doc(
+        db,
+        "palpites",
+        usuario.email + "_" + jogo.id
+      )
+    );
+
+  if(palpiteRef.exists()){
+
+    const palpite =
+      palpiteRef.data();
+
+    placarSalvoA =
+      palpite.placarA;
+
+    placarSalvoB =
+      palpite.placarB;
+
+  }
+
+}
+
     const agora =
       new Date();
 
@@ -553,7 +589,7 @@ async function carregarJogos(){
           min="0"
           max="99"
           step="1"
-          value="0"
+          value="${placarSalvoA}"
           oninput="this.value=this.value.replace(/[^0-9]/g,'')"
           style="width:70px;"
         >
@@ -566,7 +602,7 @@ async function carregarJogos(){
           min="0"
           max="99"
           step="1"
-          value="0"
+          value="${placarSalvoB}"
           oninput="this.value=this.value.replace(/[^0-9]/g,'')"
           style="width:70px;"
         >
