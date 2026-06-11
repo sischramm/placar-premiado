@@ -1929,23 +1929,6 @@ body::before{
 
 }
 
-}
-
-.jogos-grid{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    margin-top:20px;
-}
-
-.jogo{
-    width:calc(50% - 10px);
-    background:rgba(255,255,255,.92);
-    border-radius:15px;
-    padding:20px;
-    box-sizing:border-box;
-}
-
 @media(max-width:900px){
     .jogo{
         width:100%;
