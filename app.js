@@ -1672,3 +1672,98 @@ async function carregarPerfil(){
   `;
 
 }
+
+function carregarPaisesExtras(){
+
+  const paises = [
+    "África do Sul",
+    "Alemanha",
+    "Arábia Saudita",
+    "Argélia",
+    "Argentina",
+    "Austrália",
+    "Áustria",
+    "Bélgica",
+    "Bósnia",
+    "Brasil",
+    "Cabo Verde",
+    "Canadá",
+    "Catar",
+    "Colômbia",
+    "Coreia do Sul",
+    "Costa do Marfim",
+    "Croácia",
+    "Curaçao",
+    "Egito",
+    "Equador",
+    "Escócia",
+    "Espanha",
+    "EUA",
+    "França",
+    "Gana",
+    "Haiti",
+    "Holanda",
+    "Inglaterra",
+    "Irã",
+    "Iraque",
+    "Japão",
+    "Jordânia",
+    "Marrocos",
+    "México",
+    "Noruega",
+    "Nova Zelândia",
+    "Panamá",
+    "Paraguai",
+    "Portugal",
+    "RD Congo",
+    "República Tcheca",
+    "Senegal",
+    "Suécia",
+    "Suíça",
+    "Tunísia",
+    "Turquia",
+    "Uruguai",
+    "Uzbequistão"
+  ];
+
+  paises.sort(
+    (a,b) => a.localeCompare(b,'pt-BR')
+  );
+
+  const opcoes =
+    paises.map(
+      pais =>
+        `<option value="${pais}">${pais}</option>`
+    ).join("");
+
+  const campeao =
+    document.getElementById(
+      "extraCampeao"
+    );
+
+  const vice =
+    document.getElementById(
+      "extraVice"
+    );
+
+  if(campeao){
+
+    campeao.innerHTML =
+      `<option value="">
+        Selecione o Campeão
+      </option>` +
+      opcoes;
+
+  }
+
+  if(vice){
+
+    vice.innerHTML =
+      `<option value="">
+        Selecione o Vice Campeão
+      </option>` +
+      opcoes;
+
+  }
+
+}
