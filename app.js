@@ -208,23 +208,18 @@ async function cadastrar(){
 
   try {
 
-const idPalpite =
-  usuario.email + "_" + idJogo;
-
-await setDoc(
-  doc(
-    db,
-    "palpites",
-    idPalpite
-  ),
-  {
-    usuario: usuario.email,
-    jogoId: idJogo,
-    placarA,
-    placarB,
-    atualizadoEm: new Date()
-  }
-);
+    await addDoc(
+      collection(db, "usuarios"),
+      {
+        nome,
+        empresa,
+        filial,
+        email,
+        senha,
+        pontos: 0,
+        criadoEm: new Date()
+      }
+    );
 
     alert("Cadastro realizado com sucesso!");
 
@@ -237,7 +232,7 @@ await setDoc(
   }
 
 }
-
+   
 function salvarExtras(){
   alert("Extras serão conectados ao Firebase");
 }
@@ -419,6 +414,7 @@ window.login = login;
 window.sair = sair;
 window.toggleSenha = toggleSenha;
 window.carregarFiliais = carregarFiliais;
+window.abrirAba = abrirAba;
 
 async function importarJogos(){
 
@@ -446,18 +442,15 @@ async function importarJogos(){
 
   for(const jogo of jogos){
 
-await addDoc(
-  collection(db, "usuarios"),
-  {
-    nome,
-    empresa,
-    filial,
-    email,
-    senha,
-    pontos: 0,
-    criadoEm: new Date()
-  }
-);
+    await addDoc(
+      collection(db,"jogos"),
+      {
+        ...jogo,
+        encerrado:false,
+        placarRealA:null,
+        placarRealB:null
+      }
+    );
 
   }
 
