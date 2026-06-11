@@ -894,11 +894,12 @@ if(usuario){
     width:48%;
     display:inline-block;
     vertical-align:top;
+    border:1px solid #ddd;
+    padding:15px;
     margin:1%;
+    border-radius:10px;
     background:#fff;
     color:#000;
-    border-radius:12px;
-    padding:15px;
     box-sizing:border-box;
   "
 >
