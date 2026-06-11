@@ -193,14 +193,20 @@ function toggleSenha(id, botao){
 async function login(){
 
   const email =
-    document.getElementById("loginEmail").value.trim();
+    document.getElementById(
+      "loginEmail"
+    ).value.trim();
 
   const senha =
-    document.getElementById("loginSenha").value.trim();
+    document.getElementById(
+      "loginSenha"
+    ).value.trim();
 
   if(!email || !senha){
 
-    alert("Informe e-mail e senha.");
+    alert(
+      "Informe e-mail e senha."
+    );
 
     return;
 
@@ -210,27 +216,37 @@ async function login(){
 
     const usuarios =
       await getDocs(
-        collection(db,"usuarios")
+        collection(
+          db,
+          "usuarios"
+        )
       );
 
-    let usuarioEncontrado = null;
+    let usuarioEncontrado =
+      null;
 
     usuarios.forEach(doc => {
 
-      const dados = doc.data();
+      const dados =
+        doc.data();
 
       if(
         dados.email === email &&
         dados.senha === senha
       ){
-        usuarioEncontrado = dados;
+
+        usuarioEncontrado =
+          dados;
+
       }
 
     });
 
     if(!usuarioEncontrado){
 
-      alert("Usuário ou senha inválidos.");
+      alert(
+        "Usuário ou senha inválidos."
+      );
 
       return;
 
@@ -238,7 +254,9 @@ async function login(){
 
     localStorage.setItem(
       "usuarioLogado",
-      JSON.stringify(usuarioEncontrado)
+      JSON.stringify(
+        usuarioEncontrado
+      )
     );
 
     document.getElementById(
@@ -254,14 +272,22 @@ async function login(){
     ).style.display = "block";
 
     document.getElementById(
-      "nomeUsuario"
-    ).innerHTML =
-      usuarioEncontrado.nome;
+      "topoSistema"
+    ).style.display = "block";
 
-    document.getElementById(
-      "pontosUsuario"
-    ).innerHTML =
-      usuarioEncontrado.pontos || 0;
+    if(
+      usuarioEncontrado.email ===
+      "gabriel.rodrigues@gruposhark.com.br"
+    ){
+
+      document.getElementById(
+        "menuAdmin"
+      ).style.display =
+        "inline-block";
+
+    }
+
+    carregarJogos();
 
     alert(
       "Bem-vindo " +
@@ -270,9 +296,13 @@ async function login(){
 
   }catch(erro){
 
-    console.error(erro);
+    console.error(
+      erro
+    );
 
-    alert("Erro ao realizar login.");
+    alert(
+      "Erro ao realizar login."
+    );
 
   }
 
