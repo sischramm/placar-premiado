@@ -55,7 +55,33 @@ if(usuario){
 };
 
 function abrirAba(nome){
-  alert("Abrir aba: " + nome);
+
+  document.getElementById("abaPalpites").style.display = "none";
+  document.getElementById("abaRanking").style.display = "none";
+  document.getElementById("abaClassificacao").style.display = "none";
+  document.getElementById("abaPerfil").style.display = "none";
+  document.getElementById("abaExtras").style.display = "none";
+
+  if(nome === "palpites"){
+    document.getElementById("abaPalpites").style.display = "block";
+  }
+
+  if(nome === "ranking"){
+    document.getElementById("abaRanking").style.display = "block";
+  }
+
+  if(nome === "classificacao"){
+    document.getElementById("abaClassificacao").style.display = "block";
+  }
+
+  if(nome === "perfil"){
+    document.getElementById("abaPerfil").style.display = "block";
+  }
+
+  if(nome === "extras"){
+    document.getElementById("abaExtras").style.display = "block";
+  }
+
 }
 
 function sair(){
