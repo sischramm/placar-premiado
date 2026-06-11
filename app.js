@@ -857,18 +857,21 @@ if(usuario){
     const bloqueado =
       agora >= dataJogo;
 
-    lista.innerHTML += `
-    
-      <div
-        style="
-          border:1px solid #ddd;
-          padding:15px;
-          margin-bottom:15px;
-          border-radius:10px;
-          background:#fff;
-          color:#000;
-        "
-      >
+   lista.innerHTML += `
+<div
+  style="
+    width:48%;
+    display:inline-block;
+    vertical-align:top;
+    margin:1%;
+    background:#fff;
+    color:#000;
+    border-radius:12px;
+    padding:15px;
+    box-sizing:border-box;
+  "
+>
+`;
 
         <h3>
           ${jogo.timeA}
