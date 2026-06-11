@@ -295,6 +295,39 @@ async function cadastrar(){
 
     alert("Cadastro realizado com sucesso!");
 
+const usuario = {
+  nome,
+  empresa,
+  filial,
+  email,
+  pontos: 0
+};
+
+localStorage.setItem(
+  "usuarioLogado",
+  JSON.stringify(usuario)
+);
+
+document.getElementById(
+  "loginSistema"
+).style.display = "none";
+
+document.getElementById(
+  "homeInicial"
+).style.display = "none";
+
+document.getElementById(
+  "painel"
+).style.display = "block";
+
+document.getElementById(
+  "nomeUsuario"
+).innerHTML = nome;
+
+document.getElementById(
+  "pontosUsuario"
+).innerHTML = 0;
+
   } catch (erro) {
 
     console.error(erro);
