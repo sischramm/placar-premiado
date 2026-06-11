@@ -809,8 +809,6 @@ let ultimaData = "";
 
 for (const documento of snapshot.docs) {
 
-    for (const documento of snapshot.docs) {
-
   const jogo = documento.data();
 
   const dataExibicao =
@@ -837,13 +835,6 @@ for (const documento of snapshot.docs) {
         "usuarioLogado"
       )
     );
-
-    const usuario =
-  JSON.parse(
-    localStorage.getItem(
-      "usuarioLogado"
-    )
-  );
 
 let placarSalvoA = "";
 let placarSalvoB = "";
