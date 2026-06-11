@@ -605,29 +605,33 @@ async function atualizarProgresso(){
       )
     );
 
-  if(!usuario) return;
+  if(!usuario){
+    return;
+  }
 
   const jogosSnap =
     await getDocs(
       collection(db,"jogos")
     );
 
+  const totalJogos =
+    jogosSnap.size;
+
   const palpitesSnap =
     await getDocs(
       collection(db,"palpites")
     );
 
-  const totalJogos =
-    jogosSnap.size;
-
   let realizados = 0;
 
   palpitesSnap.forEach(doc => {
 
-    const p = doc.data();
+    const palpite = doc.data();
 
     if(
-      p.usuario === usuario.email
+      palpite.usuario &&
+      palpite.usuario.toLowerCase() ===
+      usuario.email.toLowerCase()
     ){
       realizados++;
     }
@@ -635,39 +639,52 @@ async function atualizarProgresso(){
   });
 
   const pendentes =
-    totalJogos - realizados;
+    Math.max(
+      totalJogos - realizados,
+      0
+    );
 
   const percentual =
     totalJogos > 0
-    ? Math.round(
-        (realizados / totalJogos) * 100
-      )
-    : 0;
+      ? Math.round(
+          (realizados / totalJogos) * 100
+        )
+      : 0;
 
-  document.getElementById(
-    "totalJogos"
-  ).innerHTML =
-    totalJogos + " jogos";
+  const elTotal =
+    document.getElementById("totalJogos");
 
-  document.getElementById(
-    "realizados"
-  ).innerHTML =
-    realizados + " realizados";
+  const elRealizados =
+    document.getElementById("realizados");
 
-  document.getElementById(
-    "pendentes"
-  ).innerHTML =
-    pendentes + " pendentes";
+  const elPendentes =
+    document.getElementById("pendentes");
 
-  document.getElementById(
-    "percentual"
-  ).innerHTML =
-    percentual + "%";
+  const elPercentual =
+    document.getElementById("percentual");
 
-  document.getElementById(
-    "barraProgresso"
-  ).style.width =
-    percentual + "%";
+  const elBarra =
+    document.getElementById("barraProgresso");
+
+  if(elTotal)
+    elTotal.innerHTML =
+      totalJogos + " jogos";
+
+  if(elRealizados)
+    elRealizados.innerHTML =
+      realizados + " realizados";
+
+  if(elPendentes)
+    elPendentes.innerHTML =
+      pendentes + " pendentes";
+
+  if(elPercentual)
+    elPercentual.innerHTML =
+      percentual + "%";
+
+  if(elBarra)
+    elBarra.style.width =
+      percentual + "%";
 
 }
 
