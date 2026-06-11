@@ -800,14 +800,43 @@ async function carregarJogos(){
 
   lista.innerHTML = "";
 
-  const snapshot =
-    await getDocs(
-      collection(db,"jogos")
+const snapshot =
+  await getDocs(
+    collection(db,"jogos")
+  );
+
+let ultimaData = "";
+
+for (const documento of snapshot.docs) {
+
+    for (const documento of snapshot.docs) {
+
+  const jogo = documento.data();
+
+  const dataExibicao =
+    jogo.dataHora.split(" ")[0];
+
+  if(dataExibicao !== ultimaData){
+
+    lista.innerHTML += `
+      <h2 style="
+        color:white;
+        margin-top:30px;
+        margin-bottom:15px;
+      ">
+        📅 ${dataExibicao}
+      </h2>
+    `;
+
+    ultimaData = dataExibicao;
+  }
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
     );
-
-  for (const documento of snapshot.docs) {
-
-    const jogo = documento.data();
 
     const usuario =
   JSON.parse(
