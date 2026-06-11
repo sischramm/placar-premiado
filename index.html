@@ -415,21 +415,61 @@ autocomplete="email"
 
 </div>
 
-      <!-- ABA PALPITES -->
+<!-- ABA PALPITES -->
 
-      <div id="abaPalpites">
+<div id="abaPalpites">
 
-        <div class="card">
+  <div class="card">
 
-          <h2>
-            ⚽ Palpites
-          </h2>
+    <h2>
+      ⚽ Palpites
+    </h2>
 
-          <div id="listaJogos"></div>
+    <div class="progresso">
 
+      <div style="text-align:right;">
+        <span id="percentual">0%</span>
+      </div>
+
+      <div class="barra">
+
+        <div
+          id="barraProgresso"
+          class="barra-interna">
         </div>
 
       </div>
+
+      <div style="
+        display:flex;
+        gap:10px;
+        margin-top:10px;
+        flex-wrap:wrap;
+      ">
+
+        <div id="realizados">
+          0 realizados
+        </div>
+
+        <div id="pendentes">
+          0 pendentes
+        </div>
+
+        <div id="totalJogos">
+          0 jogos
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div id="listaJogos"></div>
+
+  </div>
+
+</div>
 
       <!-- ABA RANKING -->
 
