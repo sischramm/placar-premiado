@@ -1103,8 +1103,7 @@ async function renderizarDataAtual(){
         )
       );
 
-    const bloqueado =
-      agora >= dataJogo;
+    const bloqueado = false;
 
     lista.innerHTML += `
 
