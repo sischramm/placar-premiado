@@ -398,6 +398,64 @@ async function salvarExtras(){
 
   return;
 
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario){
+
+    alert("Faça login novamente.");
+
+    return;
+
+  }
+
+  await setDoc(
+
+    doc(
+      db,
+      "extras",
+      usuario.email
+    ),
+
+    {
+
+      campeao:
+        document.getElementById(
+          "extraCampeao"
+        ).value,
+
+      vice:
+        document.getElementById(
+          "extraVice"
+        ).value,
+
+      artilheiro:
+        document.getElementById(
+          "extraArtilheiro"
+        ).value,
+
+      golsBrasil:
+        document.getElementById(
+          "extraGolsBrasil"
+        ).value,
+
+      faseBrasil:
+        document.getElementById(
+          "extraFaseBrasil"
+        ).value
+
+    }
+
+  );
+
+  alert(
+    "Palpites extras salvos com sucesso!"
+  );
+
 }
 
 window.salvarExtras = salvarExtras;
