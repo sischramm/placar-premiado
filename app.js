@@ -1103,7 +1103,9 @@ async function renderizarDataAtual(){
         )
       );
 
-    const bloqueado = false;
+    const bloqueado =
+  new Date() >=
+  new Date("2026-06-12T20:00:00");
 
     lista.innerHTML += `
 
