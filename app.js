@@ -77,19 +77,20 @@ if(usuario){
 
 function abrirAba(nome){
 
-  const abas = [
-    "abaPalpites",
-    "abaRanking",
-    "abaClassificacao",
-    "abaMata",
-    "abaEmpresa",
-    "abaEstatisticas",
-    "abaPerfil",
-    "abaExtras",
-    "abaPremiacao",
-    "abaRegulamento",
-    "abaAdmin"
-  ];
+const abas = [
+  "abaPalpites",
+  "abaRanking",
+  "abaClassificacao",
+  "abaMata",
+  "abaEmpresa",
+  "abaEstatisticas",
+  "abaPerfil",
+  "abaExtras",
+  "abaPremiacao",
+  "abaRegulamento",
+  "abaAdmin",
+  "abaResultados"
+];
 
   abas.forEach(id => {
 
@@ -157,6 +158,16 @@ if(nome === "extras"){
     document.getElementById("abaAdmin").style.display = "block";
     carregarAdminJogos();
   }
+
+  if(nome === "resultados"){
+
+  document.getElementById(
+    "abaResultados"
+  ).style.display = "block";
+
+  carregarAdminJogos();
+
+}
 
 }
 
@@ -270,9 +281,19 @@ async function login(){
     ).style.display = "block";
 
     if(
-      usuarioEncontrado.email ===
-      "gabriel.rodrigues@gruposhark.com.br"
-    ){
+  usuarioEncontrado.email ===
+  "gabriel.rodrigues@gruposhark.com.br"
+  ||
+  usuarioEncontrado.email ===
+  "simone.schramm@equagril.com.br"
+){
+
+  document.getElementById(
+    "menuResultados"
+  ).style.display =
+    "inline-block";
+
+}{
 
       document.getElementById(
         "menuAdmin"
