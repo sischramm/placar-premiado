@@ -159,13 +159,13 @@ if(nome === "extras"){
     carregarAdminJogos();
   }
 
-  if(nome === "resultados"){
+if(nome === "resultados"){
 
   document.getElementById(
     "abaResultados"
   ).style.display = "block";
 
-  carregarAdminJogos();
+  carregarResultados();
 
 }
 
