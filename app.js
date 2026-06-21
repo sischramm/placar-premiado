@@ -1596,19 +1596,19 @@ async function salvarResultado(idJogo){
 
     if(jogo.id === idJogo){
 
-      await setDoc(
-        doc(
-          db,
-          "jogos",
-          docSnap.id
-        ),
-        {
-          ...jogo,
-          placarRealA,
-          placarRealB,
-          encerrado:true
-        }
-      );
+ await setDoc(
+  doc(
+    db,
+    "jogos",
+    docSnap.id
+  ),
+  {
+    ...jogo,
+    placarRealA,
+    placarRealB,
+    encerrado: true
+  }
+);
 
     }
 
