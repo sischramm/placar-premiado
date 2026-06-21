@@ -349,18 +349,35 @@ autocomplete="email"
     style="display:none;"
   >
     ⚙️ Importar Jogos
+ 
   </button>
 
 </div>
-      
-      <div class="menu">
+
+<div class="menu">
 
   <button onclick="abrirAba('palpites')">
     ⚽ Palpites
   </button>
 
+  <button onclick="abrirAba('ranking')">
+    🏅 Ranking
+  </button>
+
+  <button onclick="abrirAba('empresa')">
+    🏢 Empresas
+  </button>
+
   <button onclick="abrirAba('extras')">
     ⭐ Extras
+  </button>
+
+  <button onclick="abrirAba('estatisticas')">
+    📈 Estatísticas
+  </button>
+
+  <button onclick="abrirAba('perfil')">
+    👤 Perfil
   </button>
 
   <button onclick="abrirAba('premiacao')">
@@ -371,10 +388,6 @@ autocomplete="email"
     📜 Regulamento
   </button>
 
-  <button onclick="sair()">
-    🚪 Sair
-  </button>
-
   <button
     id="menuAdmin"
     onclick="abrirAba('admin')"
@@ -383,8 +396,12 @@ autocomplete="email"
     ⚙️ Admin
   </button>
 
-</div>
+  <button onclick="sair()">
+    🚪 Sair
+  </button>
 
+</div>      
+      
 <!-- ABA PALPITES -->
 
 <div id="abaPalpites">
