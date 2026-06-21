@@ -1587,14 +1587,10 @@ window.salvarResultado =
 async function carregarRanking(){
 
   const top5 =
-    document.getElementById(
-      "rankingTop5"
-    );
+    document.getElementById("rankingTop5");
 
   const rankingCompleto =
-    document.getElementById(
-      "rankingCompleto"
-    );
+    document.getElementById("rankingCompleto");
 
   if(!top5 || !rankingCompleto)
     return;
@@ -1607,84 +1603,98 @@ async function carregarRanking(){
   let usuarios = [];
 
   snapshot.forEach(doc => {
-
-    usuarios.push(
-      doc.data()
-    );
-
+    usuarios.push(doc.data());
   });
 
   usuarios.sort(
-    (a,b) =>
-      (b.pontos || 0) -
-      (a.pontos || 0)
+    (a,b)=>
+      (b.pontos||0)-(a.pontos||0)
   );
 
-  let htmlTop5 = "";
-  let htmlLista = "";
+  let htmlTop5 = `
+  <div class="top5-fifa">
+  `;
 
   usuarios.slice(0,5)
-    .forEach((u,index) => {
+  .forEach((u,index)=>{
 
-      const medalhas = [
-        "🥇",
-        "🥈",
-        "🥉",
-        "🏅",
-        "🏅"
-      ];
+    const rk =
+      ["rk1","rk2","rk3","rk4","rk5"][index];
 
-      htmlTop5 += `
+    const medalha =
+      ["🏆","🥈","🥉","🏅","🎖️"][index];
 
-        <div class="ranking-top">
+    htmlTop5 += `
 
-          <strong>
-            ${medalhas[index]}
-            ${index + 1}º Lugar
-          </strong>
+    <div class="ranking-card ${rk}">
 
-          <br>
+      <div class="ranking-selo">
+        FIFA 2026
+      </div>
 
-          ${u.nome}
+      <div class="ranking-img">
+        ${medalha}
+      </div>
 
-          <br>
+      <div class="ranking-posicao">
+        ${index+1}º Lugar
+      </div>
 
-          ${u.pontos || 0} pts
+      <p>
+        ${u.nome}
+        <br>
+        <strong>${u.pontos||0} pts</strong>
+      </p>
 
-        </div>
+    </div>
 
-      `;
+    `;
 
-    });
+  });
+
+  htmlTop5 += `
+  </div>
+  `;
+
+  let htmlLista = `
+  <div style="
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
+  ">
+  `;
 
   usuarios.slice(5,20)
-    .forEach((u,index) => {
+  .forEach((u,index)=>{
 
-      htmlLista += `
+    htmlLista += `
 
-        <div class="ranking-item">
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid #eee;
+    ">
 
-          ${index + 6}º
+      <div>
+        ${index+6}º - ${u.nome}
+      </div>
 
-          -
+      <strong>
+        ${u.pontos||0} pts
+      </strong>
 
-          ${u.nome}
+    </div>
 
-          <strong>
-            (${u.pontos || 0} pts)
-          </strong>
+    `;
 
-        </div>
+  });
 
-      `;
+  htmlLista += "</div>";
 
-    });
+  top5.innerHTML = htmlTop5;
 
-  top5.innerHTML =
-    htmlTop5;
-
-  rankingCompleto.innerHTML =
-    htmlLista;
+  rankingCompleto.innerHTML = htmlLista;
 
 }
 
