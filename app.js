@@ -18,12 +18,10 @@ window.onload = function() {
   const home = document.getElementById("homeInicial");
   const login = document.getElementById("loginSistema");
   const topo = document.getElementById("topoSistema");
-  const sistema = document.getElementById("sistemaCompleto");
 
   if(home) home.style.display = "flex";
   if(login) login.style.display = "none";
   if(topo) topo.style.display = "none";
-  if(sistema) sistema.style.display = "none";
 
   const usuario =
 JSON.parse(
@@ -77,25 +75,24 @@ if(usuario){
 
 function abrirAba(nome){
 
-const abas = [
-  "abaPalpites",
-  "abaRanking",
-  "abaClassificacao",
-  "abaMata",
-  "abaEmpresa",
-  "abaEstatisticas",
-  "abaPerfil",
-  "abaExtras",
-  "abaPremiacao",
-  "abaRegulamento",
-  "abaAdmin",
-  "abaResultados"
-];
+  const abas = [
+    "abaPalpites",
+    "abaRanking",
+    "abaClassificacao",
+    "abaMata",
+    "abaEmpresa",
+    "abaEstatisticas",
+    "abaPerfil",
+    "abaExtras",
+    "abaPremiacao",
+    "abaRegulamento",
+    "abaAdmin",
+    "abaResultados"
+  ];
 
   abas.forEach(id => {
 
-    const aba =
-      document.getElementById(id);
+    const aba = document.getElementById(id);
 
     if(aba){
       aba.style.display = "none";
@@ -134,17 +131,17 @@ const abas = [
     carregarPerfil();
   }
 
-if(nome === "extras"){
+  if(nome === "extras"){
 
-  document.getElementById(
-    "abaExtras"
-  ).style.display = "block";
+    document.getElementById(
+      "abaExtras"
+    ).style.display = "block";
 
-  carregarPaisesExtras();
+    carregarPaisesExtras();
 
-  carregarExtras();
+    carregarExtras();
 
-}
+  }
 
   if(nome === "premiacao"){
     document.getElementById("abaPremiacao").style.display = "block";
@@ -156,30 +153,24 @@ if(nome === "extras"){
 
   if(nome === "admin"){
 
-  document.getElementById(
-    "abaAdmin"
-  ).style.display = "block";
+    document.getElementById(
+      "abaAdmin"
+    ).style.display = "block";
 
-  document.getElementById(
-    "adminJogos"
-  ).innerHTML =
-  "<h1 style='color:red'>ADMIN FUNCIONOU</h1>";
+    carregarAdminJogos();
 
-}
+  }
 
-if(nome === "resultados"){
+  if(nome === "resultados"){
 
-  document.getElementById(
-    "abaResultados"
-  ).style.display = "block";
+    document.getElementById(
+      "abaResultados"
+    ).style.display = "block";
 
-  document.getElementById(
-    "resultadoJogos"
-  ).innerHTML =
-  "<h1 style='color:red'>RESULTADOS FUNCIONOU</h1>";
+    carregarResultados();
 
-}
-  
+  }
+
 }
 
 function sair(){
