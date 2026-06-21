@@ -1624,68 +1624,84 @@ async function carregarResultados(){
 
   if(!div) return;
 
-  div.innerHTML = "";
+  div.innerHTML = "Carregando...";
 
-  const snapshot =
-    await getDocs(
-      collection(db,"jogos")
-    );
+  try{
 
-  snapshot.forEach(docSnap => {
+    const snapshot =
+      await getDocs(
+        collection(db,"jogos")
+      );
 
-    const jogo =
-      docSnap.data();
+    div.innerHTML = "";
 
-    div.innerHTML += `
+    snapshot.forEach(docSnap => {
 
+      const jogo = docSnap.data();
+
+      div.innerHTML += `
+
+        <div style="
+          background:#fff;
+          color:#222;
+          padding:15px;
+          border-radius:12px;
+          margin-bottom:15px;
+        ">
+
+          <h3>
+            ${jogo.timeA || "Time A"}
+            x
+            ${jogo.timeB || "Time B"}
+          </h3>
+
+          <input
+            id="realA_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+            style="width:70px"
+          >
+
+          X
+
+          <input
+            id="realB_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+            style="width:70px"
+          >
+
+          <button onclick="salvarResultado(${jogo.id})">
+            💾 Salvar Resultado
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+  }catch(erro){
+
+    console.error(erro);
+
+    div.innerHTML = `
       <div style="
         background:#fff;
-        color:#222;
-        padding:15px;
-        border-radius:12px;
-        margin-bottom:15px;
+        color:red;
+        padding:20px;
+        border-radius:15px;
       ">
-
-        <h3>
-          ${jogo.timeA}
-          x
-          ${jogo.timeB}
-        </h3>
-
-        <br>
-
-        <input
-          id="realA_${jogo.id}"
-          type="number"
-          value="${jogo.placarRealA ?? ""}"
-          style="width:70px"
-        >
-
-        X
-
-        <input
-          id="realB_${jogo.id}"
-          type="number"
-          value="${jogo.placarRealB ?? ""}"
-          style="width:70px"
-        >
-
-        <button
-          onclick="salvarResultado(${jogo.id})"
-        >
-          💾 Salvar Resultado
-        </button>
-
+        Erro ao carregar resultados.<br>
+        Veja o Console (F12).
       </div>
-
     `;
 
-  });
+  }
 
 }
 
-window.carregarResultados =
-  carregarResultados;
+window.carregarResultados = carregarResultados;
 
 async function carregarRanking(){
 
