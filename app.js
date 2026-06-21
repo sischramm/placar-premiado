@@ -280,12 +280,12 @@ async function login(){
       "topoSistema"
     ).style.display = "block";
 
-    if(
+if(
   usuarioEncontrado.email ===
-  "gabriel.rodrigues@gruposhark.com.br"
+    "gabriel.rodrigues@gruposhark.com.br"
   ||
   usuarioEncontrado.email ===
-  "simone.schramm@equagril.com.br"
+    "simone.schramm@equagril.com.br"
 ){
 
   document.getElementById(
@@ -293,14 +293,24 @@ async function login(){
   ).style.display =
     "inline-block";
 
-}{
+  document.getElementById(
+    "menuAdmin"
+  ).style.display =
+    "inline-block";
 
-      document.getElementById(
-        "menuAdmin"
-      ).style.display =
-        "inline-block";
+}else{
 
-    }
+  document.getElementById(
+    "menuResultados"
+  ).style.display =
+    "none";
+
+  document.getElementById(
+    "menuAdmin"
+  ).style.display =
+    "none";
+
+}
 
     carregarJogos();
 
@@ -1729,7 +1739,7 @@ async function carregarRanking(){
     <div class="ranking-card ${rk}">
 
       <div class="ranking-selo">
-        FIFA 2026
+        Shark 2026
       </div>
 
       <div class="ranking-img">
