@@ -1596,7 +1596,7 @@ async function salvarResultado(idJogo){
   alert(
     "Resultado salvo!"
   );
-
+await carregarResultados();
 }
 
 window.carregarAdminJogos =
@@ -1604,6 +1604,85 @@ window.carregarAdminJogos =
 
 window.salvarResultado =
   salvarResultado;
+
+async function carregarResultados(){
+
+  const div =
+    document.getElementById(
+      "resultadoJogos"
+    );
+
+  if(!div) return;
+
+  const snapshot =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  div.innerHTML = "";
+
+  snapshot.forEach(docSnap=>{
+
+    const jogo =
+      docSnap.data();
+
+    div.innerHTML += `
+
+      <div style="
+        border:1px solid rgba(255,255,255,.2);
+        border-radius:15px;
+        padding:15px;
+        margin-bottom:15px;
+        background:rgba(255,255,255,.08);
+      ">
+
+        <h3>
+          ${jogo.timeA}
+          x
+          ${jogo.timeB}
+        </h3>
+
+        <div style="
+          display:flex;
+          gap:10px;
+          align-items:center;
+          margin-top:15px;
+        ">
+
+          <input
+            id="realA_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+            style="width:70px"
+          >
+
+          X
+
+          <input
+            id="realB_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+            style="width:70px"
+          >
+
+          <button
+            onclick="salvarResultado(${jogo.id})"
+          >
+            💾 Salvar
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+window.carregarResultados =
+  carregarResultados;
 
 async function carregarRanking(){
 
