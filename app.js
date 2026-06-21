@@ -155,9 +155,17 @@ if(nome === "extras"){
   }
 
   if(nome === "admin"){
-    document.getElementById("abaAdmin").style.display = "block";
-    carregarAdminJogos();
-  }
+
+  document.getElementById(
+    "abaAdmin"
+  ).style.display = "block";
+
+  document.getElementById(
+    "adminJogos"
+  ).innerHTML =
+  "<h1 style='color:red'>ADMIN FUNCIONOU</h1>";
+
+}
 
 if(nome === "resultados"){
 
@@ -165,10 +173,13 @@ if(nome === "resultados"){
     "abaResultados"
   ).style.display = "block";
 
-  carregarResultados();
+  document.getElementById(
+    "resultadoJogos"
+  ).innerHTML =
+  "<h1 style='color:red'>RESULTADOS FUNCIONOU</h1>";
 
 }
-
+  
 }
 
 function sair(){
