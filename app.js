@@ -2020,6 +2020,15 @@ async function carregarRanking(){
 
   );
 
+  // Compensação dos primeiros jogos
+  usuarios.forEach(u=>{
+
+    u.pontos =
+      (u.pontos || 0) + 40;
+
+  });
+
+  // Ordena por pontos
   usuarios.sort(
     (a,b)=>
       (b.pontos||0) -
@@ -2071,45 +2080,49 @@ async function carregarRanking(){
   </div>
   `;
 
-let htmlLista = `
-<div style="
-  background:#fff;
-  border-radius:15px;
-  overflow:hidden;
-">
-`;
-
-usuarios.slice(5,20)
-.forEach((u,index)=>{
-
-  htmlLista += `
-
+  let htmlLista = `
   <div style="
-    display:flex;
-    justify-content:space-between;
-    padding:14px 18px;
-    border-bottom:1px solid #eee;
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
   ">
-
-    <div>
-      ${index+6}º - ${u.nome}
-    </div>
-
-    <strong>
-      ${u.pontos||0} pts
-    </strong>
-
-  </div>
-
   `;
 
-});
+  usuarios.slice(5,20)
+  .forEach((u,index)=>{
 
-htmlLista += "</div>";
+    htmlLista += `
 
-  top5.innerHTML = htmlTop5;
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid #eee;
+    ">
 
-  rankingCompleto.innerHTML = htmlLista;
+      <div>
+        ${index+6}º - ${u.nome}
+      </div>
+
+      <strong>
+        ${u.pontos||0} pts
+      </strong>
+
+    </div>
+
+    `;
+
+  });
+
+  htmlLista += `
+  </div>
+  `;
+
+  top5.innerHTML =
+    htmlTop5;
+
+  rankingCompleto.innerHTML =
+    htmlLista;
 
 }
 
