@@ -4,12 +4,15 @@ import {
   getDocs,
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 let indiceDataAtual = 0;
 let datasJogos = [];
 let todosJogos = [];
+let meusPalpites = {};
 
 import { db } from "./firebase.js";
 
@@ -1007,9 +1010,11 @@ async function carregarJogos(){
 
   indiceDataAtual = 0;
 
-  await renderizarDataAtual();
+await carregarMeusPalpites();
 
-  await atualizarProgresso();
+await renderizarDataAtual();
+
+await atualizarProgresso();
 
 }
 
@@ -1108,14 +1113,18 @@ async function renderizarDataAtual(){
 
     if(usuario){
 
-      const palpiteRef =
-        await getDoc(
-          doc(
-            db,
-            "palpites",
-            usuario.email + "_" + jogo.id
-          )
-        );
+ const palpite =
+  meusPalpites[jogo.id];
+
+if(palpite){
+
+  placarSalvoA =
+    palpite.placarA;
+
+  placarSalvoB =
+    palpite.placarB;
+
+}
 
       if(palpiteRef.exists()){
 
@@ -1304,26 +1313,10 @@ async function atualizarProgresso(){
   const totalJogos =
     jogosSnap.size;
 
-  const palpitesSnap =
-    await getDocs(
-      collection(db,"palpites")
-    );
-
-  let realizados = 0;
-
-  palpitesSnap.forEach(doc => {
-
-    const palpite = doc.data();
-
-    if(
-      palpite.usuario &&
-      palpite.usuario.toLowerCase() ===
-      usuario.email.toLowerCase()
-    ){
-      realizados++;
-    }
-
-  });
+let realizados =
+  Object.keys(
+    meusPalpites
+  ).length;
 
   const pendentes =
     Math.max(
@@ -1461,6 +1454,18 @@ await setDoc(
     atualizadoEm: new Date()
   }
 );
+
+    meusPalpites[idJogo] = {
+
+  usuario: usuario.email,
+
+  jogoId: idJogo,
+
+  placarA,
+
+  placarB
+
+};
 
     alert("Palpite salvo/atualizado!");
 
@@ -2039,5 +2044,41 @@ function carregarPaisesExtras(){
       opcoes;
 
   }
+
+}
+
+async function carregarMeusPalpites(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario) return;
+
+  meusPalpites = {};
+
+  const snap =
+    await getDocs(
+      query(
+        collection(db,"palpites"),
+        where(
+          "usuario",
+          "==",
+          usuario.email
+        )
+      )
+    );
+
+  snap.forEach(docSnap=>{
+
+    const p =
+      docSnap.data();
+
+    meusPalpites[p.jogoId] = p;
+
+  });
 
 }
