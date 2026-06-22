@@ -1733,95 +1733,26 @@ window.salvarResultado =
 
 async function carregarResultados(){
 
+  alert("Entrou");
+
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  if(!div) return;
+  alert(div);
 
-  div.innerHTML = "";
-
-  window.todosJogos.forEach(jogo => {
-
-    div.innerHTML += `
-
-      <div class="jogo">
-
-        <h3>
-          ${jogo.timeA} x ${jogo.timeB}
-        </h3>
-
-        <p>
-          Grupo ${jogo.grupo}
-        </p>
-
-        <p>
-          🕒 ${jogo.dataHora}
-        </p>
-
-        <div style="
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          gap:15px;
-          margin:20px 0;
-        ">
-
-          <input
-            id="realA_${jogo.id}"
-            type="number"
-            min="0"
-            value="${jogo.placarRealA ?? ""}"
-            style="
-              width:80px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-            "
-          >
-
-          <span style="
-            font-size:32px;
-            font-weight:bold;
-          ">
-            X
-          </span>
-
-          <input
-            id="realB_${jogo.id}"
-            type="number"
-            min="0"
-            value="${jogo.placarRealB ?? ""}"
-            style="
-              width:80px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-            "
-          >
-
-        </div>
-
-        <button onclick="salvarResultado(${jogo.id})">
-          💾 Salvar Resultado
-        </button>
-
-      </div>
-
-      <br>
-
-    `;
-
-  });
+  div.innerHTML = `
+    <h1 style="
+      color:red;
+      background:white;
+      padding:30px;
+    ">
+      FUNCIONOU
+    </h1>
+  `;
 
 }
-
-window.carregarResultados = carregarResultados;
-
-window.carregarResultados = carregarResultados;
-
-window.carregarResultados = carregarResultados;
 
 window.carregarResultados =
   carregarResultados;
