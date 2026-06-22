@@ -1725,82 +1725,25 @@ window.salvarResultado =
 
 async function carregarResultados(){
 
+  alert("Entrou em carregarResultados");
+
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  if(!div) return;
+  alert(div);
 
-  div.innerHTML = "";
-
-  for(const jogo of todosJogos){
-
-    div.innerHTML += `
-
-    <div class="jogo">
-
-      <h3>
-        ${jogo.timeA} x ${jogo.timeB}
-      </h3>
-
-      <p>
-        Grupo ${jogo.grupo}
-      </p>
-
-      <p>
-        ${jogo.dataHora}
-      </p>
-
-      <div style="
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        gap:15px;
-        margin:20px 0;
-      ">
-
-        <input
-          id="realA_${jogo.id}"
-          type="number"
-          value="${jogo.placarRealA ?? ""}"
-          style="
-            width:80px;
-            height:50px;
-            text-align:center;
-          "
-        >
-
-        <span>X</span>
-
-        <input
-          id="realB_${jogo.id}"
-          type="number"
-          value="${jogo.placarRealB ?? ""}"
-          style="
-            width:80px;
-            height:50px;
-            text-align:center;
-          "
-        >
-
-      </div>
-
-      <button onclick="salvarResultado(${jogo.id})">
-        💾 Salvar Resultado
-      </button>
-
-    </div>
-
-    <br>
-
-    `;
-
-  }
+  div.innerHTML = `
+    <h1 style="color:white">
+      TESTE FUNCIONANDO
+    </h1>
+  `;
 
 }
 
-window.carregarResultados = carregarResultados;
+window.carregarResultados =
+  carregarResultados;
 
 async function carregarRanking(){
 
