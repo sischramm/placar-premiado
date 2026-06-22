@@ -1742,46 +1742,37 @@ async function carregarResultados(){
 
   div.innerHTML = "";
 
-  // Pega exatamente os mesmos jogos do Palpite
-  const jogos =
-    document.querySelectorAll(
-      "#listaJogos .jogo"
-    );
-
-  jogos.forEach((card,index)=>{
-
-    const titulo =
-      card.querySelector("h3")?.innerHTML || "";
-
-    const grupo =
-      card.querySelector("p")?.innerHTML || "";
+  window.todosJogos.forEach(jogo => {
 
     div.innerHTML += `
 
       <div class="jogo">
 
         <h3>
-          ${titulo}
+          ${jogo.timeA} x ${jogo.timeB}
         </h3>
 
         <p>
-          ${grupo}
+          Grupo ${jogo.grupo}
         </p>
 
-        <div
-          style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:15px;
-            margin:20px 0;
-          "
-        >
+        <p>
+          🕒 ${jogo.dataHora}
+        </p>
+
+        <div style="
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:15px;
+          margin:20px 0;
+        ">
 
           <input
-            id="realA_${index}"
+            id="realA_${jogo.id}"
             type="number"
             min="0"
+            value="${jogo.placarRealA ?? ""}"
             style="
               width:80px;
               height:50px;
@@ -1790,19 +1781,18 @@ async function carregarResultados(){
             "
           >
 
-          <span
-            style="
-              font-size:30px;
-              font-weight:bold;
-            "
-          >
+          <span style="
+            font-size:32px;
+            font-weight:bold;
+          ">
             X
           </span>
 
           <input
-            id="realB_${index}"
+            id="realB_${jogo.id}"
             type="number"
             min="0"
+            value="${jogo.placarRealB ?? ""}"
             style="
               width:80px;
               height:50px;
@@ -1813,17 +1803,21 @@ async function carregarResultados(){
 
         </div>
 
-        <button>
+        <button onclick="salvarResultado(${jogo.id})">
           💾 Salvar Resultado
         </button>
 
       </div>
+
+      <br>
 
     `;
 
   });
 
 }
+
+window.carregarResultados = carregarResultados;
 
 window.carregarResultados = carregarResultados;
 
