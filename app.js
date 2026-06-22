@@ -1738,15 +1738,79 @@ async function carregarResultados(){
       "resultadoJogos"
     );
 
-  div.innerHTML = `
-    <div style="
-      background:white;
-      color:black;
-      padding:40px;
-    ">
-      TESTE RESULTADOS
-    </div>
-  `;
+  if(!div) return;
+
+  div.innerHTML = "";
+
+  const snapshot =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  snapshot.forEach(docSnap => {
+
+    const jogo =
+      docSnap.data();
+
+    div.innerHTML += `
+
+      <div class="card">
+
+        <h3>
+          ${jogo.timeA}
+          x
+          ${jogo.timeB}
+        </h3>
+
+        <p>
+          Grupo ${jogo.grupo}
+        </p>
+
+        <p>
+          ${jogo.dataHora}
+        </p>
+
+        <div style="
+          display:flex;
+          justify-content:center;
+          gap:15px;
+          margin:20px 0;
+        ">
+
+          <input
+            id="realA_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+            style="width:80px"
+          >
+
+          <span style="
+            color:white;
+            font-size:30px;
+          ">
+            X
+          </span>
+
+          <input
+            id="realB_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+            style="width:80px"
+          >
+
+        </div>
+
+        <button
+          onclick="salvarResultado(${jogo.id})"
+        >
+          💾 Salvar Resultado
+        </button>
+
+      </div>
+
+    `;
+
+  });
 
 }
 
