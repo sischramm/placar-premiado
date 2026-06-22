@@ -1874,10 +1874,20 @@ async function atualizarRanking(){
       collection(db,"jogos")
     );
 
+  console.log(
+  "Quantidade de jogos:",
+  jogosSnap.size
+);
+
   const palpitesSnap =
     await getDocs(
       collection(db,"palpites")
     );
+
+  console.log(
+  "Quantidade de palpites:",
+  palpitesSnap.size
+);
 
   const usuariosSnap =
     await getDocs(
@@ -1896,6 +1906,13 @@ async function atualizarRanking(){
   const pontosUsuarios = {};
 
   palpitesSnap.forEach(docSnap => {
+
+    const p = docSnap.data();
+
+console.log(
+  "Palpite:",
+  p
+);
 
     const p =
       docSnap.data();
