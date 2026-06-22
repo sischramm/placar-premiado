@@ -1817,7 +1817,7 @@ async function carregarResultados(){
             id="realA_${jogo.docId}"
             type="number"
             min="0"
-            value="${jogo.placarRealA || ""}"
+            value="${jogo.placarRealA ?? ""}"
             style="
               width:70px;
               height:50px;
@@ -1841,7 +1841,7 @@ async function carregarResultados(){
             id="realB_${jogo.docId}"
             type="number"
             min="0"
-            value="${jogo.placarRealB || ""}"
+            value="${jogo.placarRealB ?? ""}"
             style="
               width:70px;
               height:50px;
