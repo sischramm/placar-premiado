@@ -2079,7 +2079,7 @@ async function carregarRanking(){
   ">
   `;
 
-  usuarios.slice(5)
+  usuarios.slice(5,20)
   .forEach((u,index)=>{
 
     htmlLista += `
