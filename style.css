@@ -1212,6 +1212,48 @@ body::before{
   flex:0 0 220px;
 }
 
+.ranking-nome{
+
+  min-height:65px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  text-align:center;
+
+  padding:0 10px;
+
+  color:#444;
+
+  font-size:18px;
+
+  font-weight:800;
+
+  line-height:1.2;
+
+}
+
+.ranking-card p strong{
+
+  display:block;
+
+  margin-top:12px;
+
+  font-size:28px;
+
+  color:#00a651;
+
+}
+
+.ranking-img{
+
+  background:#f8fafc;
+
+}
+
 @media (max-width:600px){
 
   .top5-fifa{
