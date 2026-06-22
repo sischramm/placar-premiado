@@ -1904,7 +1904,10 @@ async function atualizarRanking(){
       docSnap.data();
 
     const jogo =
-      jogos[p.idJogo];
+      Object.values(jogos)
+        .find(
+          j => j.id == p.jogoId
+        );
 
     if(
       !jogo ||
@@ -1916,7 +1919,7 @@ async function atualizarRanking(){
 
     let pontos = 0;
 
-    // placar exato
+    // Placar exato = 10 pts
     if(
       p.placarA == jogo.placarRealA &&
       p.placarB == jogo.placarRealB
@@ -1926,6 +1929,7 @@ async function atualizarRanking(){
 
     }else{
 
+      // Acertou vencedor ou empate = 5 pts
       const resultadoPalpite =
         Math.sign(
           p.placarA - p.placarB
@@ -1949,14 +1953,15 @@ async function atualizarRanking(){
     }
 
     if(
-      !pontosUsuarios[p.email]
+      pontosUsuarios[p.usuario]
+      == null
     ){
 
-      pontosUsuarios[p.email] = 0;
+      pontosUsuarios[p.usuario] = 0;
 
     }
 
-    pontosUsuarios[p.email] +=
+    pontosUsuarios[p.usuario] +=
       pontos;
 
   });
@@ -1984,13 +1989,25 @@ async function atualizarRanking(){
         pontos:
           pontosUsuarios[
             u.email
-          ] || 0
+          ] ?? 0
 
       }
 
     );
 
   }
+
+  usuariosCache =
+    usuariosSnap.docs.map(
+      d => ({
+        id: d.id,
+        ...d.data(),
+        pontos:
+          pontosUsuarios[
+            d.data().email
+          ] ?? 0
+      })
+    );
 
 }
 
@@ -2005,8 +2022,9 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
+await atualizarRanking();
+
 await carregarUsuarios();
-  await atualizarRanking();
 
 let usuarios =
   [...usuariosCache];
