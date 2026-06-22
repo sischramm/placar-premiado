@@ -1744,7 +1744,17 @@ async function carregarResultados(){
 
   if(!div) return;
 
-  div.innerHTML = "";
+  div.innerHTML = `
+    <div
+      id="gradeResultados"
+      style="
+        display:grid;
+        grid-template-columns:
+          repeat(auto-fit,minmax(350px,1fr));
+        gap:20px;
+      "
+    ></div>
+  `;
 
   const snapshot =
     await getDocs(
@@ -1754,12 +1764,30 @@ async function carregarResultados(){
       )
     );
 
-  snapshot.forEach(docSnap => {
+  const jogos =
+    snapshot.docs
+      .map(docSnap => ({
+        docId: docSnap.id,
+        ...docSnap.data()
+      }))
+      .sort(
+        (a,b)=>
+          new Date(
+            a.dataHora.replace(" ","T")
+          ) -
+          new Date(
+            b.dataHora.replace(" ","T")
+          )
+      );
 
-    const jogo =
-      docSnap.data();
+  const grade =
+    document.getElementById(
+      "gradeResultados"
+    );
 
-    div.innerHTML += `
+  jogos.forEach(jogo => {
+
+    grade.innerHTML += `
 
       <div class="card">
 
@@ -1786,12 +1814,12 @@ async function carregarResultados(){
         >
 
           <input
-            id="realA_${docSnap.id}"
+            id="realA_${jogo.docId}"
             type="number"
             min="0"
             value="${jogo.placarRealA || ""}"
             style="
-              width:80px;
+              width:70px;
               height:50px;
               text-align:center;
               font-size:24px;
@@ -1810,12 +1838,12 @@ async function carregarResultados(){
           </span>
 
           <input
-            id="realB_${docSnap.id}"
+            id="realB_${jogo.docId}"
             type="number"
             min="0"
             value="${jogo.placarRealB || ""}"
             style="
-              width:80px;
+              width:70px;
               height:50px;
               text-align:center;
               font-size:24px;
@@ -1826,7 +1854,7 @@ async function carregarResultados(){
         </div>
 
         <button
-          onclick="salvarResultado('${docSnap.id}')"
+          onclick="salvarResultado('${jogo.docId}')"
         >
           💾 Salvar Resultado
         </button>
@@ -1838,6 +1866,9 @@ async function carregarResultados(){
   });
 
 }
+
+window.carregarResultados =
+  carregarResultados;
 
 window.carregarResultados =
   carregarResultados;
