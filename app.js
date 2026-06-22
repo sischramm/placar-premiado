@@ -1072,17 +1072,14 @@ async function carregarJogos(){
       collection(db,"jogos")
     );
 
-  todosJogos =
-    snapshot.docs
-      .map(doc => doc.data())
-      .sort((a,b) =>
-        new Date(
-          a.dataHora.replace(" ","T")
-        ) -
-        new Date(
-          b.dataHora.replace(" ","T")
-        )
-      );
+todosJogos =
+  snapshot.docs
+    .map(doc => doc.data())
+    .sort((a,b)=>
+      new Date(a.dataHora.replace(" ","T"))
+      -
+      new Date(b.dataHora.replace(" ","T"))
+    );
 
   datasJogos = [
     ...new Set(
@@ -1737,7 +1734,7 @@ async function carregarResultados(){
 
   div.innerHTML = "";
 
-  todosJogos.forEach(jogo => {
+  for(const jogo of todosJogos){
 
     div.innerHTML += `
 
@@ -1752,61 +1749,44 @@ async function carregarResultados(){
       </p>
 
       <p>
-        🕒 ${jogo.dataHora}
+        ${jogo.dataHora}
       </p>
 
-      <div
-        style="
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          gap:15px;
-          margin:25px 0;
-        "
-      >
+      <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:15px;
+        margin:20px 0;
+      ">
 
         <input
           id="realA_${jogo.id}"
           type="number"
-          min="0"
           value="${jogo.placarRealA ?? ""}"
           style="
-            width:100px;
+            width:80px;
             height:50px;
             text-align:center;
-            font-size:24px;
-            font-weight:bold;
           "
         >
 
-        <span
-          style="
-            font-size:36px;
-            font-weight:900;
-          "
-        >
-          X
-        </span>
+        <span>X</span>
 
         <input
           id="realB_${jogo.id}"
           type="number"
-          min="0"
           value="${jogo.placarRealB ?? ""}"
           style="
-            width:100px;
+            width:80px;
             height:50px;
             text-align:center;
-            font-size:24px;
-            font-weight:bold;
           "
         >
 
       </div>
 
-      <button
-        onclick="salvarResultado(${jogo.id})"
-      >
+      <button onclick="salvarResultado(${jogo.id})">
         💾 Salvar Resultado
       </button>
 
@@ -1816,12 +1796,9 @@ async function carregarResultados(){
 
     `;
 
-  });
+  }
 
 }
-
-window.carregarResultados =
-  carregarResultados;
 
 window.carregarResultados = carregarResultados;
 
