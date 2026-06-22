@@ -1896,7 +1896,7 @@ async function atualizarRanking(){
 
   const jogos = {};
 
-  jogosSnap.forEach(docSnap => {
+  jogosSnap.forEach(docSnap=>{
 
     jogos[docSnap.id] = {
       ...docSnap.data()
@@ -1904,9 +1904,9 @@ async function atualizarRanking(){
 
   });
 
-  const pontosUsuarios = {};
+  const estatisticas = {};
 
-  palpitesSnap.forEach(docSnap => {
+  palpitesSnap.forEach(docSnap=>{
 
     const p = docSnap.data();
 
@@ -1922,63 +1922,86 @@ async function atualizarRanking(){
       !jogo ||
       jogo.placarRealA == null ||
       jogo.placarRealB == null
-    ) return;
+    ){
+      return;
+    }
 
-    let pontos = 0;
+    if(!estatisticas[p.usuario]){
 
+      estatisticas[p.usuario] = {
+
+        pontos:0,
+        placaresExatos:0,
+        vencedoresAcertados:0,
+        acertouCampeao:0
+
+      };
+
+    }
+
+    const resultadoPalpite =
+      Math.sign(
+        Number(p.placarA) -
+        Number(p.placarB)
+      );
+
+    const resultadoReal =
+      Math.sign(
+        Number(jogo.placarRealA) -
+        Number(jogo.placarRealB)
+      );
+
+    // placar exato
     if(
-      Number(p.placarA) === Number(jogo.placarRealA)
+      Number(p.placarA) ===
+      Number(jogo.placarRealA)
       &&
-      Number(p.placarB) === Number(jogo.placarRealB)
+      Number(p.placarB) ===
+      Number(jogo.placarRealB)
     ){
 
-      pontos = 10;
+      estatisticas[p.usuario].pontos += 10;
 
-    }else{
+      estatisticas[p.usuario]
+      .placaresExatos++;
 
-      const resultadoPalpite =
-        Math.sign(
-          Number(p.placarA)
-          -
-          Number(p.placarB)
-        );
-
-      const resultadoReal =
-        Math.sign(
-          Number(jogo.placarRealA)
-          -
-          Number(jogo.placarRealB)
-        );
-
-      if(
-        resultadoPalpite ===
-        resultadoReal
-      ){
-
-        pontos = 5;
-
-      }
+      estatisticas[p.usuario]
+      .vencedoresAcertados++;
 
     }
 
-    if(
-      !pontosUsuarios[p.usuario]
+    // vencedor correto
+    else if(
+      resultadoPalpite ===
+      resultadoReal
     ){
 
-      pontosUsuarios[p.usuario] = 0;
+      estatisticas[p.usuario]
+      .pontos += 5;
+
+      estatisticas[p.usuario]
+      .vencedoresAcertados++;
 
     }
-
-    pontosUsuarios[p.usuario] += pontos;
 
   });
 
-  usuariosCache.forEach(u => {
+  usuariosCache.forEach(u=>{
+
+    const est =
+      estatisticas[u.email];
 
     u.pontos =
-      pontosUsuarios[
-        u.email
-      ] || 0;
+      est?.pontos || 0;
+
+    u.placaresExatos =
+      est?.placaresExatos || 0;
+
+    u.vencedoresAcertados =
+      est?.vencedoresAcertados || 0;
+
+    u.acertouCampeao =
+      est?.acertouCampeao || 0;
 
   });
 
@@ -1987,10 +2010,14 @@ async function atualizarRanking(){
 async function carregarRanking(){
 
   const top5 =
-    document.getElementById("rankingTop5");
+    document.getElementById(
+      "rankingTop5"
+    );
 
   const rankingCompleto =
-    document.getElementById("rankingCompleto");
+    document.getElementById(
+      "rankingCompleto"
+    );
 
   if(!top5 || !rankingCompleto)
     return;
@@ -1999,7 +2026,7 @@ async function carregarRanking(){
 
   await atualizarRanking();
 
-  // Remove usuários duplicados pelo e-mail
+  // Remove usuários duplicados
   let usuarios = Object.values(
 
     usuariosCache.reduce((acc,u)=>{
@@ -2020,24 +2047,81 @@ async function carregarRanking(){
 
   );
 
-  // Compensação dos primeiros jogos
+  // Bônus dos primeiros jogos
   usuarios.forEach(u=>{
 
     u.pontos =
-      (u.pontos || 0) + 40;
+      (u.pontos||0) + 40;
 
   });
 
-  // Ordena por pontos
-  usuarios.sort(
-    (a,b)=>
-      (b.pontos||0) -
-      (a.pontos||0)
-  );
+  // Ordenação conforme regulamento
+  usuarios.sort((a,b)=>{
 
-  let htmlTop5 = `
-  <div class="top5-fifa">
-  `;
+    // Pontos
+    if(
+      (b.pontos||0) !==
+      (a.pontos||0)
+    ){
+
+      return (
+        (b.pontos||0) -
+        (a.pontos||0)
+      );
+
+    }
+
+    // Campeão
+    if(
+      (b.acertouCampeao||0) !==
+      (a.acertouCampeao||0)
+    ){
+
+      return (
+        (b.acertouCampeao||0) -
+        (a.acertouCampeao||0)
+      );
+
+    }
+
+    // Placares exatos
+    if(
+      (b.placaresExatos||0) !==
+      (a.placaresExatos||0)
+    ){
+
+      return (
+        (b.placaresExatos||0) -
+        (a.placaresExatos||0)
+      );
+
+    }
+
+    // Vencedores acertados
+    if(
+      (b.vencedoresAcertados||0) !==
+      (a.vencedoresAcertados||0)
+    ){
+
+      return (
+        (b.vencedoresAcertados||0) -
+        (a.vencedoresAcertados||0)
+      );
+
+    }
+
+    // Cadastro mais antigo
+    return new Date(
+      a.criadoEm || 0
+    ) -
+    new Date(
+      b.criadoEm || 0
+    );
+
+  });
+
+  let htmlTop5 =
+    `<div class="top5-fifa">`;
 
   usuarios.slice(0,5)
   .forEach((u,index)=>{
@@ -2050,42 +2134,46 @@ async function carregarRanking(){
 
     htmlTop5 += `
 
-    <div class="ranking-card ${rk}">
+      <div class="ranking-card ${rk}">
 
-      <div class="ranking-selo">
-        Shark 2026
+        <div class="ranking-selo">
+          Shark 2026
+        </div>
+
+        <div class="ranking-img">
+          ${medalha}
+        </div>
+
+        <div class="ranking-posicao">
+          ${index+1}º Lugar
+        </div>
+
+        <p>
+          ${u.nome}
+          <br>
+          <strong>
+            ${u.pontos||0} pts
+          </strong>
+        </p>
+
       </div>
-
-      <div class="ranking-img">
-        ${medalha}
-      </div>
-
-      <div class="ranking-posicao">
-        ${index+1}º Lugar
-      </div>
-
-      <p>
-        ${u.nome}
-        <br>
-        <strong>${u.pontos||0} pts</strong>
-      </p>
-
-    </div>
 
     `;
 
   });
 
   htmlTop5 += `
-  </div>
+    </div>
   `;
 
   let htmlLista = `
-  <div style="
-    background:#fff;
-    border-radius:15px;
-    overflow:hidden;
-  ">
+    <div
+      style="
+        background:#fff;
+        border-radius:15px;
+        overflow:hidden;
+      "
+    >
   `;
 
   usuarios.slice(5,20)
@@ -2093,29 +2181,31 @@ async function carregarRanking(){
 
     htmlLista += `
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      padding:14px 18px;
-      border-bottom:1px solid #eee;
-    ">
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          padding:14px 18px;
+          border-bottom:1px solid #eee;
+        "
+      >
 
-      <div>
-        ${index+6}º - ${u.nome}
+        <div>
+          ${index+6}º - ${u.nome}
+        </div>
+
+        <strong>
+          ${u.pontos||0} pts
+        </strong>
+
       </div>
-
-      <strong>
-        ${u.pontos||0} pts
-      </strong>
-
-    </div>
 
     `;
 
   });
 
   htmlLista += `
-  </div>
+    </div>
   `;
 
   top5.innerHTML =
