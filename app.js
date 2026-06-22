@@ -13,6 +13,7 @@ let indiceDataAtual = 0;
 let datasJogos = [];
 let todosJogos = [];
 let meusPalpites = {};
+let usuariosCache = [];
 
 import { db } from "./firebase.js";
 
@@ -75,6 +76,72 @@ if(usuario){
   carregarJogos();
 
 };
+
+// ===== CACHE DOS PALPITES =====
+
+async function carregarMeusPalpites(){
+
+  const usuario =
+    JSON.parse(
+      localStorage.getItem(
+        "usuarioLogado"
+      )
+    );
+
+  if(!usuario) return;
+
+  meusPalpites = {};
+
+  const snapshot =
+    await getDocs(
+      query(
+        collection(db,"palpites"),
+        where(
+          "usuario",
+          "==",
+          usuario.email
+        )
+      )
+    );
+
+  snapshot.forEach(docSnap => {
+
+    const p =
+      docSnap.data();
+
+    meusPalpites[p.jogoId] = p;
+
+  });
+
+}
+
+
+// ===== CACHE DOS USUÁRIOS =====
+
+async function carregarUsuarios(){
+
+  if(usuariosCache.length > 0)
+    return;
+
+  const snapshot =
+    await getDocs(
+      collection(db,"usuarios")
+    );
+
+  usuariosCache = [];
+
+  snapshot.forEach(docSnap => {
+
+    usuariosCache.push(
+      docSnap.data()
+    );
+
+  });
+
+}
+
+
+// =====================
 
 function abrirAba(nome){
 
@@ -389,32 +456,50 @@ async function cadastrar(){
       }
     );
 
+    // Atualiza cache de usuários
+    usuariosCache.push({
+      nome,
+      empresa,
+      filial,
+      email,
+      senha,
+      pontos: 0
+    });
+
     alert("Cadastro realizado com sucesso!");
 
-const usuario = {
-  nome,
-  empresa,
-  filial,
-  email,
-  pontos: 0
-};
+    const usuario = {
+      nome,
+      empresa,
+      filial,
+      email,
+      pontos: 0
+    };
 
-localStorage.setItem(
-  "usuarioLogado",
-  JSON.stringify(usuario)
-);
+    localStorage.setItem(
+      "usuarioLogado",
+      JSON.stringify(usuario)
+    );
 
-document.getElementById(
-  "loginSistema"
-).style.display = "none";
+    document.getElementById(
+      "loginSistema"
+    ).style.display = "none";
 
-document.getElementById(
-  "homeInicial"
-).style.display = "none";
+    document.getElementById(
+      "homeInicial"
+    ).style.display = "none";
 
-document.getElementById(
-  "painel"
-).style.display = "block";
+    document.getElementById(
+      "painel"
+    ).style.display = "block";
+
+    document.getElementById(
+      "topoSistema"
+    ).style.display = "block";
+
+    await carregarMeusPalpites();
+
+    await carregarJogos();
 
   } catch (erro) {
 
@@ -1008,7 +1093,7 @@ async function carregarJogos(){
     )
   ];
 
-  indiceDataAtual = 0;
+ indiceDataAtual = 0;
 
 await carregarMeusPalpites();
 
@@ -1106,54 +1191,41 @@ async function renderizarDataAtual(){
       )
     );
 
-  for(const jogo of jogosDoDia){
+for(const jogo of jogosDoDia){
 
-    let placarSalvoA = "";
-    let placarSalvoB = "";
+  let placarSalvoA = "";
+  let placarSalvoB = "";
 
-    if(usuario){
+  if(usuario){
 
- const palpite =
-  meusPalpites[jogo.id];
+    const palpite =
+      meusPalpites[jogo.id];
 
-if(palpite){
+    if(palpite){
 
-  placarSalvoA =
-    palpite.placarA;
+      placarSalvoA =
+        palpite.placarA;
 
-  placarSalvoB =
-    palpite.placarB;
-
-}
-
-      if(palpiteRef.exists()){
-
-        const palpite =
-          palpiteRef.data();
-
-        placarSalvoA =
-          palpite.placarA;
-
-        placarSalvoB =
-          palpite.placarB;
-
-      }
+      placarSalvoB =
+        palpite.placarB;
 
     }
 
-    const agora = new Date();
+  }
 
-    const dataJogo =
-      new Date(
-        jogo.dataHora.replace(
-          " ",
-          "T"
-        )
-      );
+  const agora = new Date();
 
-    const bloqueado =
-  new Date() >=
-  new Date("2026-06-12T20:00:00");
+  const dataJogo =
+    new Date(
+      jogo.dataHora.replace(
+        " ",
+        "T"
+      )
+    );
+
+  const bloqueado =
+    new Date() >=
+    new Date("2026-06-12T20:00:00");
 
     lista.innerHTML += `
 
@@ -1305,18 +1377,13 @@ async function atualizarProgresso(){
     return;
   }
 
-  const jogosSnap =
-    await getDocs(
-      collection(db,"jogos")
-    );
-
   const totalJogos =
-    jogosSnap.size;
+    todosJogos.length;
 
-let realizados =
-  Object.keys(
-    meusPalpites
-  ).length;
+  const realizados =
+    Object.keys(
+      meusPalpites
+    ).length;
 
   const pendentes =
     Math.max(
@@ -1721,16 +1788,10 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-  const snapshot =
-    await getDocs(
-      collection(db,"usuarios")
-    );
+await carregarUsuarios();
 
-  let usuarios = [];
-
-  snapshot.forEach(doc => {
-    usuarios.push(doc.data());
-  });
+let usuarios =
+  [...usuariosCache];
 
   usuarios.sort(
     (a,b)=>
@@ -1833,16 +1894,11 @@ async function carregarRankingEmpresas(){
 
   if(!tabela) return;
 
-  const snapshot =
-    await getDocs(
-      collection(db,"usuarios")
-    );
+await carregarUsuarios();
 
-  const empresas = {};
+const empresas = {};
 
-  snapshot.forEach(doc => {
-
-    const u = doc.data();
+usuariosCache.forEach(u => {
 
     if(!u.empresa){
       return;
@@ -2047,38 +2103,3 @@ function carregarPaisesExtras(){
 
 }
 
-async function carregarMeusPalpites(){
-
-  const usuario =
-    JSON.parse(
-      localStorage.getItem(
-        "usuarioLogado"
-      )
-    );
-
-  if(!usuario) return;
-
-  meusPalpites = {};
-
-  const snap =
-    await getDocs(
-      query(
-        collection(db,"palpites"),
-        where(
-          "usuario",
-          "==",
-          usuario.email
-        )
-      )
-    );
-
-  snap.forEach(docSnap=>{
-
-    const p =
-      docSnap.data();
-
-    meusPalpites[p.jogoId] = p;
-
-  });
-
-}
