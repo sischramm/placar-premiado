@@ -1874,20 +1874,10 @@ async function atualizarRanking(){
       collection(db,"jogos")
     );
 
-  console.log(
-  "Quantidade de jogos:",
-  jogosSnap.size
-);
-
   const palpitesSnap =
     await getDocs(
       collection(db,"palpites")
     );
-
-  console.log(
-  "Quantidade de palpites:",
-  palpitesSnap.size
-);
 
   const usuariosSnap =
     await getDocs(
@@ -1907,22 +1897,16 @@ async function atualizarRanking(){
 
   palpitesSnap.forEach(docSnap => {
 
-    const p = docSnap.data();
-
-console.log(
-  "Palpite:",
-  p
-);
-
     const p =
       docSnap.data();
 
-   console.log(
-  "Palpite jogo:",
-  p.jogoId,
-  "Encontrou:",
-  jogo
-);
+    const jogo =
+      Object.values(jogos)
+        .find(
+          j =>
+            Number(j.id) ===
+            Number(p.jogoId)
+        );
 
     if(
       !jogo ||
@@ -1934,30 +1918,33 @@ console.log(
 
     let pontos = 0;
 
-    // Placar exato = 10 pts
+    // Placar exato
     if(
-      p.placarA == jogo.placarRealA &&
-      p.placarB == jogo.placarRealB
+      Number(p.placarA) === Number(jogo.placarRealA)
+      &&
+      Number(p.placarB) === Number(jogo.placarRealB)
     ){
 
       pontos = 10;
 
     }else{
 
-      // Acertou vencedor ou empate = 5 pts
       const resultadoPalpite =
         Math.sign(
-          p.placarA - p.placarB
+          Number(p.placarA)
+          -
+          Number(p.placarB)
         );
 
       const resultadoReal =
         Math.sign(
-          jogo.placarRealA -
-          jogo.placarRealB
+          Number(jogo.placarRealA)
+          -
+          Number(jogo.placarRealB)
         );
 
       if(
-        resultadoPalpite ==
+        resultadoPalpite ===
         resultadoReal
       ){
 
@@ -1976,10 +1963,8 @@ console.log(
 
     }
 
-    console.log(
-  p.usuario,
-  pontos
-);
+    pontosUsuarios[p.usuario] +=
+      pontos;
 
   });
 
@@ -2014,7 +1999,7 @@ console.log(
 
   }
 
-usuariosCache = [];
+  usuariosCache = [];
 
   await carregarUsuarios();
 
@@ -2031,7 +2016,7 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
- // await atualizarRanking();
+  await atualizarRanking();
 
   usuariosCache = [];
 
