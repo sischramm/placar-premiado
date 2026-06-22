@@ -234,25 +234,11 @@ function abrirAba(nome){
 
 if(nome === "resultados"){
 
-  const aba =
-    document.getElementById(
-      "abaResultados"
-    );
+  document.getElementById(
+    "abaResultados"
+  ).style.display = "block";
 
-  aba.style.display = "block";
-  aba.style.visibility = "visible";
-  aba.style.opacity = "1";
-
-  aba.innerHTML = `
-    <div style="
-      background:red;
-      color:white;
-      padding:50px;
-      font-size:40px;
-    ">
-      RESULTADOS OK
-    </div>
-  `;
+  carregarResultados();
 
 }
 
@@ -1771,9 +1757,7 @@ async function carregarResultados(){
       <div class="card">
 
         <h3>
-          ${jogo.timeA}
-          x
-          ${jogo.timeB}
+          ${jogo.timeA} x ${jogo.timeB}
         </h3>
 
         <p>
@@ -1792,9 +1776,7 @@ async function carregarResultados(){
         ">
 
           <input
-            id="realA_${jogo.id}"
             type="number"
-            value="${jogo.placarRealA ?? ""}"
             style="width:80px"
           >
 
@@ -1806,19 +1788,11 @@ async function carregarResultados(){
           </span>
 
           <input
-            id="realB_${jogo.id}"
             type="number"
-            value="${jogo.placarRealB ?? ""}"
             style="width:80px"
           >
 
         </div>
-
-        <button
-          onclick="salvarResultado(${jogo.id})"
-        >
-          💾 Salvar Resultado
-        </button>
 
       </div>
 
