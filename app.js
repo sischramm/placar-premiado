@@ -2071,41 +2071,41 @@ async function carregarRanking(){
   </div>
   `;
 
-  let htmlLista = `
+let htmlLista = `
+<div style="
+  background:#fff;
+  border-radius:15px;
+  overflow:hidden;
+">
+`;
+
+usuarios.slice(5,20)
+.forEach((u,index)=>{
+
+  htmlLista += `
+
   <div style="
-    background:#fff;
-    border-radius:15px;
-    overflow:hidden;
+    display:flex;
+    justify-content:space-between;
+    padding:14px 18px;
+    border-bottom:1px solid #eee;
   ">
-  `;
 
-  usuarios.slice(5,20)
-  .forEach((u,index)=>{
-
-    htmlLista += `
-
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      padding:14px 18px;
-      border-bottom:1px solid #eee;
-    ">
-
-      <div>
-        ${index+6}º - ${u.nome}
-      </div>
-
-      <strong>
-        ${u.pontos||0} pts
-      </strong>
-
+    <div>
+      ${index+6}º - ${u.nome}
     </div>
 
-    `;
+    <strong>
+      ${u.pontos||0} pts
+    </strong>
 
-  });
+  </div>
 
-  htmlLista += "</div>";
+  `;
+
+});
+
+htmlLista += "</div>";
 
   top5.innerHTML = htmlTop5;
 
