@@ -1163,111 +1163,6 @@ body::before{
 
 }
 
-.top5-fifa{
-  display:grid;
-  grid-template-columns:repeat(4,260px);
-  justify-content:center;
-  gap:20px;
-}
-
-
-.selo-fifa{
-
-  position:absolute;
-
-  top:10px;
-
-  right:-32px;
-
-  background:#00a651;
-
-  color:#fff;
-
-  font-size:10px;
-
-  font-weight:700;
-
-  padding:5px 40px;
-
-  transform:rotate(45deg);
-
-  z-index:10;
-
-}
-
-/* ========================= */
-/* RANKING */
-/* ========================= */
-
-.top5-fifa{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.ranking-card{
-  width:220px;
-  flex:0 0 220px;
-}
-
-.ranking-nome{
-
-  min-height:65px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  text-align:center;
-
-  padding:0 10px;
-
-  color:#444;
-
-  font-size:18px;
-
-  font-weight:800;
-
-  line-height:1.2;
-
-}
-
-.ranking-card p strong{
-
-  display:block;
-
-  margin-top:12px;
-
-  font-size:28px;
-
-  color:#00a651;
-
-}
-
-.ranking-img{
-
-  background:#f8fafc;
-
-}
-
-@media (max-width:600px){
-
-  .top5-fifa{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-  }
-
-  .ranking-card{
-    width:100%;
-  }
-
-}
-
 /* ======================================== */
 /* MOBILE PERFIL */
 /* ======================================== */
@@ -1332,10 +1227,6 @@ body::before{
   }
 
   /* JOGOS */
-
-
-
-
 
   .inputs-jogo input{
 
@@ -1563,6 +1454,30 @@ body::before{
 
 }
 
+.ranking-nome{
+
+  min-height:60px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  text-align:center;
+
+  padding:0 10px;
+
+  font-size:18px;
+
+  font-weight:800;
+
+  color:#444;
+
+  line-height:1.2;
+
+}
+
 .ranking-selo{
 
   position:absolute;
@@ -1593,11 +1508,6 @@ body::before{
   align-items:flex-start;
   gap:20px;
   flex-wrap:wrap;
-}
-
-.ranking-card{
-  width:220px;
-  flex:0 0 220px;
 }
 
 body::before{
@@ -1860,12 +1770,6 @@ body::before{
 
   opacity:.85;
 
-}
-
-@media(max-width:900px){
-    .jogo{
-        width:100%;
-    }
 }
 
 /* ======================================== */
