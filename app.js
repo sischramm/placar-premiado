@@ -426,7 +426,6 @@ async function cadastrar(){
   if(!nome || !empresa || !filial || !email || !senha){
 
     alert("Preencha todos os campos.");
-
     return;
 
   }
@@ -434,16 +433,22 @@ async function cadastrar(){
   if(!termo){
 
     alert("Aceite o regulamento.");
-
     return;
 
   }
 
   try {
 
-    await addDoc(
-      collection(db, "usuarios"),
+    await setDoc(
+
+      doc(
+        db,
+        "usuarios",
+        email
+      ),
+
       {
+
         nome,
         empresa,
         filial,
@@ -451,32 +456,42 @@ async function cadastrar(){
         senha,
         pontos: 0,
         criadoEm: new Date()
+
       }
+
     );
 
-    // Atualiza cache de usuários
     usuariosCache.push({
+
       nome,
       empresa,
       filial,
       email,
       senha,
       pontos: 0
+
     });
 
     alert("Cadastro realizado com sucesso!");
 
     const usuario = {
+
       nome,
       empresa,
       filial,
       email,
       pontos: 0
+
     };
 
     localStorage.setItem(
+
       "usuarioLogado",
-      JSON.stringify(usuario)
+
+      JSON.stringify(
+        usuario
+      )
+
     );
 
     document.getElementById(
