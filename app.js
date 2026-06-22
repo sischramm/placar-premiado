@@ -1900,11 +1900,12 @@ async function atualizarRanking(){
     const p =
       docSnap.data();
 
-    const jogo =
-      Object.values(jogos)
-        .find(
-          j => j.id == p.jogoId
-        );
+   console.log(
+  "Palpite jogo:",
+  p.jogoId,
+  "Encontrou:",
+  jogo
+);
 
     if(
       !jogo ||
@@ -1958,8 +1959,10 @@ async function atualizarRanking(){
 
     }
 
-    pontosUsuarios[p.usuario] +=
-      pontos;
+    console.log(
+  p.usuario,
+  pontos
+);
 
   });
 
