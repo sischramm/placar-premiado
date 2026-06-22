@@ -1735,21 +1735,30 @@ async function carregarResultados(){
 
   alert("Entrou");
 
+  const aba =
+    document.getElementById(
+      "abaResultados"
+    );
+
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  alert(div);
+  aba.style.display = "block";
+  aba.style.visibility = "visible";
+  aba.style.opacity = "1";
 
   div.innerHTML = `
-    <h1 style="
-      color:red;
+    <div style="
       background:white;
-      padding:30px;
+      color:black;
+      padding:40px;
+      font-size:40px;
+      border:5px solid red;
     ">
       FUNCIONOU
-    </h1>
+    </div>
   `;
 
 }
