@@ -1870,8 +1870,129 @@ async function carregarResultados(){
 window.carregarResultados =
   carregarResultados;
 
-window.carregarResultados =
-  carregarResultados;
+async function atualizarRanking(){
+
+  const jogosSnap =
+    await getDocs(
+      collection(db,"jogos")
+    );
+
+  const palpitesSnap =
+    await getDocs(
+      collection(db,"palpites")
+    );
+
+  const usuariosSnap =
+    await getDocs(
+      collection(db,"usuarios")
+    );
+
+  const jogos = {};
+
+  jogosSnap.forEach(docSnap => {
+
+    jogos[docSnap.id] =
+      docSnap.data();
+
+  });
+
+  const pontosUsuarios = {};
+
+  palpitesSnap.forEach(docSnap => {
+
+    const p =
+      docSnap.data();
+
+    const jogo =
+      jogos[p.idJogo];
+
+    if(
+      !jogo ||
+      jogo.placarRealA == null ||
+      jogo.placarRealB == null
+    ){
+      return;
+    }
+
+    let pontos = 0;
+
+    // placar exato
+    if(
+      p.placarA == jogo.placarRealA &&
+      p.placarB == jogo.placarRealB
+    ){
+
+      pontos = 10;
+
+    }else{
+
+      const resultadoPalpite =
+        Math.sign(
+          p.placarA - p.placarB
+        );
+
+      const resultadoReal =
+        Math.sign(
+          jogo.placarRealA -
+          jogo.placarRealB
+        );
+
+      if(
+        resultadoPalpite ==
+        resultadoReal
+      ){
+
+        pontos = 5;
+
+      }
+
+    }
+
+    if(
+      !pontosUsuarios[p.email]
+    ){
+
+      pontosUsuarios[p.email] = 0;
+
+    }
+
+    pontosUsuarios[p.email] +=
+      pontos;
+
+  });
+
+  for(
+    const docUsuario
+    of usuariosSnap.docs
+  ){
+
+    const u =
+      docUsuario.data();
+
+    await setDoc(
+
+      doc(
+        db,
+        "usuarios",
+        docUsuario.id
+      ),
+
+      {
+
+        ...u,
+
+        pontos:
+          pontosUsuarios[
+            u.email
+          ] || 0
+
+      }
+
+    );
+
+  }
+
+}
 
 async function carregarRanking(){
 
@@ -1885,6 +2006,7 @@ async function carregarRanking(){
     return;
 
 await carregarUsuarios();
+  await atualizarRanking();
 
 let usuarios =
   [...usuariosCache];
