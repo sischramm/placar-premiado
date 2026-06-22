@@ -1647,44 +1647,81 @@ async function salvarResultado(idJogo){
       ).value
     );
 
-  const jogos =
-    await getDocs(
-      collection(db,"jogos")
+  if(
+    isNaN(placarRealA) ||
+    isNaN(placarRealB)
+  ){
+
+    alert("Informe os dois placares.");
+
+    return;
+
+  }
+
+  const jogo =
+    todosJogos.find(
+      j => j.id === idJogo
     );
 
-  jogos.forEach(async docSnap => {
+  if(!jogo){
 
-    const jogo =
-      docSnap.data();
+    alert("Jogo não encontrado.");
 
-    if(jogo.id === idJogo){
+    return;
 
- await setDoc(
-  doc(
-    db,
-    "jogos",
-    docSnap.id
-  ),
-  {
-    ...jogo,
-    placarRealA,
-    placarRealB,
-    encerrado: true
   }
-);
 
-    }
+  try{
 
-  });
+    await setDoc(
 
-  alert(
-    "Resultado salvo!"
-  );
-await carregarResultados();
+      doc(
+        db,
+        "jogos",
+        jogo.docId
+      ),
+
+      {
+
+        ...jogo,
+
+        placarRealA,
+
+        placarRealB,
+
+        encerrado: true
+
+      }
+
+    );
+
+    // Atualiza memória
+    jogo.placarRealA =
+      placarRealA;
+
+    jogo.placarRealB =
+      placarRealB;
+
+    jogo.encerrado =
+      true;
+
+    alert(
+      "Resultado salvo!"
+    );
+
+  }catch(erro){
+
+    console.error(
+      erro
+    );
+
+    alert(
+      "Erro ao salvar resultado."
+    );
+
+  }
+
 }
-
-window.carregarAdminJogos =
-  carregarAdminJogos;
 
 window.salvarResultado =
   salvarResultado;
@@ -1698,80 +1735,103 @@ async function carregarResultados(){
 
   if(!div) return;
 
-  div.innerHTML = "Carregando...";
+  div.innerHTML = "";
 
-  try{
+  const grupos = {};
 
-    const snapshot =
-      await getDocs(
-        collection(db,"jogos")
-      );
+  todosJogos.forEach(jogo => {
 
-    div.innerHTML = "";
+    if(!grupos[jogo.grupo]){
+      grupos[jogo.grupo] = [];
+    }
 
-    snapshot.forEach(docSnap => {
+    grupos[jogo.grupo].push(jogo);
 
-      const jogo = docSnap.data();
+  });
+
+  Object.keys(grupos)
+    .sort()
+    .forEach(grupo => {
 
       div.innerHTML += `
-
-        <div style="
-          background:#fff;
-          color:#222;
-          padding:15px;
-          border-radius:12px;
-          margin-bottom:15px;
+        <h2 style="
+          color:#fff;
+          margin-top:30px;
         ">
+          Grupo ${grupo}
+        </h2>
+      `;
+
+      grupos[grupo].forEach(jogo => {
+
+        div.innerHTML += `
+
+        <div class="jogo">
 
           <h3>
-            ${jogo.timeA || "Time A"}
-            x
-            ${jogo.timeB || "Time B"}
+            ${jogo.timeA} x ${jogo.timeB}
           </h3>
 
-          <input
-            id="realA_${jogo.id}"
-            type="number"
-            value="${jogo.placarRealA ?? ""}"
-            style="width:70px"
+          <p>
+            🕒 ${jogo.dataHora}
+          </p>
+
+          <div style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            margin:20px 0;
+          ">
+
+            <input
+              id="realA_${jogo.id}"
+              type="number"
+              min="0"
+              value="${jogo.placarRealA ?? ""}"
+              style="
+                width:80px;
+                height:45px;
+                text-align:center;
+                font-size:22px;
+              "
+            >
+
+            <span style="
+              font-size:30px;
+              font-weight:900;
+            ">
+              X
+            </span>
+
+            <input
+              id="realB_${jogo.id}"
+              type="number"
+              min="0"
+              value="${jogo.placarRealB ?? ""}"
+              style="
+                width:80px;
+                height:45px;
+                text-align:center;
+                font-size:22px;
+              "
+            >
+
+          </div>
+
+          <button
+            onclick="salvarResultado(${jogo.id})"
           >
-
-          X
-
-          <input
-            id="realB_${jogo.id}"
-            type="number"
-            value="${jogo.placarRealB ?? ""}"
-            style="width:70px"
-          >
-
-          <button onclick="salvarResultado(${jogo.id})">
             💾 Salvar Resultado
           </button>
 
         </div>
 
-      `;
+        `;
+
+      });
 
     });
-
-  }catch(erro){
-
-    console.error(erro);
-
-    div.innerHTML = `
-      <div style="
-        background:#fff;
-        color:red;
-        padding:20px;
-        border-radius:15px;
-      ">
-        Erro ao carregar resultados.<br>
-        Veja o Console (F12).
-      </div>
-    `;
-
-  }
 
 }
 
