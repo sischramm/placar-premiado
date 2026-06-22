@@ -121,9 +121,6 @@ async function carregarMeusPalpites(){
 
 async function carregarUsuarios(){
 
-  if(usuariosCache.length > 0)
-    return;
-
   const snapshot =
     await getDocs(
       collection(db,"usuarios")
@@ -133,14 +130,14 @@ async function carregarUsuarios(){
 
   snapshot.forEach(docSnap => {
 
-    usuariosCache.push(
-      docSnap.data()
-    );
+    usuariosCache.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
 
   });
 
 }
-
 
 // =====================
 
@@ -1997,17 +1994,9 @@ async function atualizarRanking(){
 
   }
 
-  usuariosCache =
-    usuariosSnap.docs.map(
-      d => ({
-        id: d.id,
-        ...d.data(),
-        pontos:
-          pontosUsuarios[
-            d.data().email
-          ] ?? 0
-      })
-    );
+usuariosCache = [];
+
+  await carregarUsuarios();
 
 }
 
@@ -2022,16 +2011,20 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-await atualizarRanking();
+  await atualizarRanking();
 
-await carregarUsuarios();
+  usuariosCache = [];
 
-let usuarios =
-  [...usuariosCache];
+  await carregarUsuarios();
+
+  let usuarios = [...usuariosCache];
+
+  console.log(usuarios);
 
   usuarios.sort(
     (a,b)=>
-      (b.pontos||0)-(a.pontos||0)
+      (b.pontos||0)-
+      (a.pontos||0)
   );
 
   let htmlTop5 = `
