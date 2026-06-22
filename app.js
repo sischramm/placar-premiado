@@ -1999,13 +1999,30 @@ async function carregarRanking(){
 
   await atualizarRanking();
 
-  let usuarios = [...usuariosCache];
+  // Remove usuários duplicados pelo e-mail
+  let usuarios = Object.values(
 
-  console.log(usuarios);
+    usuariosCache.reduce((acc,u)=>{
+
+      if(
+        !acc[u.email] ||
+        (u.pontos||0) >
+        (acc[u.email].pontos||0)
+      ){
+
+        acc[u.email] = u;
+
+      }
+
+      return acc;
+
+    },{})
+
+  );
 
   usuarios.sort(
     (a,b)=>
-      (b.pontos||0)-
+      (b.pontos||0) -
       (a.pontos||0)
   );
 
@@ -2062,7 +2079,7 @@ async function carregarRanking(){
   ">
   `;
 
-  usuarios.slice(5,20)
+  usuarios.slice(5)
   .forEach((u,index)=>{
 
     htmlLista += `
