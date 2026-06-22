@@ -1740,29 +1740,32 @@ async function carregarResultados(){
       "abaResultados"
     );
 
-  alert(aba);
-
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  alert(div);
+  aba.style.display = "block";
+  aba.style.opacity = "1";
+  aba.style.visibility = "visible";
 
-  if(div){
+  div.style.display = "block";
+  div.style.opacity = "1";
+  div.style.visibility = "visible";
 
-    div.innerHTML = `
-      <div style="
-        background:white;
-        color:red;
-        font-size:40px;
-        padding:40px;
-      ">
-        FUNCIONOU
-      </div>
-    `;
+  div.innerHTML = "";
 
-  }
+  div.innerHTML += `
+    <div style="
+      background:red;
+      color:white;
+      font-size:40px;
+      padding:50px;
+      border:10px solid yellow;
+    ">
+      FUNCIONOU !!!
+    </div>
+  `;
 
 }
 
