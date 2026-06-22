@@ -14,6 +14,7 @@ let datasJogos = [];
 let todosJogos = [];
 let meusPalpites = {};
 let usuariosCache = [];
+window.todosJogos = todosJogos;
 
 import { db } from "./firebase.js";
 
@@ -1080,6 +1081,13 @@ todosJogos =
       -
       new Date(b.dataHora.replace(" ","T"))
     );
+
+  window.todosJogos = todosJogos;
+
+console.log(
+  "Jogos carregados:",
+  todosJogos.length
+);
 
   datasJogos = [
     ...new Set(
