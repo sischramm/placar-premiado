@@ -1894,17 +1894,14 @@ async function atualizarRanking(){
       collection(db,"palpites")
     );
 
-  const usuariosSnap =
-    await getDocs(
-      collection(db,"usuarios")
-    );
-
   const jogos = {};
 
   jogosSnap.forEach(docSnap => {
 
-    jogos[docSnap.id] =
-      docSnap.data();
+    jogos[docSnap.id] = {
+      docId: docSnap.id,
+      ...docSnap.data()
+    };
 
   });
 
@@ -1917,11 +1914,11 @@ async function atualizarRanking(){
 
     const jogo =
       Object.values(jogos)
-        .find(
-          j =>
-            Number(j.id) ===
-            Number(p.jogoId)
-        );
+      .find(
+        j =>
+          Number(j.id) ===
+          Number(p.jogoId)
+      );
 
     if(
       !jogo ||
@@ -1933,7 +1930,7 @@ async function atualizarRanking(){
 
     let pontos = 0;
 
-    // Placar exato
+    // placar exato
     if(
       Number(p.placarA) === Number(jogo.placarRealA)
       &&
@@ -1946,15 +1943,13 @@ async function atualizarRanking(){
 
       const resultadoPalpite =
         Math.sign(
-          Number(p.placarA)
-          -
+          Number(p.placarA) -
           Number(p.placarB)
         );
 
       const resultadoReal =
         Math.sign(
-          Number(jogo.placarRealA)
-          -
+          Number(jogo.placarRealA) -
           Number(jogo.placarRealB)
         );
 
@@ -1970,53 +1965,21 @@ async function atualizarRanking(){
     }
 
     if(
-      pontosUsuarios[p.usuario]
-      == null
+      pontosUsuarios[p.usuario] == null
     ){
 
       pontosUsuarios[p.usuario] = 0;
 
     }
 
-    pontosUsuarios[p.usuario] +=
-      pontos;
+    pontosUsuarios[p.usuario] += pontos;
 
   });
 
-  for(
-    const docUsuario
-    of usuariosSnap.docs
-  ){
-
-    const u =
-      docUsuario.data();
-
-    await setDoc(
-
-      doc(
-        db,
-        "usuarios",
-        docUsuario.id
-      ),
-
-      {
-
-        ...u,
-
-        pontos:
-          pontosUsuarios[
-            u.email
-          ] ?? 0
-
-      }
-
-    );
-
-  }
-
-  usuariosCache = [];
-
-  await carregarUsuarios();
+  console.log(
+    "Pontos calculados:",
+    pontosUsuarios
+  );
 
 }
 
