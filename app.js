@@ -1725,20 +1725,73 @@ window.salvarResultado =
 
 async function carregarResultados(){
 
-  alert("Entrou em carregarResultados");
-
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  alert(div);
+  if(!div){
 
-  div.innerHTML = `
-    <h1 style="color:white">
-      TESTE FUNCIONANDO
-    </h1>
-  `;
+    alert(
+      "resultadoJogos não encontrado"
+    );
+
+    return;
+
+  }
+
+  div.innerHTML = "";
+
+  if(
+    !todosJogos ||
+    todosJogos.length === 0
+  ){
+
+    div.innerHTML =
+      "<h2 style='color:white'>Nenhum jogo carregado</h2>";
+
+    return;
+
+  }
+
+  div.innerHTML =
+    "<h2 style='color:white'>Teste OK</h2>";
+
+  for(const jogo of todosJogos){
+
+    div.innerHTML += `
+
+    <div class="jogo">
+
+      <h3>
+        ${jogo.timeA} x ${jogo.timeB}
+      </h3>
+
+      <p>
+        Grupo ${jogo.grupo}
+      </p>
+
+      <input
+        id="realA_${jogo.id}"
+        type="number"
+        style="width:70px"
+      >
+
+      X
+
+      <input
+        id="realB_${jogo.id}"
+        type="number"
+        style="width:70px"
+      >
+
+    </div>
+
+    <br>
+
+    `;
+
+  }
 
 }
 
