@@ -2026,7 +2026,7 @@ async function carregarRanking(){
 
   await atualizarRanking();
 
-  // Remove usuários duplicados
+  // Remove usuários duplicados pelo e-mail
   let usuarios = Object.values(
 
     usuariosCache.reduce((acc,u)=>{
@@ -2047,7 +2047,7 @@ async function carregarRanking(){
 
   );
 
-  // Bônus dos primeiros jogos
+  // Compensação dos primeiros jogos
   usuarios.forEach(u=>{
 
     u.pontos =
@@ -2058,7 +2058,7 @@ async function carregarRanking(){
   // Ordenação conforme regulamento
   usuarios.sort((a,b)=>{
 
-    // Pontos
+    // 1 - Pontos
     if(
       (b.pontos||0) !==
       (a.pontos||0)
@@ -2071,7 +2071,7 @@ async function carregarRanking(){
 
     }
 
-    // Campeão
+    // 2 - Campeão
     if(
       (b.acertouCampeao||0) !==
       (a.acertouCampeao||0)
@@ -2084,7 +2084,7 @@ async function carregarRanking(){
 
     }
 
-    // Placares exatos
+    // 3 - Placares exatos
     if(
       (b.placaresExatos||0) !==
       (a.placaresExatos||0)
@@ -2097,7 +2097,7 @@ async function carregarRanking(){
 
     }
 
-    // Vencedores acertados
+    // 4 - Vencedores acertados
     if(
       (b.vencedoresAcertados||0) !==
       (a.vencedoresAcertados||0)
@@ -2110,7 +2110,7 @@ async function carregarRanking(){
 
     }
 
-    // Cadastro mais antigo
+    // 5 - Data de cadastro
     return new Date(
       a.criadoEm || 0
     ) -
@@ -2120,6 +2120,7 @@ async function carregarRanking(){
 
   });
 
+  // TOP 5
   let htmlTop5 =
     `<div class="top5-fifa">`;
 
@@ -2134,46 +2135,53 @@ async function carregarRanking(){
 
     htmlTop5 += `
 
-      <div class="ranking-card ${rk}">
+    <div class="ranking-card ${rk}">
 
-        <div class="ranking-selo">
-          Shark 2026
-        </div>
-
-        <div class="ranking-img">
-          ${medalha}
-        </div>
-
-        <div class="ranking-posicao">
-          ${index+1}º Lugar
-        </div>
-
-        <p>
-          ${u.nome}
-          <br>
-          <strong>
-            ${u.pontos||0} pts
-          </strong>
-        </p>
-
+      <div class="ranking-selo">
+        Shark 2026
       </div>
+
+      <div class="ranking-img">
+        ${medalha}
+      </div>
+
+      <div class="ranking-posicao">
+        ${index+1}º Lugar
+      </div>
+
+      <p>
+
+        <div class="ranking-nome">
+
+          ${u.nome}
+
+        </div>
+
+        <strong>
+
+          ${u.pontos||0} pts
+
+        </strong>
+
+      </p>
+
+    </div>
 
     `;
 
   });
 
   htmlTop5 += `
-    </div>
+  </div>
   `;
 
+  // DO 6º AO 20º
   let htmlLista = `
-    <div
-      style="
-        background:#fff;
-        border-radius:15px;
-        overflow:hidden;
-      "
-    >
+  <div style="
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
+  ">
   `;
 
   usuarios.slice(5,20)
@@ -2181,31 +2189,34 @@ async function carregarRanking(){
 
     htmlLista += `
 
-      <div
-        style="
-          display:flex;
-          justify-content:space-between;
-          padding:14px 18px;
-          border-bottom:1px solid #eee;
-        "
-      >
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 18px;
+      border-bottom:1px solid #eee;
+    ">
 
-        <div>
-          ${index+6}º - ${u.nome}
-        </div>
+      <div>
 
-        <strong>
-          ${u.pontos||0} pts
-        </strong>
+        ${index+6}º - ${u.nome}
 
       </div>
+
+      <strong>
+
+        ${u.pontos||0} pts
+
+      </strong>
+
+    </div>
 
     `;
 
   });
 
   htmlLista += `
-    </div>
+  </div>
   `;
 
   top5.innerHTML =
