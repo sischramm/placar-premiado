@@ -1730,70 +1730,91 @@ async function carregarResultados(){
       "resultadoJogos"
     );
 
-  if(!div){
-
-    alert(
-      "resultadoJogos não encontrado"
-    );
-
-    return;
-
-  }
+  if(!div) return;
 
   div.innerHTML = "";
 
-  if(
-    !todosJogos ||
-    todosJogos.length === 0
-  ){
+  // Se ainda não carregou, carrega agora
+  if(!todosJogos || todosJogos.length === 0){
 
-    div.innerHTML =
-      "<h2 style='color:white'>Nenhum jogo carregado</h2>";
+    const snapshot =
+      await getDocs(
+        collection(db,"jogos")
+      );
 
-    return;
+    todosJogos =
+      snapshot.docs
+        .map(docSnap => ({
+          docId: docSnap.id,
+          ...docSnap.data()
+        }))
+        .sort((a,b)=>
+          new Date(a.dataHora.replace(" ","T"))
+          -
+          new Date(b.dataHora.replace(" ","T"))
+        );
 
   }
-
-  div.innerHTML =
-    "<h2 style='color:white'>Teste OK</h2>";
 
   for(const jogo of todosJogos){
 
     div.innerHTML += `
 
-    <div class="jogo">
+      <div class="jogo">
 
-      <h3>
-        ${jogo.timeA} x ${jogo.timeB}
-      </h3>
+        <h3>
+          ${jogo.timeA} x ${jogo.timeB}
+        </h3>
 
-      <p>
-        Grupo ${jogo.grupo}
-      </p>
+        <p>
+          Grupo ${jogo.grupo}
+        </p>
 
-      <input
-        id="realA_${jogo.id}"
-        type="number"
-        style="width:70px"
-      >
+        <p>
+          🕒 ${jogo.dataHora}
+        </p>
 
-      X
+        <div style="
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:15px;
+          margin:20px 0;
+        ">
 
-      <input
-        id="realB_${jogo.id}"
-        type="number"
-        style="width:70px"
-      >
+          <input
+            id="realA_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+            style="width:80px;height:45px;text-align:center;"
+          >
 
-    </div>
+          <span>X</span>
 
-    <br>
+          <input
+            id="realB_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+            style="width:80px;height:45px;text-align:center;"
+          >
+
+        </div>
+
+        <button onclick="salvarResultado(${jogo.id})">
+          💾 Salvar Resultado
+        </button>
+
+      </div>
+
+      <br>
 
     `;
 
   }
 
 }
+
+window.carregarResultados = carregarResultados;
 
 window.carregarResultados =
   carregarResultados;
