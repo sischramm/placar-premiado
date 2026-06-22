@@ -1899,7 +1899,6 @@ async function atualizarRanking(){
   jogosSnap.forEach(docSnap => {
 
     jogos[docSnap.id] = {
-      docId: docSnap.id,
       ...docSnap.data()
     };
 
@@ -1909,8 +1908,7 @@ async function atualizarRanking(){
 
   palpitesSnap.forEach(docSnap => {
 
-    const p =
-      docSnap.data();
+    const p = docSnap.data();
 
     const jogo =
       Object.values(jogos)
@@ -1924,13 +1922,10 @@ async function atualizarRanking(){
       !jogo ||
       jogo.placarRealA == null ||
       jogo.placarRealB == null
-    ){
-      return;
-    }
+    ) return;
 
     let pontos = 0;
 
-    // placar exato
     if(
       Number(p.placarA) === Number(jogo.placarRealA)
       &&
@@ -1943,13 +1938,15 @@ async function atualizarRanking(){
 
       const resultadoPalpite =
         Math.sign(
-          Number(p.placarA) -
+          Number(p.placarA)
+          -
           Number(p.placarB)
         );
 
       const resultadoReal =
         Math.sign(
-          Number(jogo.placarRealA) -
+          Number(jogo.placarRealA)
+          -
           Number(jogo.placarRealB)
         );
 
@@ -1965,7 +1962,7 @@ async function atualizarRanking(){
     }
 
     if(
-      pontosUsuarios[p.usuario] == null
+      !pontosUsuarios[p.usuario]
     ){
 
       pontosUsuarios[p.usuario] = 0;
@@ -1976,10 +1973,14 @@ async function atualizarRanking(){
 
   });
 
-  console.log(
-    "Pontos calculados:",
-    pontosUsuarios
-  );
+  usuariosCache.forEach(u => {
+
+    u.pontos =
+      pontosUsuarios[
+        u.email
+      ] || 0;
+
+  });
 
 }
 
@@ -1994,11 +1995,9 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-  //await atualizarRanking();
-
- // usuariosCache = [];
-
   await carregarUsuarios();
+
+  await atualizarRanking();
 
   let usuarios = [...usuariosCache];
 
