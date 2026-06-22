@@ -1734,85 +1734,90 @@ async function carregarResultados(){
 
   div.innerHTML = "";
 
-  // Se ainda não carregou, carrega agora
-  if(!todosJogos || todosJogos.length === 0){
+  // Pega exatamente os mesmos jogos do Palpite
+  const jogos =
+    document.querySelectorAll(
+      "#listaJogos .jogo"
+    );
 
-    const snapshot =
-      await getDocs(
-        collection(db,"jogos")
-      );
+  jogos.forEach((card,index)=>{
 
-    todosJogos =
-      snapshot.docs
-        .map(docSnap => ({
-          docId: docSnap.id,
-          ...docSnap.data()
-        }))
-        .sort((a,b)=>
-          new Date(a.dataHora.replace(" ","T"))
-          -
-          new Date(b.dataHora.replace(" ","T"))
-        );
+    const titulo =
+      card.querySelector("h3")?.innerHTML || "";
 
-  }
-
-  for(const jogo of todosJogos){
+    const grupo =
+      card.querySelector("p")?.innerHTML || "";
 
     div.innerHTML += `
 
       <div class="jogo">
 
         <h3>
-          ${jogo.timeA} x ${jogo.timeB}
+          ${titulo}
         </h3>
 
         <p>
-          Grupo ${jogo.grupo}
+          ${grupo}
         </p>
 
-        <p>
-          🕒 ${jogo.dataHora}
-        </p>
-
-        <div style="
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          gap:15px;
-          margin:20px 0;
-        ">
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            margin:20px 0;
+          "
+        >
 
           <input
-            id="realA_${jogo.id}"
+            id="realA_${index}"
             type="number"
-            value="${jogo.placarRealA ?? ""}"
-            style="width:80px;height:45px;text-align:center;"
+            min="0"
+            style="
+              width:80px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+            "
           >
 
-          <span>X</span>
+          <span
+            style="
+              font-size:30px;
+              font-weight:bold;
+            "
+          >
+            X
+          </span>
 
           <input
-            id="realB_${jogo.id}"
+            id="realB_${index}"
             type="number"
-            value="${jogo.placarRealB ?? ""}"
-            style="width:80px;height:45px;text-align:center;"
+            min="0"
+            style="
+              width:80px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+            "
           >
 
         </div>
 
-        <button onclick="salvarResultado(${jogo.id})">
+        <button>
           💾 Salvar Resultado
         </button>
 
       </div>
 
-      <br>
-
     `;
 
-  }
+  });
 
 }
+
+window.carregarResultados = carregarResultados;
 
 window.carregarResultados = carregarResultados;
 
