@@ -1733,37 +1733,18 @@ window.salvarResultado =
 
 async function carregarResultados(){
 
-  alert("Entrou");
-
-  const aba =
-    document.getElementById(
-      "abaResultados"
-    );
-
   const div =
     document.getElementById(
       "resultadoJogos"
     );
 
-  aba.style.display = "block";
-  aba.style.opacity = "1";
-  aba.style.visibility = "visible";
-
-  div.style.display = "block";
-  div.style.opacity = "1";
-  div.style.visibility = "visible";
-
-  div.innerHTML = "";
-
-  div.innerHTML += `
+  div.innerHTML = `
     <div style="
-      background:red;
-      color:white;
-      font-size:40px;
-      padding:50px;
-      border:10px solid yellow;
+      background:white;
+      color:black;
+      padding:40px;
     ">
-      FUNCIONOU !!!
+      TESTE RESULTADOS
     </div>
   `;
 
