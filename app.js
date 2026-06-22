@@ -232,15 +232,29 @@ function abrirAba(nome){
 
   }
 
-  if(nome === "resultados"){
+if(nome === "resultados"){
 
+  const aba =
     document.getElementById(
       "abaResultados"
-    ).style.display = "block";
+    );
 
-    carregarResultados();
+  aba.style.display = "block";
+  aba.style.visibility = "visible";
+  aba.style.opacity = "1";
 
-  }
+  aba.innerHTML = `
+    <div style="
+      background:red;
+      color:white;
+      padding:50px;
+      font-size:40px;
+    ">
+      RESULTADOS OK
+    </div>
+  `;
+
+}
 
 }
 
