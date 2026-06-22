@@ -1657,20 +1657,9 @@ async function salvarResultado(idJogo){
     isNaN(placarRealB)
   ){
 
-    alert("Informe os dois placares.");
-
-    return;
-
-  }
-
-  const jogo =
-    todosJogos.find(
-      j => j.id === idJogo
+    alert(
+      "Informe os dois placares."
     );
-
-  if(!jogo){
-
-    alert("Jogo não encontrado.");
 
     return;
 
@@ -1678,13 +1667,36 @@ async function salvarResultado(idJogo){
 
   try{
 
-    await setDoc(
-
+    const jogoRef =
       doc(
         db,
         "jogos",
-        jogo.docId
-      ),
+        idJogo
+      );
+
+    const jogoSnap =
+      await getDoc(
+        jogoRef
+      );
+
+    if(
+      !jogoSnap.exists()
+    ){
+
+      alert(
+        "Jogo não encontrado."
+      );
+
+      return;
+
+    }
+
+    const jogo =
+      jogoSnap.data();
+
+    await setDoc(
+
+      jogoRef,
 
       {
 
@@ -1700,19 +1712,11 @@ async function salvarResultado(idJogo){
 
     );
 
-    // Atualiza memória
-    jogo.placarRealA =
-      placarRealA;
-
-    jogo.placarRealB =
-      placarRealB;
-
-    jogo.encerrado =
-      true;
-
     alert(
-      "Resultado salvo!"
+      "✅ Resultado salvo!"
     );
+
+    carregarResultados();
 
   }catch(erro){
 
@@ -1744,7 +1748,10 @@ async function carregarResultados(){
 
   const snapshot =
     await getDocs(
-      collection(db,"jogos")
+      collection(
+        db,
+        "jogos"
+      )
     );
 
   snapshot.forEach(docSnap => {
@@ -1765,34 +1772,64 @@ async function carregarResultados(){
         </p>
 
         <p>
-          ${jogo.dataHora}
+          🕒 ${jogo.dataHora}
         </p>
 
-        <div style="
-          display:flex;
-          justify-content:center;
-          gap:15px;
-          margin:20px 0;
-        ">
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            margin:25px 0;
+          "
+        >
 
           <input
+            id="realA_${docSnap.id}"
             type="number"
-            style="width:80px"
+            min="0"
+            value="${jogo.placarRealA || ""}"
+            style="
+              width:80px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+              font-weight:bold;
+            "
           >
 
-          <span style="
-            color:white;
-            font-size:30px;
-          ">
+          <span
+            style="
+              color:white;
+              font-size:30px;
+              font-weight:bold;
+            "
+          >
             X
           </span>
 
           <input
+            id="realB_${docSnap.id}"
             type="number"
-            style="width:80px"
+            min="0"
+            value="${jogo.placarRealB || ""}"
+            style="
+              width:80px;
+              height:50px;
+              text-align:center;
+              font-size:24px;
+              font-weight:bold;
+            "
           >
 
         </div>
+
+        <button
+          onclick="salvarResultado('${docSnap.id}')"
+        >
+          💾 Salvar Resultado
+        </button>
 
       </div>
 
