@@ -2011,7 +2011,7 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-  await atualizarRanking();
+ // await atualizarRanking();
 
   usuariosCache = [];
 
