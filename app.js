@@ -1737,103 +1737,91 @@ async function carregarResultados(){
 
   div.innerHTML = "";
 
-  const grupos = {};
-
   todosJogos.forEach(jogo => {
 
-    if(!grupos[jogo.grupo]){
-      grupos[jogo.grupo] = [];
-    }
+    div.innerHTML += `
 
-    grupos[jogo.grupo].push(jogo);
+    <div class="jogo">
+
+      <h3>
+        ${jogo.timeA} x ${jogo.timeB}
+      </h3>
+
+      <p>
+        Grupo ${jogo.grupo}
+      </p>
+
+      <p>
+        🕒 ${jogo.dataHora}
+      </p>
+
+      <div
+        style="
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:15px;
+          margin:25px 0;
+        "
+      >
+
+        <input
+          id="realA_${jogo.id}"
+          type="number"
+          min="0"
+          value="${jogo.placarRealA ?? ""}"
+          style="
+            width:100px;
+            height:50px;
+            text-align:center;
+            font-size:24px;
+            font-weight:bold;
+          "
+        >
+
+        <span
+          style="
+            font-size:36px;
+            font-weight:900;
+          "
+        >
+          X
+        </span>
+
+        <input
+          id="realB_${jogo.id}"
+          type="number"
+          min="0"
+          value="${jogo.placarRealB ?? ""}"
+          style="
+            width:100px;
+            height:50px;
+            text-align:center;
+            font-size:24px;
+            font-weight:bold;
+          "
+        >
+
+      </div>
+
+      <button
+        onclick="salvarResultado(${jogo.id})"
+      >
+        💾 Salvar Resultado
+      </button>
+
+    </div>
+
+    <br>
+
+    `;
 
   });
 
-  Object.keys(grupos)
-    .sort()
-    .forEach(grupo => {
-
-      div.innerHTML += `
-        <h2 style="
-          color:#fff;
-          margin-top:30px;
-        ">
-          Grupo ${grupo}
-        </h2>
-      `;
-
-      grupos[grupo].forEach(jogo => {
-
-        div.innerHTML += `
-
-        <div class="jogo">
-
-          <h3>
-            ${jogo.timeA} x ${jogo.timeB}
-          </h3>
-
-          <p>
-            🕒 ${jogo.dataHora}
-          </p>
-
-          <div style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:15px;
-            margin:20px 0;
-          ">
-
-            <input
-              id="realA_${jogo.id}"
-              type="number"
-              min="0"
-              value="${jogo.placarRealA ?? ""}"
-              style="
-                width:80px;
-                height:45px;
-                text-align:center;
-                font-size:22px;
-              "
-            >
-
-            <span style="
-              font-size:30px;
-              font-weight:900;
-            ">
-              X
-            </span>
-
-            <input
-              id="realB_${jogo.id}"
-              type="number"
-              min="0"
-              value="${jogo.placarRealB ?? ""}"
-              style="
-                width:80px;
-                height:45px;
-                text-align:center;
-                font-size:22px;
-              "
-            >
-
-          </div>
-
-          <button
-            onclick="salvarResultado(${jogo.id})"
-          >
-            💾 Salvar Resultado
-          </button>
-
-        </div>
-
-        `;
-
-      });
-
-    });
-
 }
+
+window.carregarResultados =
+  carregarResultados;
 
 window.carregarResultados = carregarResultados;
 
