@@ -2393,24 +2393,95 @@ async function carregarPerfil(){
 
   await carregarUsuarios();
 
-  const usuarioAtual =
-    usuariosCache.find(
+  await atualizarRanking();
+
+  let usuarios = Object.values(
+
+    usuariosCache.reduce((acc,u)=>{
+
+      if(
+        !acc[u.email] ||
+        (u.pontos||0) >
+        (acc[u.email].pontos||0)
+      ){
+
+        acc[u.email] = u;
+
+      }
+
+      return acc;
+
+    },{})
+
+  );
+
+  // +40 pontos dos 4 primeiros jogos
+  usuarios.forEach(u=>{
+
+    u.pontos =
+      (u.pontos||0) + 40;
+
+  });
+
+  // Mesma ordenação do ranking
+  usuarios.sort((a,b)=>{
+
+    if(
+      (b.pontos||0)!==
+      (a.pontos||0)
+    ){
+
+      return (
+        b.pontos||0
+      ) - (
+        a.pontos||0
+      );
+
+    }
+
+    if(
+      (b.acertouCampeao||0)!==
+      (a.acertouCampeao||0)
+    ){
+
+      return (
+        b.acertouCampeao||0
+      ) - (
+        a.acertouCampeao||0
+      );
+
+    }
+
+    if(
+      (b.placaresExatos||0)!==
+      (a.placaresExatos||0)
+    ){
+
+      return (
+        b.placaresExatos||0
+      ) - (
+        a.placaresExatos||0
+      );
+
+    }
+
+    return (
+      b.vencedoresAcertados||0
+    ) - (
+      a.vencedoresAcertados||0
+    );
+
+  });
+
+  const dadosUsuario =
+    usuarios.find(
       u =>
         u.email ===
         usuario.email
     );
 
-  let usuariosOrdenados =
-    [...usuariosCache];
-
-  usuariosOrdenados.sort(
-    (a,b)=>
-      (b.pontos||0) -
-      (a.pontos||0)
-  );
-
   const posicao =
-    usuariosOrdenados.findIndex(
+    usuarios.findIndex(
       u =>
         u.email ===
         usuario.email
@@ -2445,7 +2516,7 @@ async function carregarPerfil(){
 
     <div class="perfil-item">
       🏆 <strong>Pontos:</strong>
-      ${usuarioAtual?.pontos || 0} pts
+      ${dadosUsuario?.pontos || 40} pts
     </div>
 
     <div class="perfil-item">
