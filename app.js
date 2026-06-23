@@ -1939,50 +1939,108 @@ async function atualizarRanking(){
 
     }
 
+    const pA = Number(p.placarA);
+    const pB = Number(p.placarB);
+
+    const rA = Number(jogo.placarRealA);
+    const rB = Number(jogo.placarRealB);
+
     const resultadoPalpite =
-      Math.sign(
-        Number(p.placarA) -
-        Number(p.placarB)
-      );
+      Math.sign(pA - pB);
 
     const resultadoReal =
-      Math.sign(
-        Number(jogo.placarRealA) -
-        Number(jogo.placarRealB)
-      );
+      Math.sign(rA - rB);
 
-    // placar exato
+    const saldoPalpite =
+      Math.abs(pA - pB);
+
+    const saldoReal =
+      Math.abs(rA - rB);
+
+    let pontos = 0;
+
+    // 10 pontos - placar exato
     if(
-      Number(p.placarA) ===
-      Number(jogo.placarRealA)
-      &&
-      Number(p.placarB) ===
-      Number(jogo.placarRealB)
+      pA === rA &&
+      pB === rB
     ){
 
-      estatisticas[p.usuario].pontos += 10;
+      pontos = 10;
 
       estatisticas[p.usuario]
-      .placaresExatos++;
+        .placaresExatos++;
 
       estatisticas[p.usuario]
-      .vencedoresAcertados++;
+        .vencedoresAcertados++;
 
     }
 
-    // vencedor correto
+    // 7 pontos - vencedor + gols de um dos times
     else if(
-      resultadoPalpite ===
-      resultadoReal
+
+      resultadoPalpite === resultadoReal &&
+
+      (
+        pA === rA ||
+        pB === rB
+      )
+
     ){
 
-      estatisticas[p.usuario]
-      .pontos += 5;
+      pontos = 7;
 
       estatisticas[p.usuario]
-      .vencedoresAcertados++;
+        .vencedoresAcertados++;
 
     }
+
+    // 5 pontos - vencedor + diferença de gols
+    else if(
+
+      resultadoPalpite === resultadoReal &&
+
+      saldoPalpite === saldoReal
+
+    ){
+
+      pontos = 5;
+
+      estatisticas[p.usuario]
+        .vencedoresAcertados++;
+
+    }
+
+    // 5 pontos - empate
+    else if(
+
+      resultadoReal === 0 &&
+      resultadoPalpite === 0
+
+    ){
+
+      pontos = 5;
+
+      estatisticas[p.usuario]
+        .vencedoresAcertados++;
+
+    }
+
+    // 3 pontos - apenas vencedor
+    else if(
+
+      resultadoPalpite === resultadoReal
+
+    ){
+
+      pontos = 3;
+
+      estatisticas[p.usuario]
+        .vencedoresAcertados++;
+
+    }
+
+    estatisticas[p.usuario]
+      .pontos += pontos;
 
   });
 
@@ -1992,7 +2050,7 @@ async function atualizarRanking(){
       estatisticas[u.email];
 
     u.pontos =
-      est?.pontos || 0;
+      (est?.pontos || 0);
 
     u.placaresExatos =
       est?.placaresExatos || 0;
