@@ -2382,103 +2382,33 @@ async function carregarPerfil(){
       )
     );
 
-  if(!usuario) return;
+  if(!usuario)
+    return;
 
   await carregarUsuarios();
 
-  await atualizarRanking();
-
-  let usuarios = Object.values(
-
-    usuariosCache.reduce((acc,u)=>{
-
-      if(
-        !acc[u.email] ||
-        (u.pontos||0) >
-        (acc[u.email].pontos||0)
-      ){
-
-        acc[u.email] = u;
-
-      }
-
-      return acc;
-
-    },{})
-
-  );
-
-  // +40 pontos dos primeiros jogos
-  usuarios.forEach(u=>{
-
-    u.pontos =
-      (u.pontos||0) + 40;
-
-  });
-
-  // mesma ordenação do ranking
-  usuarios.sort((a,b)=>{
-
-    if(
-      (b.pontos||0)!==
-      (a.pontos||0)
-    ){
-
-      return (
-        b.pontos||0
-      ) - (
-        a.pontos||0
-      );
-
-    }
-
-    if(
-      (b.acertouCampeao||0)!==
-      (a.acertouCampeao||0)
-    ){
-
-      return (
-        b.acertouCampeao||0
-      ) - (
-        a.acertouCampeao||0
-      );
-
-    }
-
-    if(
-      (b.placaresExatos||0)!==
-      (a.placaresExatos||0)
-    ){
-
-      return (
-        b.placaresExatos||0
-      ) - (
-        a.placaresExatos||0
-      );
-
-    }
-
-    return (
-      b.vencedoresAcertados||0
-    ) - (
-      a.vencedoresAcertados||0
+  const usuarioAtual =
+    usuariosCache.find(
+      u =>
+        u.email ===
+        usuario.email
     );
 
-  });
+  let usuariosOrdenados =
+    [...usuariosCache];
+
+  usuariosOrdenados.sort(
+    (a,b)=>
+      (b.pontos||0) -
+      (a.pontos||0)
+  );
 
   const posicao =
-    usuarios.findIndex(
+    usuariosOrdenados.findIndex(
       u =>
         u.email ===
         usuario.email
     ) + 1;
-
-  const dadosUsuario =
-    usuarios.find(
-      u =>
-        u.email ===
-        usuario.email
-    );
 
   const perfil =
     document.getElementById(
@@ -2508,12 +2438,12 @@ async function carregarPerfil(){
     </div>
 
     <div class="perfil-item">
-      🏆 <strong>Pontuação:</strong>
-      ${dadosUsuario?.pontos || 40} pts
+      🏆 <strong>Pontos:</strong>
+      ${usuarioAtual?.pontos || 0} pts
     </div>
 
     <div class="perfil-item">
-      🥇 <strong>Ranking Geral:</strong>
+      🥇 <strong>Ranking:</strong>
       ${posicao}º Lugar
     </div>
 
