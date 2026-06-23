@@ -2114,46 +2114,53 @@ async function carregarRanking(){
   });
 
   // Ordenação conforme regulamento
-  usuarios.sort((a,b)=>{
+usuarios.sort((a,b)=>{
 
-    // 1 - Pontos
-    if(
-      (b.pontos||0) !==
-      (a.pontos||0)
-    ){
+  if(
+    (b.pontos||0)!==(a.pontos||0)
+  ){
 
-      return (
-        (b.pontos||0) -
-        (a.pontos||0)
-      );
+    return (
+      b.pontos||0
+    ) - (
+      a.pontos||0
+    );
 
-    }
+  }
 
-    // 2 - Campeão
-    if(
-      (b.acertouCampeao||0) !==
-      (a.acertouCampeao||0)
-    ){
+  if(
+    (b.acertouCampeao||0)!==
+    (a.acertouCampeao||0)
+  ){
 
-      return (
-        (b.acertouCampeao||0) -
-        (a.acertouCampeao||0)
-      );
+    return (
+      b.acertouCampeao||0
+    ) - (
+      a.acertouCampeao||0
+    );
 
-    }
+  }
 
-    // 3 - Placares exatos
-    if(
-      (b.placaresExatos||0) !==
-      (a.placaresExatos||0)
-    ){
+  if(
+    (b.placaresExatos||0)!==
+    (a.placaresExatos||0)
+  ){
 
-      return (
-        (b.placaresExatos||0) -
-        (a.placaresExatos||0)
-      );
+    return (
+      b.placaresExatos||0
+    ) - (
+      a.placaresExatos||0
+    );
 
-    }
+  }
+
+  return (
+    b.vencedoresAcertados||0
+  ) - (
+    a.vencedoresAcertados||0
+  );
+
+});
 
     // 4 - Vencedores acertados
     if(
