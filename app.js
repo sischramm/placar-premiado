@@ -2161,30 +2161,6 @@ usuarios.sort((a,b)=>{
   );
 
 });
-
-    // 4 - Vencedores acertados
-    if(
-      (b.vencedoresAcertados||0) !==
-      (a.vencedoresAcertados||0)
-    ){
-
-      return (
-        (b.vencedoresAcertados||0) -
-        (a.vencedoresAcertados||0)
-      );
-
-    }
-
-    // 5 - Data de cadastro
-    return new Date(
-      a.criadoEm || 0
-    ) -
-    new Date(
-      b.criadoEm || 0
-    );
-
-  });
-
   // TOP 5
   let htmlTop5 =
     `<div class="top5-fifa">`;
