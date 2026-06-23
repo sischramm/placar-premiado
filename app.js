@@ -2254,7 +2254,7 @@ usuarios.sort((a,b)=>{
   ">
   `;
 
-  usuarios.slice(5,20)
+  usuarios.slice(5)
   .forEach((u,index)=>{
 
     htmlLista += `
