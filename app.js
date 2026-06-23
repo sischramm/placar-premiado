@@ -1910,6 +1910,13 @@ async function atualizarRanking(){
 
     const p = docSnap.data();
 
+    // Ignora os 4 primeiros jogos
+    if(
+      Number(p.jogoId) <= 4
+    ){
+      return;
+    }
+
     const jogo =
       Object.values(jogos)
       .find(
@@ -1991,7 +1998,7 @@ async function atualizarRanking(){
 
     }
 
-    // Empate (sem placar exato)
+    // Empate sem placar exato
     else if(
 
       resultadoReal === 0 &&
@@ -2059,13 +2066,6 @@ async function atualizarRanking(){
 
     }
 
-    // Errou vencedor
-    else{
-
-      pontos = 0;
-
-    }
-
     estatisticas[p.usuario]
       .pontos += pontos;
 
@@ -2074,9 +2074,7 @@ async function atualizarRanking(){
   usuariosCache.forEach(u=>{
 
     const est =
-      estatisticas[
-        u.email
-      ];
+      estatisticas[u.email];
 
     u.pontos =
       est?.pontos || 0;
@@ -2109,9 +2107,15 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-  await carregarUsuarios();
+  if(
+    usuariosCache.length === 0
+  ){
 
-  await atualizarRanking();
+    await carregarUsuarios();
+
+    await atualizarRanking();
+
+  }
 
   // Remove usuários duplicados pelo e-mail
   let usuarios = Object.values(
@@ -2134,7 +2138,7 @@ async function carregarRanking(){
 
   );
 
-  // Compensação dos primeiros jogos
+  // Compensação dos 4 primeiros jogos
   usuarios.forEach(u=>{
 
     u.pontos =
@@ -2143,53 +2147,55 @@ async function carregarRanking(){
   });
 
   // Ordenação conforme regulamento
-usuarios.sort((a,b)=>{
+  usuarios.sort((a,b)=>{
 
-  if(
-    (b.pontos||0)!==(a.pontos||0)
-  ){
+    if(
+      (b.pontos||0)!==
+      (a.pontos||0)
+    ){
+
+      return (
+        b.pontos||0
+      ) - (
+        a.pontos||0
+      );
+
+    }
+
+    if(
+      (b.acertouCampeao||0)!==
+      (a.acertouCampeao||0)
+    ){
+
+      return (
+        b.acertouCampeao||0
+      ) - (
+        a.acertouCampeao||0
+      );
+
+    }
+
+    if(
+      (b.placaresExatos||0)!==
+      (a.placaresExatos||0)
+    ){
+
+      return (
+        b.placaresExatos||0
+      ) - (
+        a.placaresExatos||0
+      );
+
+    }
 
     return (
-      b.pontos||0
+      b.vencedoresAcertados||0
     ) - (
-      a.pontos||0
+      a.vencedoresAcertados||0
     );
 
-  }
+  });
 
-  if(
-    (b.acertouCampeao||0)!==
-    (a.acertouCampeao||0)
-  ){
-
-    return (
-      b.acertouCampeao||0
-    ) - (
-      a.acertouCampeao||0
-    );
-
-  }
-
-  if(
-    (b.placaresExatos||0)!==
-    (a.placaresExatos||0)
-  ){
-
-    return (
-      b.placaresExatos||0
-    ) - (
-      a.placaresExatos||0
-    );
-
-  }
-
-  return (
-    b.vencedoresAcertados||0
-  ) - (
-    a.vencedoresAcertados||0
-  );
-
-});
   // TOP 5
   let htmlTop5 =
     `<div class="top5-fifa">`;
@@ -2254,7 +2260,7 @@ usuarios.sort((a,b)=>{
   ">
   `;
 
-  usuarios.slice(5)
+  usuarios.slice(5,20)
   .forEach((u,index)=>{
 
     htmlLista += `
