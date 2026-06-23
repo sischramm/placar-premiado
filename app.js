@@ -1926,7 +1926,9 @@ async function atualizarRanking(){
       return;
     }
 
-    if(!estatisticas[p.usuario]){
+    if(
+      !estatisticas[p.usuario]
+    ){
 
       estatisticas[p.usuario] = {
 
@@ -1939,27 +1941,41 @@ async function atualizarRanking(){
 
     }
 
-    const pA = Number(p.placarA);
-    const pB = Number(p.placarB);
+    const pA =
+      Number(p.placarA);
 
-    const rA = Number(jogo.placarRealA);
-    const rB = Number(jogo.placarRealB);
+    const pB =
+      Number(p.placarB);
+
+    const rA =
+      Number(jogo.placarRealA);
+
+    const rB =
+      Number(jogo.placarRealB);
 
     const resultadoPalpite =
-      Math.sign(pA - pB);
+      Math.sign(
+        pA - pB
+      );
 
     const resultadoReal =
-      Math.sign(rA - rB);
+      Math.sign(
+        rA - rB
+      );
 
     const saldoPalpite =
-      Math.abs(pA - pB);
+      Math.abs(
+        pA - pB
+      );
 
     const saldoReal =
-      Math.abs(rA - rB);
+      Math.abs(
+        rA - rB
+      );
 
     let pontos = 0;
 
-    // 10 pontos - placar exato
+    // Placar exato
     if(
       pA === rA &&
       pB === rB
@@ -1975,10 +1991,27 @@ async function atualizarRanking(){
 
     }
 
-    // 7 pontos - vencedor + gols de um dos times
+    // Empate (sem placar exato)
     else if(
 
-      resultadoPalpite === resultadoReal &&
+      resultadoReal === 0 &&
+      resultadoPalpite === 0
+
+    ){
+
+      pontos = 5;
+
+      estatisticas[p.usuario]
+        .vencedoresAcertados++;
+
+    }
+
+    // Vencedor + gols de um dos times
+    else if(
+
+      resultadoPalpite === resultadoReal
+
+      &&
 
       (
         pA === rA ||
@@ -1994,10 +2027,12 @@ async function atualizarRanking(){
 
     }
 
-    // 5 pontos - vencedor + diferença de gols
+    // Vencedor + diferença de gols
     else if(
 
-      resultadoPalpite === resultadoReal &&
+      resultadoPalpite === resultadoReal
+
+      &&
 
       saldoPalpite === saldoReal
 
@@ -2010,22 +2045,7 @@ async function atualizarRanking(){
 
     }
 
-    // 5 pontos - empate
-    else if(
-
-      resultadoReal === 0 &&
-      resultadoPalpite === 0
-
-    ){
-
-      pontos = 5;
-
-      estatisticas[p.usuario]
-        .vencedoresAcertados++;
-
-    }
-
-    // 3 pontos - apenas vencedor
+    // Apenas vencedor
     else if(
 
       resultadoPalpite === resultadoReal
@@ -2039,6 +2059,13 @@ async function atualizarRanking(){
 
     }
 
+    // Errou vencedor
+    else{
+
+      pontos = 0;
+
+    }
+
     estatisticas[p.usuario]
       .pontos += pontos;
 
@@ -2047,10 +2074,12 @@ async function atualizarRanking(){
   usuariosCache.forEach(u=>{
 
     const est =
-      estatisticas[u.email];
+      estatisticas[
+        u.email
+      ];
 
     u.pontos =
-      (est?.pontos || 0);
+      est?.pontos || 0;
 
     u.placaresExatos =
       est?.placaresExatos || 0;
