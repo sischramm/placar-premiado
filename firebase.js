@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import {
   getFirestore,
   collection,
-  addDoc
+  addDoc,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -22,3 +23,4 @@ export const db = getFirestore(app);
 window.db = db;
 window.collection = collection;
 window.addDoc = addDoc;
+window.getDocs = getDocs;
