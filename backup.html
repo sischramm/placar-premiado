@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
 
+<head>
+
+<meta charset="UTF-8">
+
+<title>Backup Firebase</title>
+
+</head>
+
+<body>
+
+<h2>Backup Firebase</h2>
+
+<button onclick="exportarUsuarios()">
+
+Exportar Usuários
+
+</button>
+
+<script type="module">
+
+import "./firebase.js";
+
+async function exportarUsuarios(){
+
+  const snapshot =
+    await window.getDocs(
+
+      window.collection(
+        window.db,
+        "usuarios"
+      )
+
+    );
+
+  const dados=[];
+
+  snapshot.forEach(doc=>{
+
+    dados.push({
+
+      id:doc.id,
+
+      ...doc.data()
+
+    });
+
+  });
+
+  console.log(dados);
+
+}
+
+window.exportarUsuarios =
+exportarUsuarios;
+
+</script>
+
+</body>
+
+</html>
