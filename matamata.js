@@ -9,7 +9,7 @@ function carregarFase(fase = "SEG") {
 
     faseAtual = fase;
 
-    const container = document.getElementById("mataMataTabela");
+    const container = document.querySelector("#abaMata #mataMataTabela");
 
     container.innerHTML = "";
 
