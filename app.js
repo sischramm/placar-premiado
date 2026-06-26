@@ -825,6 +825,14 @@ window.toggleSenha = toggleSenha;
 window.carregarFiliais = carregarFiliais;
 window.abrirAba = abrirAba;
 
+function abrirMata(){
+
+    window.location.href = "matamata.html";
+
+}
+
+window.abrirMata = abrirMata;
+
 async function importarJogos(){
 
   const jogos = [
