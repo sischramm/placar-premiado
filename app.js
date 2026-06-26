@@ -182,8 +182,31 @@ function abrirAba(nome){
   }
 
   if(nome === "mata"){
+
     document.getElementById("abaMata").style.display = "block";
-  }
+
+    document.getElementById("mataMataTabela").innerHTML = "";
+
+    faseAtual = "SEG";
+
+    carregarFase(faseAtual);
+
+    document.getElementById("palpitesMata").innerHTML = "";
+
+    const usuario = JSON.parse(
+        localStorage.getItem("usuarioLogado")
+    );
+
+    if(usuario){
+
+        carregarPalpitesMata(
+            usuario.email,
+            faseAtual
+        );
+
+    }
+
+}
 
   if(nome === "empresa"){
     document.getElementById("abaEmpresa").style.display = "block";
