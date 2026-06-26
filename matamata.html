@@ -3,13 +3,13 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Placar Premiado | Mata-Mata</title>
+    <title>Placar Premiado | Mata-Mata</title>
 
-<link rel="stylesheet" href="matamata.css">
+    <link rel="stylesheet" href="matamata.css">
 
 </head>
 
@@ -17,12 +17,12 @@
 
 <header class="topo">
 
-    <img src="logo.png" class="logo">
+    <img src="logo.png" class="logo" alt="Logo">
 
     <h1>🏆 Mata-Mata</h1>
 
     <p id="faseAtual">
-        16 Avos de Final
+        Segunda Rodada
     </p>
 
 </header>
@@ -32,9 +32,7 @@
     ⏰ Encerramento dos palpites:
 
     <strong>
-
         28/06 às 15:30
-
     </strong>
 
 </div>
@@ -43,8 +41,16 @@
 
 </section>
 
+<!-- Firebase -->
 <script type="module" src="firebase.js"></script>
 
+<!-- Base de jogos -->
+<script src="jogos-mata.js"></script>
+
+<!-- Salvar / Carregar palpites -->
+<script src="salvar-mata.js"></script>
+
+<!-- Tela do Mata-Mata -->
 <script src="matamata.js"></script>
 
 </body>
