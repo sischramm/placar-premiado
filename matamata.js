@@ -163,24 +163,26 @@ window.carregarFase=carregarFase;
 window.selecionarTime=selecionarTime;
 window.selecionarForma=selecionarForma;
 
-window.onload = () => {
+window.onload = async () => {
 
-    // Enquanto estamos desenvolvendo, vamos abrir
-    // sempre a Segunda Rodada
     const fase = "SEG";
 
-    // Monta os jogos na tela
+    // Carrega os jogos
     carregarFase(fase);
 
-    // Recupera o usuário logado
+    // Atualiza o nome da fase no topo
+    document.getElementById("faseAtual").innerHTML =
+        FASES[fase].nome;
+
+    // Recupera o usuário
     const usuario = JSON.parse(
         localStorage.getItem("usuarioLogado")
     );
 
-    // Se estiver logado, carrega os palpites salvos
+    // Carrega os palpites já salvos
     if (usuario) {
 
-        carregarPalpitesMata(
+        await carregarPalpitesMata(
             usuario.email,
             fase
         );
