@@ -1,6 +1,5 @@
 // ==========================================
 // CONTROLE DAS FASES
-// Horário Oficial de Brasília
 // ==========================================
 
 const FASES = {
@@ -37,6 +36,7 @@ const FASES = {
 
 };
 
+// Verifica se a fase está aberta
 function faseAberta(fase){
 
     const agora = new Date();
@@ -49,6 +49,38 @@ function faseAberta(fase){
 
 }
 
-window.FASES = FASES;
+// Atualiza o cronômetro
+function atualizarCronometro(fase){
 
+    const agora = new Date();
+
+    const fecha = new Date(FASES[fase].fecha);
+
+    const restante = fecha - agora;
+
+    if(restante <= 0){
+
+        document.querySelector(".cronometro").innerHTML =
+            "🔒 Palpites Encerrados";
+
+        return;
+    }
+
+    const dias = Math.floor(restante / 86400000);
+    const horas = Math.floor((restante % 86400000) / 3600000);
+    const minutos = Math.floor((restante % 3600000) / 60000);
+    const segundos = Math.floor((restante % 60000) / 1000);
+
+    document.querySelector(".cronometro").innerHTML = `
+        ⏳ Encerramento em
+        <br>
+        <strong>${dias}d ${horas}h ${minutos}m ${segundos}s</strong>
+        <br>
+        <small>Horário de Brasília</small>
+    `;
+
+}
+
+window.FASES = FASES;
 window.faseAberta = faseAberta;
+window.atualizarCronometro = atualizarCronometro;
