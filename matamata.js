@@ -174,12 +174,30 @@ window.onload = async () => {
     document.getElementById("faseAtual").innerHTML =
         FASES[fase].nome;
 
-    // Recupera o usuário
+    // ==========================
+    // CRONÔMETRO
+    // ==========================
+
+    atualizarCronometro(fase);
+
+    setInterval(() => {
+
+        atualizarCronometro(fase);
+
+    }, 1000);
+
+    // ==========================
+    // USUÁRIO
+    // ==========================
+
     const usuario = JSON.parse(
         localStorage.getItem("usuarioLogado")
     );
 
-    // Carrega os palpites já salvos
+    // ==========================
+    // CARREGA PALPITES
+    // ==========================
+
     if (usuario) {
 
         await carregarPalpitesMata(
