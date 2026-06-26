@@ -1,153 +1,156 @@
-const jogos = [
+// =========================================
+// MATA-MATA
+// Renderização da tela
+// =========================================
 
-{
+let faseAtual = "SEG";
 
-id:1,
+function carregarFase(fase = "SEG") {
 
-data:"28/06",
+    faseAtual = fase;
 
-hora:"15:30",
+    const container = document.getElementById("jogosContainer");
 
-timeA:"Brasil",
+    container.innerHTML = "";
 
-bandeiraA:"🇧🇷",
+    const jogos = JOGOS_MATA[fase];
 
-timeB:"Uruguai",
+    jogos.forEach(jogo => {
 
-bandeiraB:"🇺🇾"
+        container.innerHTML += criarCard(jogo);
 
-},
-
-{
-
-id:2,
-
-data:"28/06",
-
-hora:"18:00",
-
-timeA:"Argentina",
-
-bandeiraA:"🇦🇷",
-
-timeB:"México",
-
-bandeiraB:"🇲🇽"
+    });
 
 }
 
-];
+function criarCard(j) {
 
-window.onload=()=>{
+    return `
 
-const div=document.getElementById("jogosContainer");
+<div class="cardJogo" id="card${j.jogo}">
 
-div.innerHTML="";
+    <div class="cabecalhoJogo">
 
-jogos.forEach(j=>{
+        <span>${j.data}</span>
 
-div.innerHTML+=`
+        <span>${j.hora}</span>
 
-<div class="cardJogo">
+    </div>
 
-<div class="data">
+    <div class="times">
 
-${j.data} • ${j.hora}
+        <div class="time"
 
-</div>
+            id="A${j.jogo}"
 
-<div class="times">
+            onclick="selecionarTime(${j.jogo},'A')">
 
-<div class="time"
+            <img
 
-onclick="selecionar(${j.id},'A')">
+            src="assets/flags/${j.timeA ?? 'TBD'}.svg"
 
-<div class="flag">
+            class="flag">
 
-${j.bandeiraA}
+            <span>${j.nomeA}</span>
 
-</div>
+        </div>
 
-<div>
+        <div class="vs">
 
-${j.timeA}
+            X
 
-</div>
+        </div>
 
-</div>
+        <div class="time"
 
-<div class="vs">
+            id="B${j.jogo}"
 
-X
+            onclick="selecionarTime(${j.jogo},'B')">
 
-</div>
+            <img
 
-<div class="time"
+            src="assets/flags/${j.timeB ?? 'TBD'}.svg"
 
-onclick="selecionar(${j.id},'B')">
+            class="flag">
 
-<div class="flag">
+            <span>${j.nomeB}</span>
 
-${j.bandeiraB}
+        </div>
 
-</div>
+    </div>
 
-<div>
+    <div class="formas" id="formas${j.jogo}" style="display:none;">
 
-${j.timeB}
+        <button onclick="selecionarForma(${j.jogo},'N')">
 
-</div>
+            Tempo Normal
+        </button>
 
-</div>
+        <button onclick="selecionarForma(${j.jogo},'P')">
 
-</div>
+            Prorrogação
+        </button>
 
-<div
-class="formas"
-id="formas${j.id}"
+        <button onclick="selecionarForma(${j.jogo},'PE')">
 
-style="display:none;">
+            Pênaltis
+        </button>
 
-<button>
+    </div>
 
-Tempo Normal
+    <button
 
-</button>
+        class="salvar"
 
-<button>
+        onclick="salvarPalpite(${j.jogo})">
 
-Prorrogação
+        💾 Salvar Palpite
 
-</button>
-
-<button>
-
-Pênaltis
-
-</button>
-
-</div>
-
-<button class="salvar">
-
-💾 Salvar Palpite
-
-</button>
+    </button>
 
 </div>
 
 `;
 
-});
+}
+
+const escolhas = {};
+
+function selecionarTime(jogo,lado){
+
+    document
+        .querySelectorAll(`#card${jogo} .time`)
+        .forEach(e=>e.classList.remove("selecionado"));
+
+    document
+        .getElementById(lado+jogo)
+        .classList
+        .add("selecionado");
+
+    document
+        .getElementById("formas"+jogo)
+        .style.display="flex";
+
+    escolhas[jogo] ??={};
+
+    escolhas[jogo].lado=lado;
 
 }
 
-function selecionar(id){
+function selecionarForma(jogo,forma){
 
-document
-.getElementById("formas"+id)
-.style.display="flex";
+    escolhas[jogo] ??={};
+
+    escolhas[jogo].forma=forma;
 
 }
 
-window.selecionar=selecionar;
+window.carregarFase=carregarFase;
+window.selecionarTime=selecionarTime;
+window.selecionarForma=selecionarForma;
+
+window.onload=()=>{
+
+    carregarFase("SEG");
+
+};
