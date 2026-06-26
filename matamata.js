@@ -149,17 +149,35 @@ window.carregarFase=carregarFase;
 window.selecionarTime=selecionarTime;
 window.selecionarForma=selecionarForma;
 
-window.onload=()=>{
+window.onload = () => {
 
-    carregarFase("SEG");
-    
+    const fase = obterFaseAtual();
+
+    if (!fase) {
+
+        document.getElementById("jogosContainer").innerHTML = `
+
+        <div class="semJogos">
+
+            ⏳ Nenhuma fase aberta no momento.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    carregarFase(fase);
+
+    if (window.usuarioLogado) {
+
+        carregarPalpitesMata(
+            window.usuarioLogado.email,
+            fase
+        );
+
+    }
+
 };
-
-if (window.usuarioLogado) {
-
-    carregarPalpitesMata(
-        window.usuarioLogado.email,
-        "SEG"
-    );
-
-}
