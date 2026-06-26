@@ -59,7 +59,7 @@ hora:"22:00",
 abre:"2026-06-26T08:00:00",
 fecha:"2026-06-28T15:30:00",
 timeA:"NED",
-nomeA:"Países Baixos",
+nomeA:"Holanda",
 timeB:"MAR",
 nomeB:"Marrocos"
 },
