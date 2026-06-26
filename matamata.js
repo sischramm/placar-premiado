@@ -47,7 +47,7 @@ function criarCard(j) {
 
             <img
 
-            src="https://flagcdn.com/w80/${(j.timeA || 'un').toLowerCase()}.png"
+            src="https://flagcdn.com/w80/${FLAGS[j.timeA] || 'un'}.png"
 
             class="flag">
 
@@ -69,7 +69,7 @@ function criarCard(j) {
 
             <img
 
-            src="https://flagcdn.com/w80/${(j.timeB || 'un').toLowerCase()}.png"
+            src="https://flagcdn.com/w80/${FLAGS[j.timeB] || 'un'}.png"
 
             class="flag">
 
