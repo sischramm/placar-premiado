@@ -154,7 +154,6 @@ function abrirAba(nome){
     "abaExtras",
     "abaPremiacao",
     "abaRegulamento",
-    "abaAdmin",
     "abaResultados"
   ];
 
@@ -223,7 +222,8 @@ if(nome === "mata"){
     document.getElementById("abaRegulamento").style.display = "block";
   }
 
-  if(nome === "admin"){
+/*
+if(nome === "admin"){
 
     document.getElementById(
       "abaAdmin"
@@ -231,7 +231,8 @@ if(nome === "mata"){
 
     carregarAdminJogos();
 
-  }
+}
+*/
 
 if(nome === "resultados"){
 
