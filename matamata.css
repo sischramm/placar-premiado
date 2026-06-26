@@ -304,3 +304,15 @@ font-size:30px;
 }
 
 }
+
+.formaSelecionada{
+
+    background:#FFD54A !important;
+
+    color:#0b1d35 !important;
+
+    font-weight:bold;
+
+    border:2px solid white;
+
+}
