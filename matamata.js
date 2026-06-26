@@ -151,37 +151,26 @@ window.selecionarForma=selecionarForma;
 
 window.onload = () => {
 
-    const fase = obterFaseAtual();
+    // Enquanto estamos desenvolvendo, vamos abrir
+    // sempre a Segunda Rodada
+    const fase = "SEG";
 
-    if (!fase) {
-
-        document.getElementById("jogosContainer").innerHTML = `
-
-        <div class="semJogos">
-
-            ⏳ Nenhuma fase aberta no momento.
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
+    // Monta os jogos na tela
     carregarFase(fase);
 
-const usuario = JSON.parse(
-    localStorage.getItem("usuarioLogado")
-);
-
-if(usuario){
-
-    carregarPalpitesMata(
-        usuario.email,
-        fase
+    // Recupera o usuário logado
+    const usuario = JSON.parse(
+        localStorage.getItem("usuarioLogado")
     );
 
-}
+    // Se estiver logado, carrega os palpites salvos
+    if (usuario) {
+
+        carregarPalpitesMata(
+            usuario.email,
+            fase
+        );
+
+    }
 
 };
