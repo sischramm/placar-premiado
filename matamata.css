@@ -175,14 +175,21 @@
 
     width:100%;
     margin-top:25px;
-    border:none;
-    background:#FFD447;
-    color:#111;
     padding:18px;
+
+    background:#FFD447;
+    color:#111 !important;
+
+    border:none;
     border-radius:12px;
+
     font-size:20px;
     font-weight:bold;
+
+    text-align:center;
+
     cursor:pointer;
+
     transition:.3s;
 
 }
@@ -190,6 +197,7 @@
 .salvar:hover{
 
     background:#38d46c;
+    color:#111 !important;
 
 }
 
