@@ -171,13 +171,17 @@ window.onload = () => {
 
     carregarFase(fase);
 
-    if (window.usuarioLogado) {
+const usuario = JSON.parse(
+    localStorage.getItem("usuarioLogado")
+);
 
-        carregarPalpitesMata(
-            window.usuarioLogado.email,
-            fase
-        );
+if(usuario){
 
-    }
+    carregarPalpitesMata(
+        usuario.email,
+        fase
+    );
+
+}
 
 };
