@@ -119,30 +119,79 @@ function restaurarTela(fase) {
         const palpite = dados[numero];
 
         const jogo = JOGOS_MATA[fase]
-            .find(j => j.jogo == numero);
+            .find(j => j.jogo == Number(numero));
 
         if (!jogo) return;
 
         let lado = "";
 
-        if (palpite.vencedor == jogo.timeA)
+        if (palpite.vencedor === jogo.timeA)
             lado = "A";
 
-        if (palpite.vencedor == jogo.timeB)
+        if (palpite.vencedor === jogo.timeB)
             lado = "B";
 
-        if (lado) {
+        if (!lado) return;
 
-            document
-                .getElementById(lado + numero)
-                ?.classList
-                .add("selecionado");
+        // ==========================
+        // Mantém escolhas em memória
+        // ==========================
 
-            document
-                .getElementById("formas" + numero)
-                .style.display = "flex";
+        escolhas[numero] = {
 
-        }
+            lado,
+            forma: palpite.forma
+
+        };
+
+        // ==========================
+        // Marca o vencedor
+        // ==========================
+
+        document
+            .getElementById(lado + numero)
+            ?.classList
+            .add("selecionado");
+
+        // ==========================
+        // Exibe os botões
+        // ==========================
+
+        document
+            .getElementById("formas" + numero)
+            .style.display = "flex";
+
+        // ==========================
+        // Marca a forma
+        // ==========================
+
+        const botoes = document.querySelectorAll(
+            `#formas${numero} button`
+        );
+
+        botoes.forEach(btn =>
+            btn.classList.remove("formaSelecionada")
+        );
+
+        if (palpite.forma === "N")
+            botoes[0]?.classList.add("formaSelecionada");
+
+        if (palpite.forma === "P")
+            botoes[1]?.classList.add("formaSelecionada");
+
+        if (palpite.forma === "PE")
+            botoes[2]?.classList.add("formaSelecionada");
+
+        // ==========================
+        // Botão salvo
+        // ==========================
+
+        const btnSalvar = document.querySelector(
+            `#card${numero} .salvar`
+        );
+
+        if (btnSalvar)
+            btnSalvar.innerHTML = "✅ Palpite Salvo";
 
     });
 
