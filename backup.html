@@ -7,163 +7,190 @@
 
 <title>Backup Firebase</title>
 
+<style>
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f5f5;
+    padding:40px;
+
+}
+
+h1{
+
+    color:#0b4f8a;
+
+}
+
+button{
+
+    display:block;
+    width:250px;
+    margin:15px 0;
+    padding:15px;
+    font-size:16px;
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    background:#0b4f8a;
+    color:#fff;
+
+}
+
+button:hover{
+
+    background:#083a66;
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h2>Backup Firebase</h2>
+<h1>Backup Firebase</h1>
 
 <button onclick="exportarUsuarios()">
-
-Exportar Usuários
-
+👥 Exportar Usuários
 </button>
 
-  <button onclick="exportarJogos()">
+<button onclick="exportarJogos()">
+⚽ Exportar Jogos
+</button>
 
-Exportar Jogos
+<button onclick="exportarPalpites()">
+📝 Exportar Palpites
+</button>
 
+<button onclick="exportarTudo()">
+🚀 Exportar Tudo
 </button>
 
 <script type="module">
 
 import "./firebase.js";
 
-  async function exportarUsuarios(){
+async function exportarColecao(nomeColecao){
 
-  const snapshot = await window.getDocs(
-    window.collection(window.db,"usuarios")
-  );
+    try{
 
-  const dados = [];
+        const snapshot = await window.getDocs(
 
-  snapshot.forEach(doc=>{
+            window.collection(
+                window.db,
+                nomeColecao
+            )
 
-    dados.push({
-      id:doc.id,
-      ...doc.data()
-    });
+        );
 
-  });
+        const dados=[];
 
-  if(dados.length==0){
-    alert("Nenhum usuário encontrado.");
-    return;
-  }
+        snapshot.forEach(doc=>{
 
-  const cabecalho = Object.keys(dados[0]);
+            dados.push({
 
-  const linhas = dados.map(obj=>
+                id:doc.id,
 
-    cabecalho.map(c=>{
+                ...doc.data()
 
-      let valor = obj[c];
+            });
 
-      if(typeof valor==="object")
-        valor = JSON.stringify(valor);
+        });
 
-      return `"${String(valor??"").replace(/"/g,'""')}"`;
+        if(dados.length===0){
 
-    }).join(",")
+            alert("Nenhum dado encontrado em "+nomeColecao);
 
-  );
+            return;
 
-  const csv = [
+        }
 
-    cabecalho.join(","),
+        const cabecalho = Object.keys(dados[0]);
 
-    ...linhas
+        const linhas = dados.map(obj=>
 
-  ].join("\n");
+            cabecalho.map(c=>{
 
-  const blob = new Blob(
-    [csv],
-    {type:"text/csv;charset=utf-8;"}
-  );
+                let valor=obj[c];
 
-  const link =
-    document.createElement("a");
+                if(typeof valor==="object")
+                    valor=JSON.stringify(valor);
 
-  link.href =
-    URL.createObjectURL(blob);
+                return `"${String(valor??"").replace(/"/g,'""')}"`;
 
-  link.download =
-    "usuarios.csv";
+            }).join(",")
 
-  link.click();
+        );
 
-}
+        const csv=[
 
-async function exportarJogos(){
+            cabecalho.join(","),
 
-  const snapshot = await window.getDocs(
-    window.collection(window.db,"jogos")
-  );
+            ...linhas
 
-  const dados = [];
+        ].join("\n");
 
-  snapshot.forEach(doc=>{
+        const blob=new Blob(
 
-    dados.push({
-      id:doc.id,
-      ...doc.data()
-    });
+            [csv],
 
-  });
+            {
 
-  if(dados.length==0){
-    alert("Nenhum jogo encontrado.");
-    return;
-  }
+                type:"text/csv;charset=utf-8;"
 
-  const cabecalho = Object.keys(dados[0]);
+            }
 
-  const linhas = dados.map(obj=>
+        );
 
-    cabecalho.map(c=>{
+        const link=document.createElement("a");
 
-      let valor = obj[c];
+        link.href=URL.createObjectURL(blob);
 
-      if(typeof valor==="object")
-        valor = JSON.stringify(valor);
+        link.download=nomeColecao+".csv";
 
-      return `"${String(valor??"").replace(/"/g,'""')}"`;
+        document.body.appendChild(link);
 
-    }).join(",")
+        link.click();
 
-  );
+        document.body.removeChild(link);
 
-  const csv = [
+    }
 
-    cabecalho.join(","),
+    catch(e){
 
-    ...linhas
+        console.error(e);
 
-  ].join("\n");
+        alert("Erro ao exportar "+nomeColecao);
 
-  const blob = new Blob(
-    [csv],
-    {type:"text/csv;charset=utf-8;"}
-  );
-
-  const link =
-    document.createElement("a");
-
-  link.href =
-    URL.createObjectURL(blob);
-
-  link.download =
-    "jogos.csv";
-
-  link.click();
+    }
 
 }
 
-window.exportarJogos =
-exportarJogos;
-  
-window.exportarUsuarios =
-exportarUsuarios;
+async function exportarTudo(){
+
+    await exportarColecao("usuarios");
+
+    await new Promise(r=>setTimeout(r,700));
+
+    await exportarColecao("jogos");
+
+    await new Promise(r=>setTimeout(r,700));
+
+    await exportarColecao("palpites");
+
+    alert("Backup concluído!");
+
+}
+
+window.exportarUsuarios=()=>exportarColecao("usuarios");
+
+window.exportarJogos=()=>exportarColecao("jogos");
+
+window.exportarPalpites=()=>exportarColecao("palpites");
+
+window.exportarTudo=exportarTudo;
 
 </script>
 
