@@ -19,6 +19,12 @@ Exportar Usuários
 
 </button>
 
+  <button onclick="exportarJogos()">
+
+Exportar Jogos
+
+</button>
+
 <script type="module">
 
 import "./firebase.js";
@@ -88,6 +94,74 @@ import "./firebase.js";
 
 }
 
+async function exportarJogos(){
+
+  const snapshot = await window.getDocs(
+    window.collection(window.db,"jogos")
+  );
+
+  const dados = [];
+
+  snapshot.forEach(doc=>{
+
+    dados.push({
+      id:doc.id,
+      ...doc.data()
+    });
+
+  });
+
+  if(dados.length==0){
+    alert("Nenhum jogo encontrado.");
+    return;
+  }
+
+  const cabecalho = Object.keys(dados[0]);
+
+  const linhas = dados.map(obj=>
+
+    cabecalho.map(c=>{
+
+      let valor = obj[c];
+
+      if(typeof valor==="object")
+        valor = JSON.stringify(valor);
+
+      return `"${String(valor??"").replace(/"/g,'""')}"`;
+
+    }).join(",")
+
+  );
+
+  const csv = [
+
+    cabecalho.join(","),
+
+    ...linhas
+
+  ].join("\n");
+
+  const blob = new Blob(
+    [csv],
+    {type:"text/csv;charset=utf-8;"}
+  );
+
+  const link =
+    document.createElement("a");
+
+  link.href =
+    URL.createObjectURL(blob);
+
+  link.download =
+    "jogos.csv";
+
+  link.click();
+
+}
+
+window.exportarJogos =
+exportarJogos;
+  
 window.exportarUsuarios =
 exportarUsuarios;
 
