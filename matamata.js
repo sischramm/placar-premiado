@@ -101,11 +101,9 @@ function criarCard(j) {
     <button
 
         class="salvar"
+    onclick="salvarPalpiteMata(${j.jogo})">
 
-        onclick="salvarPalpiteMata(${j.jogo})"
-
-        💾 Salvar Palpite
-
+    💾 Salvar Palpite
     </button>
 
 </div>
