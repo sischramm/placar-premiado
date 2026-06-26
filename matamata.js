@@ -163,42 +163,38 @@ window.carregarFase=carregarFase;
 window.selecionarTime=selecionarTime;
 window.selecionarForma=selecionarForma;
 
-window.onload = async () => {
+async function iniciarMata(){
 
     const fase = "SEG";
 
-    // Carrega os jogos
     carregarFase(fase);
 
-    // Atualiza o nome da fase no topo
-    document.getElementById("faseAtual").innerHTML =
-        FASES[fase].nome;
+    if(document.getElementById("faseAtual")){
 
-    // ==========================
-    // CRONÔMETRO
-    // ==========================
+        document.getElementById("faseAtual").innerHTML =
+            FASES[fase].nome;
 
-    atualizarCronometro(fase);
+    }
 
-    setInterval(() => {
+    if(typeof atualizarCronometro === "function"){
 
         atualizarCronometro(fase);
 
-    }, 1000);
+        clearInterval(window.timerMata);
 
-    // ==========================
-    // USUÁRIO
-    // ==========================
+        window.timerMata = setInterval(() => {
+
+            atualizarCronometro(fase);
+
+        },1000);
+
+    }
 
     const usuario = JSON.parse(
         localStorage.getItem("usuarioLogado")
     );
 
-    // ==========================
-    // CARREGA PALPITES
-    // ==========================
-
-    if (usuario) {
+    if(usuario){
 
         await carregarPalpitesMata(
             usuario.email,
@@ -207,4 +203,6 @@ window.onload = async () => {
 
     }
 
-};
+}
+
+window.iniciarMata = iniciarMata;
