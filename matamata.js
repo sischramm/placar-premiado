@@ -152,5 +152,14 @@ window.selecionarForma=selecionarForma;
 window.onload=()=>{
 
     carregarFase("SEG");
-
+    
 };
+
+if (window.usuarioLogado) {
+
+    carregarPalpitesMata(
+        window.usuarioLogado.email,
+        "SEG"
+    );
+
+}
