@@ -38,15 +38,19 @@ async function carregarPalpitesMata(email, fase) {
 
 async function salvarPalpite(jogo) {
 
-    if (!window.usuarioLogado) {
+const usuario = JSON.parse(
+    localStorage.getItem("usuarioLogado")
+);
 
-        alert("Usuário não identificado.");
+if(!usuario){
 
-        return;
+    alert("Faça login novamente.");
 
-    }
+    return;
 
-    const email = window.usuarioLogado.email;
+}
+
+const email = usuario.email;
 
     const fase = faseAtual;
 
