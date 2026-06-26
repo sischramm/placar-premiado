@@ -49,7 +49,10 @@ function faseAberta(fase){
 
 }
 
+// ======================================
 // Atualiza o cronômetro
+// ======================================
+
 function atualizarCronometro(fase){
 
     const agora = new Date();
@@ -58,20 +61,32 @@ function atualizarCronometro(fase){
 
     const restante = fecha - agora;
 
+    const cronometro = document.getElementById("cronometroMata")
+                    || document.querySelector(".cronometro");
+
+    if(!cronometro) return;
+
     if(restante <= 0){
 
-        document.querySelector(".cronometro").innerHTML =
-            "🔒 Palpites Encerrados";
+        cronometro.innerHTML = `
+            🔒 <strong>Palpites Encerrados</strong>
+            <br>
+            <small>Horário de Brasília</small>
+        `;
 
         return;
+
     }
 
     const dias = Math.floor(restante / 86400000);
+
     const horas = Math.floor((restante % 86400000) / 3600000);
+
     const minutos = Math.floor((restante % 3600000) / 60000);
+
     const segundos = Math.floor((restante % 60000) / 1000);
 
-    document.querySelector(".cronometro").innerHTML = `
+    cronometro.innerHTML = `
         ⏳ Encerramento em
         <br>
         <strong>${dias}d ${horas}h ${minutos}m ${segundos}s</strong>
