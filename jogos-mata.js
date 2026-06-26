@@ -135,3 +135,59 @@ FIN:[]
 };
 
 window.JOGOS_MATA=JOGOS_MATA;
+
+// ======================================
+// RETORNA A FASE ABERTA
+// ======================================
+
+function obterFaseAtual(){
+
+    const agora = new Date();
+
+    if(
+        agora >= new Date("2026-06-26T08:00:00") &&
+        agora <= new Date("2026-06-28T15:30:00")
+    ){
+        return "SEG";
+    }
+
+    if(
+        agora >= new Date("2026-07-03T12:00:00") &&
+        agora <= new Date("2026-07-04T13:00:00")
+    ){
+        return "OIT";
+    }
+
+    if(
+        agora >= new Date("2026-07-08T12:00:00") &&
+        agora <= new Date("2026-07-09T16:00:00")
+    ){
+        return "QUA";
+    }
+
+    if(
+        agora >= new Date("2026-07-13T12:00:00") &&
+        agora <= new Date("2026-07-14T16:00:00")
+    ){
+        return "SEM";
+    }
+
+    if(
+        agora >= new Date("2026-07-17T08:00:00") &&
+        agora <= new Date("2026-07-18T17:00:00")
+    ){
+        return "L3";
+    }
+
+    if(
+        agora >= new Date("2026-07-18T08:00:00") &&
+        agora <= new Date("2026-07-19T16:00:00")
+    ){
+        return "FIN";
+    }
+
+    return null;
+
+}
+
+window.obterFaseAtual = obterFaseAtual;
