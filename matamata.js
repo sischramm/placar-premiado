@@ -102,7 +102,7 @@ function criarCard(j) {
 
         class="salvar"
 
-        onclick="salvarPalpite(${j.jogo})">
+        onclick="salvarPalpiteMata(${j.jogo})"
 
         💾 Salvar Palpite
 
