@@ -181,30 +181,11 @@ function abrirAba(nome){
     document.getElementById("abaClassificacao").style.display = "block";
   }
 
-  if(nome === "mata"){
+if(nome === "mata"){
 
     document.getElementById("abaMata").style.display = "block";
 
-    document.getElementById("mataMataTabela").innerHTML = "";
-
-    faseAtual = "SEG";
-
-    carregarFase(faseAtual);
-
-    document.getElementById("palpitesMata").innerHTML = "";
-
-    const usuario = JSON.parse(
-        localStorage.getItem("usuarioLogado")
-    );
-
-    if(usuario){
-
-        carregarPalpitesMata(
-            usuario.email,
-            faseAtual
-        );
-
-    }
+    iniciarMata();
 
 }
 
