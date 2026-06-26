@@ -36,7 +36,7 @@ async function carregarPalpitesMata(email, fase) {
 
 }
 
-async function salvarPalpite(jogo) {
+async function salvarPalpiteMata(jogo){
 
 const usuario = JSON.parse(
     localStorage.getItem("usuarioLogado")
@@ -197,5 +197,5 @@ function restaurarTela(fase) {
 
 }
 
-window.salvarPalpite = salvarPalpite;
+window.salvarPalpiteMata = salvarPalpiteMata;
 window.carregarPalpitesMata = carregarPalpitesMata;
