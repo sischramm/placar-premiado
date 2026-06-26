@@ -47,7 +47,7 @@ function criarCard(j) {
 
             <img
 
-            src="assets/flags/${j.timeA ?? 'TBD'}.svg"
+            src="https://flagcdn.com/w80/${(j.timeA || 'un').toLowerCase()}.png"
 
             class="flag">
 
@@ -69,7 +69,7 @@ function criarCard(j) {
 
             <img
 
-            src="assets/flags/${j.timeB ?? 'TBD'}.svg"
+            src="https://flagcdn.com/w80/${(j.timeB || 'un').toLowerCase()}.png"
 
             class="flag">
 
@@ -137,11 +137,25 @@ function selecionarTime(jogo,lado){
 
 }
 
-function selecionarForma(jogo,forma){
+function selecionarForma(jogo, forma){
 
-    escolhas[jogo] ??={};
+    escolhas[jogo] ??= {};
 
-    escolhas[jogo].forma=forma;
+    escolhas[jogo].forma = forma;
+
+    document
+        .querySelectorAll(`#formas${jogo} button`)
+        .forEach(btn => btn.classList.remove("formaSelecionada"));
+
+    let indice = 0;
+
+    if(forma==="N") indice=0;
+    if(forma==="P") indice=1;
+    if(forma==="PE") indice=2;
+
+    document
+        .querySelectorAll(`#formas${jogo} button`)[indice]
+        .classList.add("formaSelecionada");
 
 }
 
