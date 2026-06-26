@@ -147,6 +147,8 @@ body{
 
 }
 
+
+
 .time:hover{
 
     border-color:#FFD447;
@@ -157,9 +159,13 @@ body{
 
 .time.selecionado{
 
-    border-color:#38d46c;
+    background:#0b7cff;
 
-    background:#124228;
+    color:white;
+
+    border:2px solid #ffffff;
+
+    transform:scale(1.03);
 
 }
 
