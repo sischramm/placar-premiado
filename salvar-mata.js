@@ -38,27 +38,45 @@ async function carregarPalpitesMata(email, fase) {
 
 async function salvarPalpiteMata(jogo){
 
-const usuario = JSON.parse(
-    localStorage.getItem("usuarioLogado")
-);
+    const usuario = JSON.parse(
+        localStorage.getItem("usuarioLogado")
+    );
 
-if(!usuario){
+    if(!usuario){
 
-    alert("Faça login novamente.");
+        alert("Faça login novamente.");
 
-    return;
+        return;
 
-}
+    }
 
-const email = usuario.email;
+    const email = usuario.email;
 
     const fase = faseAtual;
+
+    // Procura os dados do jogo
+    const dadosJogo = JOGOS_MATA[fase]
+        .find(j => j.jogo == jogo);
+
+    // ==========================================
+    // VERIFICA SE O PRAZO DO JOGO JÁ ENCERROU
+    // ==========================================
+
+    if(new Date() >= new Date(dadosJogo.fecha)){
+
+        alert("🔒 Os palpites para este jogo já foram encerrados.");
+
+        return;
+
+    }
+
+    // ==========================================
 
     PALPITES_MATA[fase] ??= {};
 
     const escolha = escolhas[jogo];
 
-    if (!escolha) {
+    if(!escolha){
 
         alert("Escolha um vencedor.");
 
@@ -66,12 +84,10 @@ const email = usuario.email;
 
     }
 
-    const dadosJogo = JOGOS_MATA[fase]
-        .find(j => j.jogo == jogo);
-
-    const vencedor = escolha.lado == "A"
-        ? dadosJogo.timeA
-        : dadosJogo.timeB;
+    const vencedor =
+        escolha.lado == "A"
+            ? dadosJogo.timeA
+            : dadosJogo.timeB;
 
     PALPITES_MATA[fase][jogo] = {
 
@@ -101,10 +117,15 @@ const email = usuario.email;
 
     );
 
-    const btn = document
-        .querySelector(`#card${jogo} .salvar`);
+    const btn = document.querySelector(
+        `#card${jogo} .salvar`
+    );
 
-    btn.innerHTML = "✅ Palpite Salvo";
+    if(btn){
+
+        btn.innerHTML = "✅ Palpite Salvo";
+
+    }
 
 }
 
