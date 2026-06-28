@@ -355,46 +355,32 @@ async function login(){
       "topoSistema"
     ).style.display = "block";
 
+const menuResultados =
+    document.getElementById("menuResultados");
+
 if(
-  usuarioEncontrado.email ===
-    "gabriel.rodrigues@gruposhark.com.br"
-  ||
-  usuarioEncontrado.email ===
-    "simone.schramm@equagril.com.br"
+    usuarioEncontrado.email ===
+        "gabriel.rodrigues@gruposhark.com.br"
+    ||
+    usuarioEncontrado.email ===
+        "simone.schramm@equagril.com.br"
 ){
 
-  document.getElementById(
-    "menuResultados"
-  ).style.display =
-    "inline-block";
-
-  document.getElementById(
-    "menuAdmin"
-  ).style.display =
-    "inline-block";
+    if(menuResultados){
+        menuResultados.style.display = "inline-block";
+    }
 
 }else{
 
-  document.getElementById(
-    "menuResultados"
-  ).style.display =
-    "none";
-
-  document.getElementById(
-    "menuAdmin"
-  ).style.display =
-    "none";
+    if(menuResultados){
+        menuResultados.style.display = "none";
+    }
 
 }
 
     carregarJogos();
 
-    alert(
-      "Bem-vindo " +
-      usuarioEncontrado.nome
-    );
-
-  }catch(erro){
+   }catch(erro){
 
     console.error(
       erro
@@ -407,6 +393,26 @@ if(
   }
 
 }
+
+// ==========================
+// ENTER NO LOGIN
+// ==========================
+
+document.getElementById("loginEmail").addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+        login();
+    }
+
+});
+
+document.getElementById("loginSenha").addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+        login();
+    }
+
+});
 
 async function cadastrar(){
 
