@@ -37,6 +37,7 @@ const FASES = {
 };
 
 // Verifica se a fase está aberta
+
 function faseAberta(fase){
 
     const agora = new Date();
@@ -89,20 +90,24 @@ function atualizarCronometro(fase){
     const restante = fecha - agora;
 
     const dias = Math.floor(restante / 86400000);
+    const horas = Math.floor((restante % 86400000) / 3600000);
+    const minutos = Math.floor((restante % 3600000) / 60000);
+    const segundos = Math.floor((restante % 60000) / 1000);
 
-    const horas = Math.floor((restante % 86400000)/3600000);
-
-    const minutos = Math.floor((restante % 3600000)/60000);
-
-    const segundos = Math.floor((restante % 60000)/1000);
-
-    // Quantos jogos fecham nesse mesmo horário
+    // Jogos que fecham exatamente no mesmo horário
     const qtdMesmoHorario =
-        JOGOS_MATA[fase].filter(j=>j.fecha===proximo.fecha).length;
+        JOGOS_MATA[fase].filter(j => j.fecha === proximo.fecha).length;
+
+    const dataFechamento = fecha.toLocaleDateString("pt-BR");
+
+    const horaFechamento = fecha.toLocaleTimeString("pt-BR",{
+        hour:"2-digit",
+        minute:"2-digit"
+    });
 
     let mensagem = "";
 
-    if(qtdMesmoHorario>1){
+    if(qtdMesmoHorario > 1){
 
         mensagem = `
             <div style="font-size:18px;color:#FFD447;font-weight:bold;">
@@ -115,18 +120,19 @@ function atualizarCronometro(fase){
                 ${proximo.nomeA} × ${proximo.nomeB}
             </div>
 
-            <div style="font-size:34px;font-weight:bold;">
+            <div style="font-size:36px;font-weight:bold;margin:15px 0;">
                 ${dias}d ${horas}h ${minutos}m ${segundos}s
             </div>
 
-            <div style="margin-top:12px;font-size:15px;line-height:1.5;">
-                <strong>${qtdMesmoHorario} jogos</strong>
-                encerram seus palpites em
-                <br>
-                <strong>${proximo.data}</strong>
+            <div style="font-size:16px;line-height:1.6;">
+                Os <strong>${qtdMesmoHorario} jogos restantes</strong>
+                encerram os palpites em
+                <br><br>
+                <strong>${dataFechamento}</strong>
                 às
-                <strong>${proximo.hora}</strong>
-                (Horário de Brasília)
+                <strong>${horaFechamento}</strong>
+                <br>
+                <small>(Horário de Brasília)</small>
             </div>
         `;
 
@@ -141,17 +147,18 @@ function atualizarCronometro(fase){
                 ${proximo.nomeA} × ${proximo.nomeB}
             </div>
 
-            <div style="font-size:34px;font-weight:bold;">
+            <div style="font-size:36px;font-weight:bold;margin:15px 0;">
                 ${dias}d ${horas}h ${minutos}m ${segundos}s
             </div>
 
-            <div style="margin-top:12px;font-size:15px;">
+            <div style="font-size:16px;line-height:1.6;">
                 Palpites encerram em
-                <br>
-                <strong>${proximo.data}</strong>
+                <br><br>
+                <strong>${dataFechamento}</strong>
                 às
-                <strong>${proximo.hora}</strong>
-                (Horário de Brasília)
+                <strong>${horaFechamento}</strong>
+                <br>
+                <small>(Horário de Brasília)</small>
             </div>
         `;
 
