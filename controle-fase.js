@@ -107,62 +107,55 @@ function atualizarCronometro(fase){
 
     let mensagem = "";
 
-    if(qtdMesmoHorario > 1){
+ if(qtdMesmoHorario > 1){
 
-        mensagem = `
-            <div style="font-size:18px;color:#FFD447;font-weight:bold;">
-                ⏳ Encerramento dos palpites
-            </div>
+    mensagem = `
+        <div style="font-size:16px;color:#FFD447;font-weight:700;">
+            ⏳ Encerramento dos palpites
+        </div>
 
-            <div style="font-size:24px;font-weight:bold;margin:10px 0;">
-                Próximo jogo:
-                <br>
-                ${proximo.nomeA} × ${proximo.nomeB}
-            </div>
+        <div style="font-size:22px;font-weight:700;margin:8px 0 5px;">
+            ${proximo.nomeA} × ${proximo.nomeB}
+        </div>
 
-            <div style="font-size:36px;font-weight:bold;margin:15px 0;">
-                ${dias}d ${horas}h ${minutos}m ${segundos}s
-            </div>
+        <div style="font-size:28px;font-weight:800;margin:8px 0;color:#fff;">
+            ${dias}d ${horas}h ${minutos}m ${segundos}s
+        </div>
 
-            <div style="font-size:16px;line-height:1.6;">
-                Os <strong>${qtdMesmoHorario} jogos restantes</strong>
-                encerram os palpites em
-                <br><br>
-                <strong>${dataFechamento}</strong>
-                às
-                <strong>${horaFechamento}</strong>
-                <br>
-                <small>(Horário de Brasília)</small>
-            </div>
-        `;
+        <div style="font-size:14px;line-height:1.5;opacity:.95;">
+            <strong>${qtdMesmoHorario} jogos</strong> encerram os palpites em
+            <br>
+            <strong>${dataFechamento} às ${horaFechamento}</strong>
+            <br>
+            <small>Horário de Brasília</small>
+        </div>
+    `;
 
-    }else{
+}else{
 
-        mensagem = `
-            <div style="font-size:18px;color:#FFD447;font-weight:bold;">
-                ⏳ Próximo fechamento
-            </div>
+    mensagem = `
+        <div style="font-size:16px;color:#FFD447;font-weight:700;">
+            ⏳ Próximo fechamento
+        </div>
 
-            <div style="font-size:24px;font-weight:bold;margin:10px 0;">
-                ${proximo.nomeA} × ${proximo.nomeB}
-            </div>
+        <div style="font-size:22px;font-weight:700;margin:8px 0 5px;">
+            ${proximo.nomeA} × ${proximo.nomeB}
+        </div>
 
-            <div style="font-size:36px;font-weight:bold;margin:15px 0;">
-                ${dias}d ${horas}h ${minutos}m ${segundos}s
-            </div>
+        <div style="font-size:28px;font-weight:800;margin:8px 0;color:#fff;">
+            ${dias}d ${horas}h ${minutos}m ${segundos}s
+        </div>
 
-            <div style="font-size:16px;line-height:1.6;">
-                Palpites encerram em
-                <br><br>
-                <strong>${dataFechamento}</strong>
-                às
-                <strong>${horaFechamento}</strong>
-                <br>
-                <small>(Horário de Brasília)</small>
-            </div>
-        `;
+        <div style="font-size:14px;line-height:1.5;opacity:.95;">
+            Palpites encerram em
+            <br>
+            <strong>${dataFechamento} às ${horaFechamento}</strong>
+            <br>
+            <small>Horário de Brasília</small>
+        </div>
+    `;
 
-    }
+}
 
     cronometro.innerHTML = mensagem;
 
