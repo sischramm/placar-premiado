@@ -3,17 +3,28 @@
    Grupo Shark - Copa 2026
 ======================================= */
 
+
+#gradeResultados{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:18px;
+
+}
+
 .resultadoCard{
 
-    background:rgba(8,25,45,.95);
-
-    border:1px solid rgba(255,255,255,.08);
+    background:#102743;
 
     border-radius:18px;
 
-    padding:20px;
+    padding:18px;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 8px 25px rgba(0,0,0,.35);
 
     transition:.25s;
 
@@ -21,7 +32,7 @@
 
 .resultadoCard:hover{
 
-    transform:translateY(-3px);
+    transform:translateY(-4px);
 
 }
 
@@ -31,15 +42,13 @@
 
     justify-content:space-between;
 
-    align-items:center;
-
-    margin-bottom:20px;
-
-    font-size:14px;
-
     color:#FFD447;
 
+    font-size:13px;
+
     font-weight:bold;
+
+    margin-bottom:15px;
 
 }
 
@@ -47,13 +56,13 @@
 
     text-align:center;
 
-    color:#fff;
+    color:white;
 
-    font-size:22px;
+    font-size:20px;
 
     font-weight:bold;
 
-    margin:12px 0;
+    margin:10px 0;
 
 }
 
@@ -65,37 +74,35 @@
 
     align-items:center;
 
-    gap:15px;
+    gap:10px;
 
-    margin:20px 0;
+    margin:15px 0;
 
 }
 
 .resultadoPlacar input{
 
-    width:70px;
+    width:55px;
 
-    height:60px;
+    height:55px;
 
     border:none;
 
-    border-radius:12px;
+    border-radius:10px;
 
     text-align:center;
 
-    font-size:28px;
+    font-size:26px;
 
     font-weight:bold;
-
-    background:#fff;
 
 }
 
 .resultadoPlacar span{
 
-    font-size:34px;
-
     color:#FFD447;
+
+    font-size:30px;
 
     font-weight:bold;
 
@@ -105,42 +112,58 @@
 
     width:100%;
 
-    margin-top:18px;
+    margin-top:15px;
 
-    background:#10b65b;
+    background:#18b558;
 
-    color:#fff;
+    color:white;
 
     border:none;
 
-    border-radius:12px;
+    border-radius:10px;
 
-    padding:15px;
+    padding:12px;
 
-    font-size:17px;
+    font-size:15px;
 
     font-weight:bold;
 
     cursor:pointer;
 
-    transition:.25s;
-
 }
 
 .btnResultado:hover{
 
-    background:#17d46d;
+    background:#1dd768;
 
 }
 
-.statusResultado{
+@media(max-width:1400px){
 
-    margin-top:12px;
+#gradeResultados{
 
-    text-align:center;
+grid-template-columns:repeat(3,1fr);
 
-    color:#57ff84;
+}
 
-    font-weight:bold;
+}
+
+@media(max-width:1000px){
+
+#gradeResultados{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:700px){
+
+#gradeResultados{
+
+grid-template-columns:1fr;
+
+}
 
 }
