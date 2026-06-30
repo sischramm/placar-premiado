@@ -1820,65 +1820,47 @@ async function carregarResultados(){
 
 grade.innerHTML += `
 
-<div class="resultado-card ${jogo.encerrado ? "resultado-salvo" : ""}">
+<div class="resultadoCard">
 
-    <div class="resultado-topo">
+    <div class="resultadoCabecalho">
 
-        <span class="resultado-grupo">
-            🏆 ${jogo.fase || ("Grupo " + jogo.grupo)}
+        <span>
+            🏆 Grupo ${jogo.grupo}
         </span>
 
-        <span class="resultado-data">
+        <span>
             🕒 ${jogo.dataHora}
         </span>
 
     </div>
 
-    <div class="resultado-times">
+    <div class="resultadoTime">
 
-        <div class="time-lado">
+        ${jogo.timeA}
 
-            <img
-                class="flagResultado"
-                src="https://flagcdn.com/w80/${FLAGS[jogo.timeA]}.png"
-                onerror="this.style.display='none'"
-            >
+    </div>
 
-            <span>${jogo.timeA}</span>
+    <div class="resultadoPlacar">
 
-        </div>
+        <input
+            id="realA_${jogo.docId}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+        >
 
-        <div class="resultado-placar">
+        <span>X</span>
 
-            <input
-                id="realA_${jogo.docId}"
-                type="number"
-                min="0"
-                value="${jogo.placarRealA ?? ""}"
-            >
+        <input
+            id="realB_${jogo.docId}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+        >
 
-            <span>X</span>
+    </div>
 
-            <input
-                id="realB_${jogo.docId}"
-                type="number"
-                min="0"
-                value="${jogo.placarRealB ?? ""}"
-            >
+    <div class="resultadoTime">
 
-        </div>
-
-        <div class="time-lado">
-
-            <img
-                class="flagResultado"
-                src="https://flagcdn.com/w80/${FLAGS[jogo.timeB]}.png"
-                onerror="this.style.display='none'"
-            >
-
-            <span>${jogo.timeB}</span>
-
-        </div>
+        ${jogo.timeB}
 
     </div>
 
@@ -1888,16 +1870,6 @@ grade.innerHTML += `
     >
         💾 Salvar Resultado
     </button>
-
-    ${
-        jogo.encerrado
-        ?
-        `<div class="statusResultado">
-            ✅ Resultado confirmado
-        </div>`
-        :
-        ""
-    }
 
 </div>
 
