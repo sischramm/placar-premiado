@@ -438,6 +438,9 @@ function criarCardResultado(jogo){
 
         : "Grupo " + jogo.grupo;
 
+    const tipoSelecionado =
+        jogo.decisao || "TN";
+
     const div =
         document.createElement("div");
 
@@ -472,40 +475,26 @@ function criarCardResultado(jogo){
 
                 ${
                     bandeiraA
-
                     ?
-
                     `<img
                         class="bandeiraResultado"
                         src="${bandeiraA}"
                         alt="${nomeA}"
                     >`
-
                     :
-
                     ""
                 }
 
-                <span>
-
-                    ${nomeA}
-
-                </span>
+                <span>${nomeA}</span>
 
             </div>
 
             <input
-
                 class="placarInput"
-
                 id="realA_${jogo.id}"
-
                 type="number"
-
                 min="0"
-
                 value="${jogo.placarRealA ?? ""}"
-
             >
 
         </div>
@@ -522,50 +511,79 @@ function criarCardResultado(jogo){
 
                 ${
                     bandeiraB
-
                     ?
-
                     `<img
                         class="bandeiraResultado"
                         src="${bandeiraB}"
                         alt="${nomeB}"
                     >`
-
                     :
-
                     ""
                 }
 
-                <span>
-
-                    ${nomeB}
-
-                </span>
+                <span>${nomeB}</span>
 
             </div>
 
             <input
-
                 class="placarInput"
-
                 id="realB_${jogo.id}"
-
                 type="number"
-
                 min="0"
-
                 value="${jogo.placarRealB ?? ""}"
-
             >
 
         </div>
 
+        ${
+            jogo.origem=="MATA"
+
+            ?
+
+            `
+
+            <div class="tipoResultado">
+
+                <button
+                    class="btnTipo ${tipoSelecionado=="TN" ? "ativo" : ""}"
+                    data-jogo="${jogo.id}"
+                    data-tipo="TN"
+                    onclick="selecionarTipoResultado('${jogo.id}','TN',this)"
+                >
+                    Tempo Normal
+                </button>
+
+                <button
+                    class="btnTipo ${tipoSelecionado=="PR" ? "ativo" : ""}"
+                    data-jogo="${jogo.id}"
+                    data-tipo="PR"
+                    onclick="selecionarTipoResultado('${jogo.id}','PR',this)"
+                >
+                    Prorrogação
+                </button>
+
+                <button
+                    class="btnTipo ${tipoSelecionado=="PE" ? "ativo" : ""}"
+                    data-jogo="${jogo.id}"
+                    data-tipo="PE"
+                    onclick="selecionarTipoResultado('${jogo.id}','PE',this)"
+                >
+                    Pênaltis
+                </button>
+
+            </div>
+
+            `
+
+            :
+
+            ""
+
+        }
+
         <button
-
             class="btnSalvarNovo"
-
             onclick="salvarResultadoNovo('${jogo.id}','${jogo.origem}')"
-
         >
 
             💾 Salvar
@@ -601,6 +619,29 @@ function formatarFase(fase){
     };
 
     return fases[fase] || fase;
+
+}
+
+// ======================================================
+// TIPO DO RESULTADO
+// ======================================================
+
+const TIPO_RESULTADO = {};
+
+function selecionarTipoResultado(id,tipo,botao){
+
+    TIPO_RESULTADO[id]=tipo;
+
+    const botoes =
+        document.querySelectorAll(
+            `[data-jogo="${id}"]`
+        );
+
+    botoes.forEach(btn=>
+        btn.classList.remove("ativo")
+    );
+
+    botao.classList.add("ativo");
 
 }
 
