@@ -1818,81 +1818,90 @@ async function carregarResultados(){
 
   jogos.forEach(jogo => {
 
-    grade.innerHTML += `
+grade.innerHTML += `
 
-      <div class="card">
+<div class="resultado-card ${jogo.encerrado ? "resultado-salvo" : ""}">
 
-        <h3>
-          ${jogo.timeA} x ${jogo.timeB}
-        </h3>
+    <div class="resultado-topo">
 
-        <p>
-          Grupo ${jogo.grupo}
-        </p>
+        <span class="resultado-grupo">
+            🏆 ${jogo.fase || ("Grupo " + jogo.grupo)}
+        </span>
 
-        <p>
-          🕒 ${jogo.dataHora}
-        </p>
+        <span class="resultado-data">
+            🕒 ${jogo.dataHora}
+        </span>
 
-        <div
-          style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:15px;
-            margin:25px 0;
-          "
-        >
+    </div>
 
-          <input
-            id="realA_${jogo.docId}"
-            type="number"
-            min="0"
-            value="${jogo.placarRealA ?? ""}"
-            style="
-              width:70px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-              font-weight:bold;
-            "
-          >
+    <div class="resultado-times">
 
-          <span
-            style="
-              color:white;
-              font-size:30px;
-              font-weight:bold;
-            "
-          >
-            X
-          </span>
+        <div class="time-lado">
 
-          <input
-            id="realB_${jogo.docId}"
-            type="number"
-            min="0"
-            value="${jogo.placarRealB ?? ""}"
-            style="
-              width:70px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-              font-weight:bold;
-            "
-          >
+            <img
+                class="flagResultado"
+                src="https://flagcdn.com/w80/${FLAGS[jogo.timeA]}.png"
+                onerror="this.style.display='none'"
+            >
+
+            <span>${jogo.timeA}</span>
 
         </div>
 
-        <button
-          onclick="salvarResultado('${jogo.docId}')"
-        >
-          💾 Salvar Resultado
-        </button>
+        <div class="resultado-placar">
 
-      </div>
+            <input
+                id="realA_${jogo.docId}"
+                type="number"
+                min="0"
+                value="${jogo.placarRealA ?? ""}"
+            >
 
-    `;
+            <span>X</span>
+
+            <input
+                id="realB_${jogo.docId}"
+                type="number"
+                min="0"
+                value="${jogo.placarRealB ?? ""}"
+            >
+
+        </div>
+
+        <div class="time-lado">
+
+            <img
+                class="flagResultado"
+                src="https://flagcdn.com/w80/${FLAGS[jogo.timeB]}.png"
+                onerror="this.style.display='none'"
+            >
+
+            <span>${jogo.timeB}</span>
+
+        </div>
+
+    </div>
+
+    <button
+        class="btnResultado"
+        onclick="salvarResultado('${jogo.docId}')"
+    >
+        💾 Salvar Resultado
+    </button>
+
+    ${
+        jogo.encerrado
+        ?
+        `<div class="statusResultado">
+            ✅ Resultado confirmado
+        </div>`
+        :
+        ""
+    }
+
+</div>
+
+`;
 
   });
 
