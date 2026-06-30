@@ -54,6 +54,18 @@ function abrirResultados(){
 
 }
 
+function obterBandeira(sigla){
+
+    if(!window.FLAGS) return "";
+
+    const codigo = window.FLAGS[sigla];
+
+    if(!codigo) return "";
+
+    return `https://flagcdn.com/w80/${codigo}.png`;
+
+}
+
 async function carregarResultadosNovo(){
 
     const snap = await getDocs(
