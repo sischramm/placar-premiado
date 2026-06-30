@@ -100,11 +100,17 @@ async function carregarResultadosNovo(){
 
     </div>
 
-    <div class="pais">
+<div class="pais">
 
-        ${jogo.timeA}
+    <img
+        class="bandeiraResultado"
+        src="https://flagcdn.com/w80/${FLAGS[jogo.timeA]}.png"
+        onerror="this.style.display='none'"
+    >
 
-    </div>
+    <div>${jogo.timeA}</div>
+
+</div>
 
     <div class="placarNovo">
 
@@ -124,11 +130,17 @@ async function carregarResultadosNovo(){
 
     </div>
 
-    <div class="pais">
+<div class="pais">
 
-        ${jogo.timeB}
+    <img
+        class="bandeiraResultado"
+        src="https://flagcdn.com/w80/${FLAGS[jogo.timeB]}.png"
+        onerror="this.style.display='none'"
+    >
 
-    </div>
+    <div>${jogo.timeB}</div>
+
+</div>
 
     <button
         class="btnSalvarNovo"
