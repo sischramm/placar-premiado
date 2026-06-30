@@ -240,7 +240,7 @@ if(nome === "resultados"){
     "abaResultados"
   ).style.display = "block";
 
-  carregarResultados();
+  abrirResultados();
 
 }
 
