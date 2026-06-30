@@ -234,15 +234,243 @@ nomeB:"Gana"
 
 ],
 
-OIT:[],
+OIT:[
 
-QUA:[],
+{
+jogo:89,
+fase:"OIT",
+ordem:1,
+data:"04/07/2026",
+hora:"14:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
 
-SEM:[],
+{
+jogo:90,
+fase:"OIT",
+ordem:2,
+data:"04/07/2026",
+hora:"18:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
 
-L3:[],
+{
+jogo:91,
+fase:"OIT",
+ordem:3,
+data:"05/07/2026",
+hora:"17:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
 
-FIN:[]
+{
+jogo:92,
+fase:"OIT",
+ordem:4,
+data:"05/07/2026",
+hora:"21:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:93,
+fase:"OIT",
+ordem:5,
+data:"06/07/2026",
+hora:"16:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:94,
+fase:"OIT",
+ordem:6,
+data:"06/07/2026",
+hora:"21:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:95,
+fase:"OIT",
+ordem:7,
+data:"07/07/2026",
+hora:"13:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:96,
+fase:"OIT",
+ordem:8,
+data:"07/07/2026",
+hora:"17:00",
+abre:"2026-07-03T12:00:00-03:00",
+fecha:"2026-07-04T13:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+}],
+
+QUA:[
+
+{
+jogo:97,
+fase:"QUA",
+ordem:1,
+data:"09/07/2026",
+hora:"17:00",
+abre:"2026-07-08T12:00:00-03:00",
+fecha:"2026-07-09T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:98,
+fase:"QUA",
+ordem:2,
+data:"10/07/2026",
+hora:"16:00",
+abre:"2026-07-08T12:00:00-03:00",
+fecha:"2026-07-09T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:99,
+fase:"QUA",
+ordem:3,
+data:"11/07/2026",
+hora:"18:00",
+abre:"2026-07-08T12:00:00-03:00",
+fecha:"2026-07-09T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:100,
+fase:"QUA",
+ordem:4,
+data:"11/07/2026",
+hora:"22:00",
+abre:"2026-07-08T12:00:00-03:00",
+fecha:"2026-07-09T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+}
+],
+
+SEM:[
+
+{
+jogo:101,
+fase:"SEM",
+ordem:1,
+data:"14/07/2026",
+hora:"16:00",
+abre:"2026-07-13T12:00:00-03:00",
+fecha:"2026-07-14T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+},
+
+{
+jogo:102,
+fase:"SEM",
+ordem:2,
+data:"15/07/2026",
+hora:"16:00",
+abre:"2026-07-13T12:00:00-03:00",
+fecha:"2026-07-14T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+}
+],
+
+L3:[
+
+{
+jogo:103,
+fase:"L3",
+ordem:1,
+data:"18/07/2026",
+hora:"18:00",
+abre:"2026-07-17T08:00:00-03:00",
+fecha:"2026-07-18T17:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+}
+],
+
+FIN:[
+
+{
+jogo:104,
+fase:"FIN",
+ordem:1,
+data:"19/07/2026",
+hora:"16:00",
+abre:"2026-07-18T08:00:00-03:00",
+fecha:"2026-07-19T16:00:00-03:00",
+timeA:"",
+nomeA:"A definir",
+timeB:"",
+nomeB:"A definir"
+}
+]
 
 };
 
