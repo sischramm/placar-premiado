@@ -73,15 +73,15 @@ async function carregarResultadosNovo(){
     );
 
     const jogos = snap.docs
-        .map(doc => ({
+        .map(doc=>({
 
-            id: doc.id,
+            id:doc.id,
 
             ...doc.data()
 
         }))
         .sort((a,b)=>
-            new Date(a.dataHora.replace(" ","T")) -
+            new Date(a.dataHora.replace(" ","T"))-
             new Date(b.dataHora.replace(" ","T"))
         );
 
@@ -89,14 +89,21 @@ async function carregarResultadosNovo(){
         jogos.length;
 
     document.getElementById("dashFinalizados").innerHTML =
-        jogos.filter(j=>j.placarRealA!==undefined).length;
+        jogos.filter(j=>
+            j.placarRealA!==null &&
+            j.placarRealB!==null
+        ).length;
 
     document.getElementById("dashPendentes").innerHTML =
-        jogos.filter(j=>j.placarRealA===undefined).length;
+        jogos.filter(j=>
+            j.placarRealA===null ||
+            j.placarRealB===null
+        ).length;
 
     function formatarDataHora(dataHora){
 
-        const d = new Date(dataHora.replace(" ","T"));
+        const d =
+            new Date(dataHora.replace(" ","T"));
 
         return{
 
@@ -131,15 +138,15 @@ async function carregarResultadosNovo(){
             jogo.nomeB || jogo.timeB;
 
         const bandeiraA =
-    obterBandeira(jogo.timeA);
+            obterBandeira(jogo.timeA);
 
-const bandeiraB =
-    obterBandeira(jogo.timeB);
+        const bandeiraB =
+            obterBandeira(jogo.timeB);
 
         const tituloFase =
             jogo.fase
-                ? jogo.fase
-                : "Grupo " + jogo.grupo;
+            ? jogo.fase
+            : "Grupo " + jogo.grupo;
 
         grade.innerHTML += `
 
@@ -148,47 +155,81 @@ const bandeiraB =
     <div class="cabResultado">
 
         <span>
+
             🏆 ${tituloFase}
+
         </span>
 
         <span>
+
             📅 ${dt.data}
+
             <br>
+
             🕒 ${dt.hora}
+
         </span>
 
     </div>
 
-<div class="pais">
+    <div class="linhaTime">
 
-    ${
-        bandeiraA
-        ?
-        `<img
-            class="bandeiraResultado"
-            src="${bandeiraA}"
-            alt="${nomeA}"
-        >`
-        :
-        ""
-    }
+        <div class="timeInfo">
 
-    <span>${nomeA}</span>
+            ${
+                bandeiraA
+                ?
+                `<img
+                    class="bandeiraResultado"
+                    src="${bandeiraA}"
+                    alt="${nomeA}"
+                >`
+                :
+                ""
+            }
 
-</div>
+            <span>${nomeA}</span>
 
-    <div class="placarNovo">
+        </div>
 
         <input
+            class="placarInput"
             id="realA_${jogo.id}"
             type="number"
             min="0"
             value="${jogo.placarRealA ?? ""}"
         >
 
-        <span>X</span>
+    </div>
+
+    <div class="xResultado">
+
+        ×
+
+    </div>
+
+    <div class="linhaTime">
+
+        <div class="timeInfo">
+
+            ${
+                bandeiraB
+                ?
+                `<img
+                    class="bandeiraResultado"
+                    src="${bandeiraB}"
+                    alt="${nomeB}"
+                >`
+                :
+                ""
+            }
+
+            <span>${nomeB}</span>
+
+        </div>
 
         <input
+            class="placarInput"
             id="realB_${jogo.id}"
             type="number"
             min="0"
@@ -197,29 +238,13 @@ const bandeiraB =
 
     </div>
 
-<div class="pais">
-
-    ${
-        bandeiraB
-        ?
-        `<img
-            class="bandeiraResultado"
-            src="${bandeiraB}"
-            alt="${nomeB}"
-        >`
-        :
-        ""
-    }
-
-    <span>${nomeB}</span>
-
-</div>
-
     <button
         class="btnSalvarNovo"
         onclick="salvarResultado('${jogo.id}')"
     >
+
         💾 Salvar
+
     </button>
 
 </div>
