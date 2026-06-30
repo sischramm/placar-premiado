@@ -942,21 +942,166 @@ autocomplete="email"
 
 <!-- ABA RESULTADOS -->
 
+<!-- ABA RESULTADOS -->
+
 <div id="abaResultados" style="display:none;">
 
-  <div class="card">
+    <div class="resultadoHeader">
 
-    <h2>⚽ Resultados dos Jogos</h2>
+        <div>
 
-    <p>
-      Informe o placar oficial de cada jogo.
-      <br>
-      🏆 O ranking será recalculado automaticamente após salvar.
-    </p>
+            <h1>🏆 Resultados Oficiais</h1>
+
+            <p>
+                Copa do Mundo FIFA 2026 • Grupo Shark
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div class="resultadoDashboard">
+
+        <div class="dashCard">
+
+            <div class="dashIcon">⚽</div>
+
+            <div class="dashTitulo">
+                Jogos
+            </div>
+
+            <div
+                class="dashNumero"
+                id="dashJogosLancados">
+                72 / 104
+            </div>
+
+        </div>
+
+        <div class="dashCard">
+
+            <div class="dashIcon">⏳</div>
+
+            <div class="dashTitulo">
+                Pendentes
+            </div>
+
+            <div
+                class="dashNumero"
+                id="dashPendentes">
+                32
+            </div>
+
+        </div>
+
+        <div class="dashCard">
+
+            <div class="dashIcon">📊</div>
+
+            <div class="dashTitulo">
+                Progresso
+            </div>
+
+            <div
+                class="dashNumero"
+                id="dashPercentual">
+                69%
+            </div>
+
+        </div>
+
+        <div class="dashCard">
+
+            <div class="dashIcon">🏆</div>
+
+            <div class="dashTitulo">
+                Próximo jogo
+            </div>
+
+            <div
+                class="dashNumero"
+                id="dashProximo">
+                --
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FILTROS -->
+
+    <div class="resultadoFiltros">
+
+        <input
+            id="pesquisaResultado"
+            type="text"
+            placeholder="🔍 Pesquisar seleção..."
+        >
+
+        <select id="filtroFase">
+
+            <option value="TODOS">
+                Todas as fases
+            </option>
+
+            <option value="A">Grupo A</option>
+            <option value="B">Grupo B</option>
+            <option value="C">Grupo C</option>
+            <option value="D">Grupo D</option>
+            <option value="E">Grupo E</option>
+            <option value="F">Grupo F</option>
+            <option value="G">Grupo G</option>
+            <option value="H">Grupo H</option>
+
+            <option value="SEG">
+                Segunda Rodada
+            </option>
+
+            <option value="OIT">
+                Oitavas
+            </option>
+
+            <option value="QUA">
+                Quartas
+            </option>
+
+            <option value="SEM">
+                Semifinal
+            </option>
+
+            <option value="TER">
+                3º Lugar
+            </option>
+
+            <option value="FIN">
+                Final
+            </option>
+
+        </select>
+
+        <select id="filtroStatus">
+
+            <option value="TODOS">
+                Todos
+            </option>
+
+            <option value="PENDENTE">
+                Pendentes
+            </option>
+
+            <option value="FINALIZADO">
+                Finalizados
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- LISTA DOS JOGOS -->
 
     <div id="resultadoJogos"></div>
-
-  </div>
 
 </div>
 
