@@ -153,11 +153,20 @@ async function carregarResultadosNovo(){
 
     </div>
 
-    <div class="pais">
+ <div class="pais">
 
-        ${nomeA}
+    ${
+        obterBandeira(jogo.timeA)
+        ? `<img
+                class="bandeiraResultado"
+                src="${obterBandeira(jogo.timeA)}"
+           >`
+        : ""
+    }
 
-    </div>
+    <span>${nomeA}</span>
+
+</div>
 
     <div class="placarNovo">
 
@@ -179,11 +188,20 @@ async function carregarResultadosNovo(){
 
     </div>
 
-    <div class="pais">
+<div class="pais">
 
-        ${nomeB}
+    ${
+        obterBandeira(jogo.timeB)
+        ? `<img
+                class="bandeiraResultado"
+                src="${obterBandeira(jogo.timeB)}"
+           >`
+        : ""
+    }
 
-    </div>
+    <span>${nomeB}</span>
+
+</div>
 
     <button
         class="btnSalvarNovo"
