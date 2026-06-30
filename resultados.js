@@ -54,11 +54,11 @@ function abrirResultados(){
 
 }
 
-function obterBandeira(sigla){
+function obterBandeira(pais){
 
     if(!window.FLAGS) return "";
 
-    const codigo = window.FLAGS[sigla];
+    const codigo = window.FLAGS[pais];
 
     if(!codigo) return "";
 
