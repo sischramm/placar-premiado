@@ -44,6 +44,44 @@ function abrirResultados(){
 
         </div>
 
+        <div class="resultado-filtros">
+
+            <select
+                id="filtroFase"
+                onchange="carregarResultadosNovo()">
+
+                <option value="GRUPOS">
+                    ⚽ Fase de Grupos
+                </option>
+
+                <option value="SEG">
+                    🏆 16 Avos
+                </option>
+
+                <option value="OIT">
+                    🏆 Oitavas
+                </option>
+
+                <option value="QUA">
+                    🏆 Quartas
+                </option>
+
+                <option value="SEM">
+                    🏆 Semifinal
+                </option>
+
+                <option value="TER">
+                    🥉 3º Lugar
+                </option>
+
+                <option value="FIN">
+                    🏆 Final
+                </option>
+
+            </select>
+
+        </div>
+
         <div id="gradeResultados"></div>
 
     </div>
@@ -68,9 +106,35 @@ function obterBandeira(pais){
 
 async function carregarResultadosNovo(){
 
+        const faseSelecionada =
+        document.getElementById("filtroFase")?.value || "GRUPOS";
+
+    let jogos = [];
+
+if(faseSelecionada=="GRUPOS"){
+
     const snap = await getDocs(
         collection(db,"jogos")
     );
+
+    jogos = snap.docs
+        .map(doc=>({
+
+            id:doc.id,
+
+            ...doc.data()
+
+        }))
+        .sort((a,b)=>
+            new Date(a.dataHora.replace(" ","T"))-
+            new Date(b.dataHora.replace(" ","T"))
+        );
+
+}else{
+
+    jogos = JOGOS_MATA[faseSelecionada] || [];
+
+}
 
     const jogos = snap.docs
         .map(doc=>({
