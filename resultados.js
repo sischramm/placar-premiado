@@ -564,7 +564,7 @@ function criarCardResultado(jogo){
 
             class="btnSalvarNovo"
 
-            onclick="salvarResultado('${jogo.id}','${jogo.origem}')"
+            onclick="salvarResultadoNovo('${jogo.id}','${jogo.origem}')"
 
         >
 
@@ -661,7 +661,7 @@ async function carregarResultadosNovo(){
 // SALVAR RESULTADO
 // ======================================================
 
-async function salvarResultado(id,origem){
+async function salvarResultadoNovo(id,origem){
 
     try{
 
@@ -759,12 +759,10 @@ async function salvarResultado(id,origem){
 
         }
 
-        const botao =
-            document.querySelector(
-
-                `button[onclick="salvarResultado('${id}','${origem}')"]`
-
-            );
+const botao =
+    document.querySelector(
+        `button[onclick="salvarResultadoNovo('${id}','${origem}')"]`
+    );
 
         if(botao){
 
