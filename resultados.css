@@ -2,3 +2,145 @@
    RESULTADOS OFICIAIS
    Grupo Shark - Copa 2026
 ======================================= */
+
+.resultadoCard{
+
+    background:rgba(8,25,45,.95);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+    transition:.25s;
+
+}
+
+.resultadoCard:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.resultadoCabecalho{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+    font-size:14px;
+
+    color:#FFD447;
+
+    font-weight:bold;
+
+}
+
+.resultadoTime{
+
+    text-align:center;
+
+    color:#fff;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin:12px 0;
+
+}
+
+.resultadoPlacar{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin:20px 0;
+
+}
+
+.resultadoPlacar input{
+
+    width:70px;
+
+    height:60px;
+
+    border:none;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    background:#fff;
+
+}
+
+.resultadoPlacar span{
+
+    font-size:34px;
+
+    color:#FFD447;
+
+    font-weight:bold;
+
+}
+
+.btnResultado{
+
+    width:100%;
+
+    margin-top:18px;
+
+    background:#10b65b;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btnResultado:hover{
+
+    background:#17d46d;
+
+}
+
+.statusResultado{
+
+    margin-top:12px;
+
+    text-align:center;
+
+    color:#57ff84;
+
+    font-weight:bold;
+
+}
