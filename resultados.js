@@ -130,6 +130,12 @@ async function carregarResultadosNovo(){
         const nomeB =
             jogo.nomeB || jogo.timeB;
 
+        const bandeiraA =
+    obterBandeira(jogo.timeA);
+
+const bandeiraB =
+    obterBandeira(jogo.timeB);
+
         const tituloFase =
             jogo.fase
                 ? jogo.fase
@@ -153,15 +159,18 @@ async function carregarResultadosNovo(){
 
     </div>
 
- <div class="pais">
+<div class="pais">
 
     ${
-        obterBandeira(jogo.timeA)
-        ? `<img
-                class="bandeiraResultado"
-                src="${obterBandeira(jogo.timeA)}"
-           >`
-        : ""
+        bandeiraA
+        ?
+        `<img
+            class="bandeiraResultado"
+            src="${bandeiraA}"
+            alt="${nomeA}"
+        >`
+        :
+        ""
     }
 
     <span>${nomeA}</span>
@@ -191,12 +200,15 @@ async function carregarResultadosNovo(){
 <div class="pais">
 
     ${
-        obterBandeira(jogo.timeB)
-        ? `<img
-                class="bandeiraResultado"
-                src="${obterBandeira(jogo.timeB)}"
-           >`
-        : ""
+        bandeiraB
+        ?
+        `<img
+            class="bandeiraResultado"
+            src="${bandeiraB}"
+            alt="${nomeB}"
+        >`
+        :
+        ""
     }
 
     <span>${nomeB}</span>
