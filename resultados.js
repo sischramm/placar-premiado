@@ -54,16 +54,95 @@ function abrirResultados(){
 
 }
 
-function carregarResultadosNovo(){
+async function carregarResultadosNovo(){
 
-    document.getElementById("gradeResultados").innerHTML = `
-        <h2 style="
-            color:white;
-            text-align:center;
-            margin-top:50px;
-        ">
-            🚧 Nova Central de Resultados em construção...
-        </h2>
-    `;
+    const snap = await getDocs(
+        collection(db,"jogos")
+    );
+
+    const jogos = snap.docs.map(doc=>({
+
+        id:doc.id,
+
+        ...doc.data()
+
+    }));
+
+    document.getElementById("dashJogos").innerHTML =
+        jogos.length;
+
+    document.getElementById("dashFinalizados").innerHTML =
+        jogos.filter(j=>j.placarRealA!==undefined).length;
+
+    document.getElementById("dashPendentes").innerHTML =
+        jogos.filter(j=>j.placarRealA===undefined).length;
+
+    const grade =
+        document.getElementById("gradeResultados");
+
+    grade.innerHTML="";
+
+    jogos.forEach(jogo=>{
+
+        grade.innerHTML += `
+
+<div class="cardResultadoNovo">
+
+    <div class="cabResultado">
+
+        <span>
+            🏆 ${jogo.grupo}
+        </span>
+
+        <span>
+            🕒 ${jogo.dataHora}
+        </span>
+
+    </div>
+
+    <div class="pais">
+
+        ${jogo.timeA}
+
+    </div>
+
+    <div class="placarNovo">
+
+        <input
+            id="realA_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealA ?? ""}"
+        >
+
+        <span>X</span>
+
+        <input
+            id="realB_${jogo.id}"
+            type="number"
+            value="${jogo.placarRealB ?? ""}"
+        >
+
+    </div>
+
+    <div class="pais">
+
+        ${jogo.timeB}
+
+    </div>
+
+    <button
+        class="btnSalvarNovo"
+        onclick="salvarResultado('${jogo.id}')"
+    >
+
+        💾 Salvar
+
+    </button>
+
+</div>
+
+`;
+
+    });
 
 }
