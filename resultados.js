@@ -1,17 +1,18 @@
-// =======================================
+// =====================================
 // RESULTADOS OFICIAIS
-// Grupo Shark - Copa 2026
-// Versão 2
-// =======================================
+// =====================================
 
-function imagemBandeira(sigla){
+async function abrirResultados(){
 
-    if(!window.FLAGS) return "";
+    const aba =
+        document.getElementById("abaResultados");
 
-    const codigo = window.FLAGS[sigla];
+    const html =
+        await fetch("resultados.html");
 
-    if(!codigo) return "";
+    aba.innerHTML =
+        await html.text();
 
-    return `https://flagcdn.com/w80/${codigo}.png`;
+    carregarResultadosNovo();
 
 }
