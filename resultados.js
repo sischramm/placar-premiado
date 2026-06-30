@@ -60,13 +60,18 @@ async function carregarResultadosNovo(){
         collection(db,"jogos")
     );
 
-    const jogos = snap.docs.map(doc=>({
+    const jogos = snap.docs
+        .map(doc => ({
 
-        id:doc.id,
+            id: doc.id,
 
-        ...doc.data()
+            ...doc.data()
 
-    }));
+        }))
+        .sort((a,b)=>
+            new Date(a.dataHora.replace(" ","T")) -
+            new Date(b.dataHora.replace(" ","T"))
+        );
 
     document.getElementById("dashJogos").innerHTML =
         jogos.length;
@@ -77,12 +82,46 @@ async function carregarResultadosNovo(){
     document.getElementById("dashPendentes").innerHTML =
         jogos.filter(j=>j.placarRealA===undefined).length;
 
+    function formatarDataHora(dataHora){
+
+        const d = new Date(dataHora.replace(" ","T"));
+
+        return{
+
+            data:d.toLocaleDateString("pt-BR"),
+
+            hora:d.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            )
+
+        };
+
+    }
+
     const grade =
         document.getElementById("gradeResultados");
 
     grade.innerHTML="";
 
     jogos.forEach(jogo=>{
+
+        const dt =
+            formatarDataHora(jogo.dataHora);
+
+        const nomeA =
+            jogo.nomeA || jogo.timeA;
+
+        const nomeB =
+            jogo.nomeB || jogo.timeB;
+
+        const tituloFase =
+            jogo.fase
+                ? jogo.fase
+                : "Grupo " + jogo.grupo;
 
         grade.innerHTML += `
 
@@ -91,32 +130,29 @@ async function carregarResultadosNovo(){
     <div class="cabResultado">
 
         <span>
-            🏆 ${jogo.grupo}
+            🏆 ${tituloFase}
         </span>
 
         <span>
-            🕒 ${jogo.dataHora}
+            📅 ${dt.data}
+            <br>
+            🕒 ${dt.hora}
         </span>
 
     </div>
 
-<div class="pais">
+    <div class="pais">
 
-    <img
-        class="bandeiraResultado"
-        src="https://flagcdn.com/w80/${FLAGS[jogo.timeA]}.png"
-        onerror="this.style.display='none'"
-    >
+        ${nomeA}
 
-    <div>${jogo.timeA}</div>
-
-</div>
+    </div>
 
     <div class="placarNovo">
 
         <input
             id="realA_${jogo.id}"
             type="number"
+            min="0"
             value="${jogo.placarRealA ?? ""}"
         >
 
@@ -125,30 +161,23 @@ async function carregarResultadosNovo(){
         <input
             id="realB_${jogo.id}"
             type="number"
+            min="0"
             value="${jogo.placarRealB ?? ""}"
         >
 
     </div>
 
-<div class="pais">
+    <div class="pais">
 
-    <img
-        class="bandeiraResultado"
-        src="https://flagcdn.com/w80/${FLAGS[jogo.timeB]}.png"
-        onerror="this.style.display='none'"
-    >
+        ${nomeB}
 
-    <div>${jogo.timeB}</div>
-
-</div>
+    </div>
 
     <button
         class="btnSalvarNovo"
         onclick="salvarResultado('${jogo.id}')"
     >
-
         💾 Salvar
-
     </button>
 
 </div>
