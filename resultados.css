@@ -168,3 +168,105 @@ grid-template-columns:1fr;
 }
 
 }
+
+.cardResultadoNovo{
+
+    background:#102d53;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.30);
+
+}
+
+.cabResultado{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#FFD447;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+}
+
+.pais{
+
+    text-align:center;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin:10px;
+
+}
+
+.placarNovo{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.placarNovo input{
+
+    width:55px;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+}
+
+.placarNovo span{
+
+    color:#FFD447;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+.btnSalvarNovo{
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:#17b65a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
