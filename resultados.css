@@ -1,8 +1,125 @@
-/* =======================================
-   RESULTADOS OFICIAIS
-   Grupo Shark - Copa 2026
-======================================= */
+/* =====================================
+   CENTRAL DE RESULTADOS
+===================================== */
 
+.resultado-container{
+
+    max-width:1700px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+}
+
+.resultado-topo{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+.resultado-topo h2{
+
+    color:#FFD447;
+
+    font-size:42px;
+
+    margin-bottom:8px;
+
+    font-weight:900;
+
+}
+
+.resultado-topo p{
+
+    color:#d8e6f8;
+
+    font-size:18px;
+
+}
+
+.resultado-dashboard{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.dash-card{
+
+    background:#10345e;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.30);
+
+}
+
+.dash-card span{
+
+    display:block;
+
+    font-size:15px;
+
+    opacity:.8;
+
+}
+
+.dash-card strong{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:36px;
+
+    color:#FFD447;
+
+}
+
+.resultado-filtros{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:30px;
+
+}
+
+.resultado-filtros input{
+
+    flex:1;
+
+}
+
+.resultado-filtros input,
+.resultado-filtros select{
+
+    height:55px;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:0 18px;
+
+    font-size:17px;
+
+}
 
 #gradeResultados{
 
@@ -14,141 +131,13 @@
 
 }
 
-.resultadoCard{
+@media(max-width:1200px){
 
-    background:#102743;
+.resultado-dashboard{
 
-    border-radius:18px;
-
-    padding:18px;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:0 8px 25px rgba(0,0,0,.35);
-
-    transition:.25s;
+grid-template-columns:repeat(2,1fr);
 
 }
-
-.resultadoCard:hover{
-
-    transform:translateY(-4px);
-
-}
-
-.resultadoCabecalho{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    color:#FFD447;
-
-    font-size:13px;
-
-    font-weight:bold;
-
-    margin-bottom:15px;
-
-}
-
-.resultadoTime{
-
-    text-align:center;
-
-    color:white;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    margin:10px 0;
-
-}
-
-.resultadoPlacar{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:10px;
-
-    margin:15px 0;
-
-}
-
-.resultadoPlacar input{
-
-    width:55px;
-
-    height:55px;
-
-    border:none;
-
-    border-radius:10px;
-
-    text-align:center;
-
-    font-size:26px;
-
-    font-weight:bold;
-
-}
-
-.resultadoPlacar span{
-
-    color:#FFD447;
-
-    font-size:30px;
-
-    font-weight:bold;
-
-}
-
-.btnResultado{
-
-    width:100%;
-
-    margin-top:15px;
-
-    background:#18b558;
-
-    color:white;
-
-    border:none;
-
-    border-radius:10px;
-
-    padding:12px;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-.btnResultado:hover{
-
-    background:#1dd768;
-
-}
-
-@media(max-width:1400px){
-
-#gradeResultados{
-
-grid-template-columns:repeat(3,1fr);
-
-}
-
-}
-
-@media(max-width:1000px){
 
 #gradeResultados{
 
@@ -159,6 +148,18 @@ grid-template-columns:repeat(2,1fr);
 }
 
 @media(max-width:700px){
+
+.resultado-dashboard{
+
+grid-template-columns:1fr;
+
+}
+
+.resultado-filtros{
+
+flex-direction:column;
+
+}
 
 #gradeResultados{
 
