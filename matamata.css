@@ -190,3 +190,51 @@
     }
 
 }
+
+.tipoResultado{
+
+    display:flex;
+
+    gap:8px;
+
+    margin:14px 0 8px;
+
+}
+
+.btnTipo{
+
+    flex:1;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#274d79;
+
+    color:#FFF;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    transition:.2s;
+
+}
+
+.btnTipo:hover{
+
+    background:#37659b;
+
+}
+
+.btnTipo.ativo{
+
+    background:#FFD447;
+
+    color:#111;
+
+}
