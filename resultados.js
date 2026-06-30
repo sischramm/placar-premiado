@@ -276,64 +276,73 @@ async function carregarJogosMata(fase){
         const confrontos =
             JOGOS_MATA[fase] || [];
 
-        const snap =
-            await getDocs(
-                collection(
-                    dbMata,
-                    "resultados"
-                )
+        const ref =
+            window.doc(
+                window.dbMata,
+                "resultados",
+                fase
             );
 
-        const resultados = {};
+        const snap =
+            await window.getDoc(ref);
 
-        snap.forEach(doc=>{
+        const dados =
+            snap.exists()
+            ? snap.data().resultados || {}
+            : {};
 
-            resultados[doc.id] =
-                doc.data();
+        return confrontos.map(jogo=>{
+
+            const resultado =
+                dados[jogo.jogo] || {};
+
+            // ==========================
+            // Mantém o tipo selecionado
+            // ==========================
+
+            if(resultado.decisao){
+
+                TIPO_RESULTADO[String(jogo.jogo)] =
+                    resultado.decisao;
+
+            }
+
+            return{
+
+                origem:"MATA",
+
+                id:String(jogo.jogo),
+
+                jogo:jogo.jogo,
+
+                fase:jogo.fase,
+
+                grupo:jogo.fase,
+
+                timeA:jogo.timeA,
+
+                nomeA:jogo.nomeA,
+
+                timeB:jogo.timeB,
+
+                nomeB:jogo.nomeB,
+
+                data:jogo.data,
+
+                hora:jogo.hora,
+
+                placarRealA:
+                    resultado.placarRealA ?? null,
+
+                placarRealB:
+                    resultado.placarRealB ?? null,
+
+                decisao:
+                    resultado.decisao ?? "TN"
+
+            };
 
         });
-
-        const jogos =
-            confrontos.map(jogo=>{
-
-                const resultado =
-                    resultados[String(jogo.jogo)] || {};
-
-                return{
-
-                    origem:"MATA",
-
-                    id:String(jogo.jogo),
-
-                    jogo:jogo.jogo,
-
-                    fase:jogo.fase,
-
-                    grupo:jogo.fase,
-
-                    timeA:jogo.timeA,
-
-                    nomeA:jogo.nomeA,
-
-                    timeB:jogo.timeB,
-
-                    nomeB:jogo.nomeB,
-
-                    data:jogo.data,
-
-                    hora:jogo.hora,
-
-                    placarRealA:
-                        resultado.placarRealA ?? null,
-
-                    placarRealB:
-                        resultado.placarRealB ?? null
-
-                };
-
-            });
-
-        return jogos;
 
     }catch(erro){
 
@@ -765,40 +774,71 @@ async function salvarResultadoNovo(id,origem){
 
         }
 
-        // =====================================
-        // MATA-MATA
-        // =====================================
+// =====================================
+// MATA-MATA
+// =====================================
 
-        else{
+else{
 
-            await setDoc(
+    const fase =
+        document.getElementById(
+            "filtroFase"
+        ).value;
 
-                doc(
-                    dbMata,
-                    "resultados",
-                    String(id)
-                ),
+    const ref =
+        window.doc(
+            window.dbMata,
+            "resultados",
+            fase
+        );
 
-                {
+    const snap =
+        await window.getDoc(ref);
 
-                    placarRealA:placarA,
+    let resultados = {};
 
-                    placarRealB:placarB,
+    if(snap.exists()){
 
-                    atualizadoEm:
-                        serverTimestamp()
+        resultados =
+            snap.data().resultados || {};
 
-                },
+    }
 
-                {
+    resultados[id]={
 
-                    merge:true
+        placarRealA:placarA,
 
-                }
+        placarRealB:placarB,
 
-            );
+        decisao:
+            TIPO_RESULTADO[id] || "TN"
+
+    };
+
+    await window.setDoc(
+
+        ref,
+
+        {
+
+            fase,
+
+            resultados,
+
+            atualizadoEm:
+                window.serverTimestamp()
+
+        },
+
+        {
+
+            merge:true
 
         }
+
+    );
+
+}
 
 const botao =
     document.querySelector(
