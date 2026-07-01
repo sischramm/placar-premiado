@@ -629,3 +629,8 @@ async function recalcularRankingFase(fase){
     }
 
 }
+
+window.atualizarProximoConfronto = atualizarProximoConfronto;
+window.atualizarTerceiroLugar = atualizarTerceiroLugar;
+window.recalcularRankingFase = recalcularRankingFase;
+window.atualizarMataAutomatico = atualizarMataAutomatico;
