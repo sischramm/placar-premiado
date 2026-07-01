@@ -482,63 +482,146 @@ async function atualizarTerceiroLugar(jogoAtual,perdedor){
 
 
 // ======================================================
-// RECALCULA APENAS UMA FASE DO RANKING
+// RECALCULA O RANKING DE UMA FASE
+// 10 pontos vencedor
+// +10 pontos forma
 // ======================================================
 
 async function recalcularRankingFase(fase){
 
     try{
 
-        console.log(
-            "Recalculando ranking da fase:",
-            fase
-        );
+        // =============================
+        // RESULTADOS DA FASE
+        // =============================
 
-        const refPalpites =
-            window.collection(
+        const refResultados =
+            window.doc(
                 window.dbMata,
-                "palpites"
+                "resultados",
+                fase
             );
 
-        const snap =
-            await window.getDocs(refPalpites);
+        const snapResultados =
+            await window.getDoc(refResultados);
 
-        if(snap.empty){
+        if(!snapResultados.exists()) return;
 
-            console.log(
-                "Nenhum palpite encontrado."
+        const resultados =
+            snapResultados.data().resultados || {};
+
+        // =============================
+        // PALPITES
+        // =============================
+
+        const snapPalpites =
+            await window.getDocs(
+                window.collection(
+                    window.dbMata,
+                    "palpites"
+                )
             );
 
-            return;
+        for(const documento of snapPalpites.docs){
 
-        }
+            const dados =
+                documento.data();
 
-        const documentos =
-            snap.docs.filter(doc=>{
+            if(dados.fase!=fase)
+                continue;
 
-                const dados =
-                    doc.data();
+            let pontos=0;
 
-                return dados.fase == fase;
+            const palpites =
+                dados.palpites || {};
+
+            Object.keys(palpites).forEach(jogo=>{
+
+                const resultado =
+                    resultados[jogo];
+
+                if(!resultado)
+                    return;
+
+                const palpite =
+                    palpites[jogo];
+
+                // ==========================
+                // ACERTOU VENCEDOR
+                // ==========================
+
+                if(
+
+                    palpite.vencedor ==
+                    resultado.vencedor.time
+
+                ){
+
+                    pontos +=10;
+
+                    // ======================
+                    // ACERTOU A FORMA
+                    // ======================
+
+                    if(
+
+                        palpite.forma ==
+                        resultado.forma
+
+                    ){
+
+                        pontos +=10;
+
+                    }
+
+                }
 
             });
 
-        console.log(
+            await window.setDoc(
 
-            "Palpites encontrados:",
+                window.doc(
 
-            documentos.length
+                    window.dbMata,
 
-        );
+                    "ranking",
 
-        // Próximo passo:
-        // calcular a pontuação de cada usuário
+                    dados.email
+
+                ),
+
+                {
+
+                    email:dados.email,
+
+                    nome:dados.nome,
+
+                    empresa:dados.empresa,
+
+                    fase,
+
+                    pontos,
+
+                    atualizadoEm:
+                        window.serverTimestamp()
+
+                },
+
+                {
+
+                    merge:true
+
+                }
+
+            );
+
+        }
 
     }catch(erro){
 
         console.error(
 
-            "Erro ao recalcular ranking:",
+            "Erro ranking:",
 
             erro
 
@@ -547,4 +630,3 @@ async function recalcularRankingFase(fase){
     }
 
 }
-
