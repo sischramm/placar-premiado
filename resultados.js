@@ -269,6 +269,10 @@ async function carregarJogosGrupo(){
 // CARREGA JOGOS DO MATA-MATA
 // ======================================================
 
+// ======================================================
+// CARREGA JOGOS DO MATA-MATA
+// ======================================================
+
 async function carregarJogosMata(fase){
 
     try{
@@ -293,19 +297,8 @@ async function carregarJogosMata(fase){
 
         return confrontos.map(jogo=>{
 
-            const resultado =
+            const salvo =
                 dados[jogo.jogo] || {};
-
-            // ==========================
-            // Mantém o tipo selecionado
-            // ==========================
-
-            if(resultado.decisao){
-
-                TIPO_RESULTADO[String(jogo.jogo)] =
-                    resultado.decisao;
-
-            }
 
             return{
 
@@ -319,26 +312,43 @@ async function carregarJogosMata(fase){
 
                 grupo:jogo.fase,
 
-                timeA:jogo.timeA,
+                // =====================
+                // Time A
+                // =====================
 
-                nomeA:jogo.nomeA,
+                timeA:
+                    salvo.timeA ??
+                    jogo.timeA ??
+                    "ADEF",
 
-                timeB:jogo.timeB,
+                nomeA:
+                    salvo.nomeA ??
+                    jogo.nomeA ??
+                    "A definir",
 
-                nomeB:jogo.nomeB,
+                // =====================
+                // Time B
+                // =====================
+
+                timeB:
+                    salvo.timeB ??
+                    jogo.timeB ??
+                    "ADEF",
+
+                nomeB:
+                    salvo.nomeB ??
+                    jogo.nomeB ??
+                    "A definir",
 
                 data:jogo.data,
 
                 hora:jogo.hora,
 
-                placarRealA:
-                    resultado.placarRealA ?? null,
+                vencedor:
+                    salvo.vencedor ?? null,
 
-                placarRealB:
-                    resultado.placarRealB ?? null,
-
-                decisao:
-                    resultado.decisao ?? "TN"
+                forma:
+                    salvo.forma ?? "N"
 
             };
 
@@ -347,7 +357,6 @@ async function carregarJogosMata(fase){
     }catch(erro){
 
         console.error(
-            "Erro ao carregar Mata-Mata:",
             erro
         );
 
@@ -822,6 +831,7 @@ async function salvarResultadoNovo(id,origem){
 
         }
 
+
 // =====================================
 // MATA-MATA
 // =====================================
@@ -844,7 +854,7 @@ else{
     }
 
     const escolha =
-    escolhasResultado[id];
+        escolhasResultado[id];
 
     if(!escolha){
 
@@ -898,7 +908,10 @@ else{
         vencedor,
 
         forma:
-    escolha.forma || "N"
+            escolha.forma || "N",
+
+        atualizadoEm:
+            new Date().toISOString()
 
     };
 
@@ -925,7 +938,11 @@ else{
 
     );
 
-    await avancarVencedor(
+    // ===========================
+    // AVANÇA O VENCEDOR
+    // ===========================
+
+    await atualizarProximoConfronto(
 
         Number(id),
 
@@ -940,29 +957,33 @@ const botao =
         `button[onclick="salvarResultadoNovo('${id}','${origem}')"]`
     );
 
-        if(botao){
+if(botao){
 
-            botao.innerHTML =
-                "✅ Salvo";
+    botao.innerHTML =
+        "✅ Salvo";
 
-            botao.style.background =
-                "#0A8F3C";
-
-        }
-
-        carregarResultadosNovo();
-
-    }catch(erro){
-
-        console.error(erro);
-
-        alert(
-            "Erro ao salvar resultado."
-        );
-
-    }
+    botao.style.background =
+        "#0A8F3C";
 
 }
+
+carregarResultadosNovo();
+
+}catch(erro){
+
+    console.error(erro);
+
+    alert(
+        "Erro ao salvar resultado."
+    );
+
+}
+
+}
+
+// ======================================================
+// SELECIONA VENCEDOR
+// ======================================================
 
 function selecionarVencedorResultado(jogo,lado){
 
@@ -972,8 +993,7 @@ function selecionarVencedorResultado(jogo,lado){
 
     document
         .getElementById("R"+lado+jogo)
-        .classList
-        .add("selecionado");
+        ?.classList.add("selecionado");
 
     document
         .getElementById("formasR"+jogo)
@@ -981,29 +1001,32 @@ function selecionarVencedorResultado(jogo,lado){
 
     escolhasResultado[jogo] ??={};
 
-    escolhasResultado[jogo].lado=lado;
+    escolhasResultado[jogo].lado = lado;
 
 }
+
+// ======================================================
+// SELECIONA FORMA
+// ======================================================
 
 function selecionarFormaResultado(jogo,forma){
 
     escolhasResultado[jogo] ??={};
 
-    escolhasResultado[jogo].forma=forma;
+    escolhasResultado[jogo].forma = forma;
 
     document
         .querySelectorAll(`#formasR${jogo} button`)
         .forEach(btn=>btn.classList.remove("formaSelecionada"));
 
-    let indice=0;
+    let indice = 0;
 
-    if(forma=="N") indice=0;
-    if(forma=="P") indice=1;
-    if(forma=="PE") indice=2;
+    if(forma=="N") indice = 0;
+    if(forma=="P") indice = 1;
+    if(forma=="PE") indice = 2;
 
     document
         .querySelectorAll(`#formasR${jogo} button`)[indice]
-        .classList
-        .add("formaSelecionada");
+        ?.classList.add("formaSelecionada");
 
-}
+}        
