@@ -88,3 +88,106 @@ const MAPA_TERCEIRO = {
     }
 
 };
+
+// ======================================================
+// RETORNA VENCEDOR E PERDEDOR
+// ======================================================
+
+function obterResultadoJogo(jogo, placarA, placarB, decisao){
+
+    let vencedor = null;
+    let perdedor = null;
+
+    if(placarA > placarB){
+
+        vencedor = {
+
+            time:jogo.timeA,
+            nome:jogo.nomeA
+
+        };
+
+        perdedor = {
+
+            time:jogo.timeB,
+            nome:jogo.nomeB
+
+        };
+
+    }
+
+    else if(placarB > placarA){
+
+        vencedor = {
+
+            time:jogo.timeB,
+            nome:jogo.nomeB
+
+        };
+
+        perdedor = {
+
+            time:jogo.timeA,
+            nome:jogo.nomeA
+
+        };
+
+    }
+
+    else{
+
+        // Empate
+        // Decide pela escolha do administrador
+        // (Prorrogação ou Pênaltis)
+
+        const vencedorLado =
+            TIPO_VENCEDOR[jogo.jogo] || "A";
+
+        if(vencedorLado=="A"){
+
+            vencedor={
+
+                time:jogo.timeA,
+                nome:jogo.nomeA
+
+            };
+
+            perdedor={
+
+                time:jogo.timeB,
+                nome:jogo.nomeB
+
+            };
+
+        }else{
+
+            vencedor={
+
+                time:jogo.timeB,
+                nome:jogo.nomeB
+
+            };
+
+            perdedor={
+
+                time:jogo.timeA,
+                nome:jogo.nomeA
+
+            };
+
+        }
+
+    }
+
+    return{
+
+        vencedor,
+
+        perdedor,
+
+        decisao
+
+    };
+
+}
+
