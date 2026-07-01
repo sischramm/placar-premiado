@@ -191,3 +191,72 @@ function obterResultadoJogo(jogo, placarA, placarB, decisao){
 
 }
 
+// ======================================================
+// AVANÇA O VENCEDOR PARA O PRÓXIMO CONFRONTO
+// ======================================================
+
+async function avancarVencedor(jogoAtual, vencedor){
+
+    const mapa = MAPA_MATA[jogoAtual];
+
+    if(!mapa) return;
+
+    const faseDestino =
+        mapa.proximo <= 96 ? "OIT" :
+        mapa.proximo <=100 ? "QUA" :
+        mapa.proximo <=102 ? "SEM" :
+        "FIN";
+
+    const ref = window.doc(
+        window.dbMata,
+        "resultados",
+        faseDestino
+    );
+
+    const snap = await window.getDoc(ref);
+
+    let dados = {};
+
+    if(snap.exists()){
+
+        dados = snap.data().resultados || {};
+
+    }
+
+    dados[mapa.proximo] ??= {};
+
+    if(mapa.lado=="A"){
+
+        dados[mapa.proximo].timeA = vencedor.time;
+        dados[mapa.proximo].nomeA = vencedor.nome;
+
+    }else{
+
+        dados[mapa.proximo].timeB = vencedor.time;
+        dados[mapa.proximo].nomeB = vencedor.nome;
+
+    }
+
+    await window.setDoc(
+
+        ref,
+
+        {
+
+            fase:faseDestino,
+
+            resultados:dados,
+
+            atualizadoEm:window.serverTimestamp()
+
+        },
+
+        {
+
+            merge:true
+
+        }
+
+    );
+
+}
