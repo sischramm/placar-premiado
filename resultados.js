@@ -476,55 +476,46 @@ function selecionarFormaResultado(jogo,forma){
 
 function criarCardResultado(jogo){
 
-    const dt =
-        formatarDataHora(jogo);
+    const dt = formatarDataHora(jogo);
 
-    const nomeA =
-        jogo.nomeA || jogo.timeA;
+    const nomeA = jogo.nomeA || jogo.timeA;
 
-    const nomeB =
-        jogo.nomeB || jogo.timeB;
+    const nomeB = jogo.nomeB || jogo.timeB;
 
-    const bandeiraA =
-        obterBandeira(jogo.timeA);
+    const bandeiraA = obterBandeira(jogo.timeA);
 
-    const bandeiraB =
-        obterBandeira(jogo.timeB);
+    const bandeiraB = obterBandeira(jogo.timeB);
 
     const titulo =
-
-        jogo.fase &&
         jogo.origem=="MATA"
-
-        ? formatarFase(jogo.fase)
-
-        : "Grupo " + jogo.grupo;
+            ? formatarFase(jogo.fase)
+            : "Grupo " + jogo.grupo;
 
     const tipoSelecionado =
-        jogo.decisao || "TN";
+        jogo.forma || "N";
 
     const div =
         document.createElement("div");
 
-    div.className =
-        "cardResultadoNovo";
+    div.className="cardResultadoNovo";
 
-    div.innerHTML = `
+    div.id="resultado"+jogo.id;
+
+    // ==================================================
+    // FASE DE GRUPOS
+    // ==================================================
+
+    if(jogo.origem=="GRUPOS"){
+
+        div.innerHTML=`
 
         <div class="cabResultado">
 
-            <span>
-
-                🏆 ${titulo}
-
-            </span>
+            <span>🏆 ${titulo}</span>
 
             <span>
 
-                📅 ${dt.data}
-
-                <br>
-
+                📅 ${dt.data}<br>
                 🕒 ${dt.hora}
 
             </span>
@@ -538,11 +529,8 @@ function criarCardResultado(jogo){
                 ${
                     bandeiraA
                     ?
-                    `<img
-                        class="bandeiraResultado"
-                        src="${bandeiraA}"
-                        alt="${nomeA}"
-                    >`
+                    `<img class="bandeiraResultado"
+                    src="${bandeiraA}">`
                     :
                     ""
                 }
@@ -556,8 +544,7 @@ function criarCardResultado(jogo){
                 id="realA_${jogo.id}"
                 type="number"
                 min="0"
-                value="${jogo.placarRealA ?? ""}"
-            >
+                value="${jogo.placarRealA ?? ""}">
 
         </div>
 
@@ -574,11 +561,8 @@ function criarCardResultado(jogo){
                 ${
                     bandeiraB
                     ?
-                    `<img
-                        class="bandeiraResultado"
-                        src="${bandeiraB}"
-                        alt="${nomeB}"
-                    >`
+                    `<img class="bandeiraResultado"
+                    src="${bandeiraB}">`
                     :
                     ""
                 }
@@ -592,61 +576,113 @@ function criarCardResultado(jogo){
                 id="realB_${jogo.id}"
                 type="number"
                 min="0"
-                value="${jogo.placarRealB ?? ""}"
-            >
+                value="${jogo.placarRealB ?? ""}">
 
         </div>
 
-        ${
-            jogo.origem=="MATA"
+        <button
+            class="btnSalvarNovo"
+            onclick="salvarResultadoNovo('${jogo.id}','GRUPOS')">
 
-            ?
+            💾 Salvar
 
-            `
+        </button>
 
-            <div class="tipoResultado">
+        `;
 
-                <button
-                    class="btnTipo ${tipoSelecionado=="TN" ? "ativo" : ""}"
-                    data-jogo="${jogo.id}"
-                    data-tipo="TN"
-                    onclick="selecionarTipoResultado('${jogo.id}','TN',this)"
-                >
-                    Tempo Normal
-                </button>
+        return div;
 
-                <button
-                    class="btnTipo ${tipoSelecionado=="PR" ? "ativo" : ""}"
-                    data-jogo="${jogo.id}"
-                    data-tipo="PR"
-                    onclick="selecionarTipoResultado('${jogo.id}','PR',this)"
-                >
-                    Prorrogação
-                </button>
+    }
 
-                <button
-                    class="btnTipo ${tipoSelecionado=="PE" ? "ativo" : ""}"
-                    data-jogo="${jogo.id}"
-                    data-tipo="PE"
-                    onclick="selecionarTipoResultado('${jogo.id}','PE',this)"
-                >
-                    Pênaltis
-                </button>
+    // ==================================================
+    // MATA-MATA
+    // ==================================================
+
+    div.innerHTML=`
+
+        <div class="cabResultado">
+
+            <span>🏆 ${titulo}</span>
+
+            <span>
+
+                📅 ${dt.data}<br>
+                🕒 ${dt.hora}
+
+            </span>
+
+        </div>
+
+        <div class="times">
+
+            <div
+                class="time"
+                id="RA${jogo.id}"
+                onclick="selecionarVencedorResultado('${jogo.id}','A')">
+
+                <img
+                    class="flag"
+                    src="https://flagcdn.com/w80/${FLAGS[jogo.timeA] || "un"}.png">
+
+                <span>${nomeA}</span>
 
             </div>
 
-            `
+            <div class="vs">
 
-            :
+                X
 
-            ""
+            </div>
 
-        }
+            <div
+                class="time"
+                id="RB${jogo.id}"
+                onclick="selecionarVencedorResultado('${jogo.id}','B')">
+
+                <img
+                    class="flag"
+                    src="https://flagcdn.com/w80/${FLAGS[jogo.timeB] || "un"}.png">
+
+                <span>${nomeB}</span>
+
+            </div>
+
+        </div>
+
+        <div
+            class="formas"
+            id="formasR${jogo.id}"
+            style="display:none;">
+
+            <button
+                class="${tipoSelecionado=="N"?"formaSelecionada":""}"
+                onclick="selecionarFormaResultado('${jogo.id}','N')">
+
+                Tempo Normal
+
+            </button>
+
+            <button
+                class="${tipoSelecionado=="P"?"formaSelecionada":""}"
+                onclick="selecionarFormaResultado('${jogo.id}','P')">
+
+                Prorrogação
+
+            </button>
+
+            <button
+                class="${tipoSelecionado=="PE"?"formaSelecionada":""}"
+                onclick="selecionarFormaResultado('${jogo.id}','PE')">
+
+                Pênaltis
+
+            </button>
+
+        </div>
 
         <button
             class="btnSalvarNovo"
-            onclick="salvarResultadoNovo('${jogo.id}','${jogo.origem}')"
-        >
+            onclick="salvarResultadoNovo('${jogo.id}','MATA')">
 
             💾 Salvar
 
