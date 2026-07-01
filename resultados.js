@@ -435,26 +435,37 @@ function atualizarDashboard(jogos,fase){
 const escolhasResultado = {};
 
 // ======================================================
-// SELECIONA O VENCEDOR (ADMIN)
+// SELECIONA O VENCEDOR
 // ======================================================
 
 function selecionarVencedorResultado(jogo,lado){
 
-    document
-        .querySelectorAll(`#resultado${jogo} .time`)
-        .forEach(e=>e.classList.remove("selecionado"));
-
-    document
-        .getElementById("R"+lado+jogo)
-        ?.classList.add("selecionado");
-
-    document
-        .getElementById("formasR"+jogo)
-        .style.display="flex";
+    escolhasResultado ??= {};
 
     escolhasResultado[jogo] ??= {};
 
     escolhasResultado[jogo].lado = lado;
+
+    document
+        .querySelectorAll(
+            `#resultado${jogo} .time`
+        )
+        .forEach(t=>t.classList.remove("selecionado"));
+
+    document
+        .getElementById(
+            "R"+lado+jogo
+        )
+        ?.classList.add("selecionado");
+
+    document
+        .getElementById(
+            "formasR"+jogo
+        )
+        ?.style.setProperty(
+            "display",
+            "flex"
+        );
 
 }
 
@@ -464,15 +475,37 @@ function selecionarVencedorResultado(jogo,lado){
 
 function selecionarFormaResultado(jogo,forma){
 
+    escolhasResultado ??= {};
+
     escolhasResultado[jogo] ??= {};
 
     escolhasResultado[jogo].forma = forma;
 
     document
-        .querySelectorAll(`#formasR${jogo} button`)
-        .forEach(btn=>btn.classList.remove("formaSelecionada"));
+        .querySelectorAll(
+            `#formasR${jogo} button`
+        )
+        .forEach(btn=>
+            btn.classList.remove("formaSelecionada")
+        );
 
-    event.target.classList.add("formaSelecionada");
+    const mapa = {
+
+        N:0,
+
+        P:1,
+
+        PE:2
+
+    };
+
+    document
+        .querySelectorAll(
+            `#formasR${jogo} button`
+        )[mapa[forma]]
+        ?.classList.add(
+            "formaSelecionada"
+        );
 
 }
 
