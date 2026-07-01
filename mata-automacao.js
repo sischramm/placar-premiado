@@ -479,3 +479,72 @@ async function atualizarTerceiroLugar(jogoAtual,perdedor){
     );
 
 }
+
+
+// ======================================================
+// RECALCULA APENAS UMA FASE DO RANKING
+// ======================================================
+
+async function recalcularRankingFase(fase){
+
+    try{
+
+        console.log(
+            "Recalculando ranking da fase:",
+            fase
+        );
+
+        const refPalpites =
+            window.collection(
+                window.dbMata,
+                "palpites"
+            );
+
+        const snap =
+            await window.getDocs(refPalpites);
+
+        if(snap.empty){
+
+            console.log(
+                "Nenhum palpite encontrado."
+            );
+
+            return;
+
+        }
+
+        const documentos =
+            snap.docs.filter(doc=>{
+
+                const dados =
+                    doc.data();
+
+                return dados.fase == fase;
+
+            });
+
+        console.log(
+
+            "Palpites encontrados:",
+
+            documentos.length
+
+        );
+
+        // Próximo passo:
+        // calcular a pontuação de cada usuário
+
+    }catch(erro){
+
+        console.error(
+
+            "Erro ao recalcular ranking:",
+
+            erro
+
+        );
+
+    }
+
+}
+
