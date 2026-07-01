@@ -308,21 +308,23 @@ async function carregarJogosMata(fase){
 
                 grupo:jogo.fase,
 
+                ordem:jogo.ordem,
+
                 timeA:
-    salvo.timeA ??
-    jogo.timeA,
+                    salvo.timeA ??
+                    jogo.timeA,
 
-nomeA:
-    salvo.nomeA ??
-    jogo.nomeA,
+                nomeA:
+                    salvo.nomeA ??
+                    jogo.nomeA,
 
-timeB:
-    salvo.timeB ??
-    jogo.timeB,
+                timeB:
+                    salvo.timeB ??
+                    jogo.timeB,
 
-nomeB:
-    salvo.nomeB ??
-    jogo.nomeB,
+                nomeB:
+                    salvo.nomeB ??
+                    jogo.nomeB,
 
                 data:jogo.data,
 
@@ -332,7 +334,10 @@ nomeB:
                     salvo.vencedor ?? null,
 
                 forma:
-                    salvo.forma ?? "N"
+                    salvo.forma ?? "N",
+
+                atualizadoEm:
+                    salvo.atualizadoEm ?? null
 
             };
 
@@ -341,6 +346,7 @@ nomeB:
     }catch(erro){
 
         console.error(
+            "Erro ao carregar mata:",
             erro
         );
 
@@ -785,14 +791,52 @@ async function carregarResultadosNovo(){
     jogos.forEach(jogo=>{
 
         grade.appendChild(
-
-            criarCardResultado(
-                jogo
-            )
-
+            criarCardResultado(jogo)
         );
 
     });
+
+    // =====================================
+    // RESTAURA O MATA-MATA JÁ SALVO
+    // =====================================
+
+    if(faseSelecionada!="GRUPOS"){
+
+        jogos.forEach(jogo=>{
+
+            if(!jogo.vencedor) return;
+
+            escolhasResultado[jogo.id] = {
+
+                lado:
+                    jogo.vencedor.time == jogo.timeA
+                        ? "A"
+                        : "B",
+
+                forma:
+                    jogo.forma || "N"
+
+            };
+
+            selecionarVencedorResultado(
+
+                jogo.id,
+
+                escolhasResultado[jogo.id].lado
+
+            );
+
+            selecionarFormaResultado(
+
+                jogo.id,
+
+                escolhasResultado[jogo.id].forma
+
+            );
+
+        });
+
+    }
 
 }
 
