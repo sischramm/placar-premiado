@@ -365,4 +365,117 @@ async function atualizarProximoConfronto(jogoAtual,vencedor){
 
     );
 
+// Atualiza as telas automaticamente
+    await atualizarMataAutomatico();
+
+}
+
+
+
+// ======================================================
+// ATUALIZA A TELA APÓS AVANÇAR
+// ======================================================
+
+async function atualizarMataAutomatico(){
+
+    // Se estiver na Central de Resultados
+    if(typeof carregarResultadosNovo=="function"){
+
+        await carregarResultadosNovo();
+
+    }
+
+    // Se estiver na tela do Mata-Mata
+    if(typeof carregarFase=="function"){
+
+        carregarFase(faseAtual);
+
+    }
+
+    // Atualiza Ranking
+    if(typeof carregarRanking=="function"){
+
+        carregarRanking();
+
+    }
+
+    // Atualiza Estatísticas
+    if(typeof carregarEstatisticas=="function"){
+
+        carregarEstatisticas();
+
+    }
+
+}
+
+
+// ======================================================
+// AVANÇA O PERDEDOR PARA O 3º LUGAR
+// ======================================================
+
+async function atualizarTerceiroLugar(jogoAtual,perdedor){
+
+    const mapa = MAPA_TERCEIRO[jogoAtual];
+
+    if(!mapa) return;
+
+    const ref = window.doc(
+
+        window.dbMata,
+
+        "resultados",
+
+        "L3"
+
+    );
+
+    const snap = await window.getDoc(ref);
+
+    let dados = {};
+
+    if(snap.exists()){
+
+        dados = snap.data().resultados || {};
+
+    }
+
+    dados[103] ??= {};
+
+    if(mapa.lado=="A"){
+
+        dados[103].timeA = perdedor.time;
+
+        dados[103].nomeA = perdedor.nome;
+
+    }else{
+
+        dados[103].timeB = perdedor.time;
+
+        dados[103].nomeB = perdedor.nome;
+
+    }
+
+    await window.setDoc(
+
+        ref,
+
+        {
+
+            fase:"L3",
+
+            resultados:dados,
+
+            atualizadoEm:
+                window.serverTimestamp()
+
+        },
+
+        {
+
+            merge:true
+
+        }
+
+    );
+
 }
