@@ -371,7 +371,6 @@ async function atualizarProximoConfronto(jogoAtual,vencedor){
 }
 
 
-
 // ======================================================
 // ATUALIZA A TELA APÓS AVANÇAR
 // ======================================================
