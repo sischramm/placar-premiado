@@ -260,3 +260,109 @@ async function avancarVencedor(jogoAtual, vencedor){
     );
 
 }
+
+// ======================================================
+// OBTÉM A FASE DO PRÓXIMO JOGO
+// ======================================================
+
+function obterFaseDestino(numeroJogo){
+
+    if(numeroJogo >= 89 && numeroJogo <= 96)
+        return "OIT";
+
+    if(numeroJogo >= 97 && numeroJogo <= 100)
+        return "QUA";
+
+    if(numeroJogo >= 101 && numeroJogo <= 102)
+        return "SEM";
+
+    if(numeroJogo == 103)
+        return "L3";
+
+    if(numeroJogo == 104)
+        return "FIN";
+
+    return null;
+
+}
+
+// ======================================================
+// ATUALIZA O PRÓXIMO CONFRONTO
+// ======================================================
+
+async function atualizarProximoConfronto(jogoAtual,vencedor){
+
+    const mapa = MAPA_MATA[jogoAtual];
+
+    if(!mapa) return;
+
+    const faseDestino =
+        obterFaseDestino(
+            mapa.proximo
+        );
+
+    if(!faseDestino) return;
+
+    const ref =
+        window.doc(
+            window.dbMata,
+            "resultados",
+            faseDestino
+        );
+
+    const snap =
+        await window.getDoc(ref);
+
+    let dados = {};
+
+    if(snap.exists()){
+
+        dados =
+            snap.data().resultados || {};
+
+    }
+
+    dados[mapa.proximo] ??= {};
+
+    if(mapa.lado=="A"){
+
+        dados[mapa.proximo].timeA =
+            vencedor.time;
+
+        dados[mapa.proximo].nomeA =
+            vencedor.nome;
+
+    }else{
+
+        dados[mapa.proximo].timeB =
+            vencedor.time;
+
+        dados[mapa.proximo].nomeB =
+            vencedor.nome;
+
+    }
+
+    await window.setDoc(
+
+        ref,
+
+        {
+
+            fase:faseDestino,
+
+            resultados:dados,
+
+            atualizadoEm:
+                window.serverTimestamp()
+
+        },
+
+        {
+
+            merge:true
+
+        }
+
+    );
+
+}
