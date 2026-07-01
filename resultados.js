@@ -418,6 +418,54 @@ function atualizarDashboard(jogos,fase){
 }
 
 // ======================================================
+// ESCOLHAS DO ADMINISTRADOR
+// ======================================================
+
+const escolhasResultado = {};
+
+// ======================================================
+// SELECIONA O VENCEDOR (ADMIN)
+// ======================================================
+
+function selecionarVencedorResultado(jogo,lado){
+
+    document
+        .querySelectorAll(`#resultado${jogo} .time`)
+        .forEach(e=>e.classList.remove("selecionado"));
+
+    document
+        .getElementById("R"+lado+jogo)
+        ?.classList.add("selecionado");
+
+    document
+        .getElementById("formasR"+jogo)
+        .style.display="flex";
+
+    escolhasResultado[jogo] ??= {};
+
+    escolhasResultado[jogo].lado = lado;
+
+}
+
+// ======================================================
+// SELECIONA A FORMA
+// ======================================================
+
+function selecionarFormaResultado(jogo,forma){
+
+    escolhasResultado[jogo] ??= {};
+
+    escolhasResultado[jogo].forma = forma;
+
+    document
+        .querySelectorAll(`#formasR${jogo} button`)
+        .forEach(btn=>btn.classList.remove("formaSelecionada"));
+
+    event.target.classList.add("formaSelecionada");
+
+}
+
+// ======================================================
 // CRIA CARD DE RESULTADO
 // ======================================================
 
@@ -778,10 +826,6 @@ async function salvarResultadoNovo(id,origem){
 // MATA-MATA
 // =====================================
 
-// =====================================
-// MATA-MATA
-// =====================================
-
 else{
 
     const fase =
@@ -800,7 +844,7 @@ else{
     }
 
     const escolha =
-        escolhas[id];
+    escolhasResultado[id];
 
     if(!escolha){
 
@@ -854,7 +898,7 @@ else{
         vencedor,
 
         forma:
-            escolha.forma || "N"
+    escolha.forma || "N"
 
     };
 
@@ -920,4 +964,46 @@ const botao =
 
 }
 
-// utilitários
+function selecionarVencedorResultado(jogo,lado){
+
+    document
+        .querySelectorAll(`#resultado${jogo} .time`)
+        .forEach(e=>e.classList.remove("selecionado"));
+
+    document
+        .getElementById("R"+lado+jogo)
+        .classList
+        .add("selecionado");
+
+    document
+        .getElementById("formasR"+jogo)
+        .style.display="flex";
+
+    escolhasResultado[jogo] ??={};
+
+    escolhasResultado[jogo].lado=lado;
+
+}
+
+function selecionarFormaResultado(jogo,forma){
+
+    escolhasResultado[jogo] ??={};
+
+    escolhasResultado[jogo].forma=forma;
+
+    document
+        .querySelectorAll(`#formasR${jogo} button`)
+        .forEach(btn=>btn.classList.remove("formaSelecionada"));
+
+    let indice=0;
+
+    if(forma=="N") indice=0;
+    if(forma=="P") indice=1;
+    if(forma=="PE") indice=2;
+
+    document
+        .querySelectorAll(`#formasR${jogo} button`)[indice]
+        .classList
+        .add("formaSelecionada");
+
+}
