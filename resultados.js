@@ -848,41 +848,41 @@ async function salvarResultadoNovo(id,origem){
 
     try{
 
-        const placarA =
-            parseInt(
-                document.getElementById(
-                    `realA_${id}`
-                ).value
-            );
-
-        const placarB =
-            parseInt(
-                document.getElementById(
-                    `realB_${id}`
-                ).value
-            );
-
-        if(
-
-            isNaN(placarA) ||
-
-            isNaN(placarB)
-
-        ){
-
-            alert(
-                "Informe os dois placares."
-            );
-
-            return;
-
-        }
-
         // =====================================
         // FASE DE GRUPOS
         // =====================================
 
         if(origem=="GRUPOS"){
+
+            const placarA =
+                parseInt(
+                    document.getElementById(
+                        `realA_${id}`
+                    ).value
+                );
+
+            const placarB =
+                parseInt(
+                    document.getElementById(
+                        `realB_${id}`
+                    ).value
+                );
+
+            if(
+
+                isNaN(placarA) ||
+
+                isNaN(placarB)
+
+            ){
+
+                alert(
+                    "Informe os dois placares."
+                );
+
+                return;
+
+            }
 
             await updateDoc(
 
@@ -907,182 +907,185 @@ async function salvarResultadoNovo(id,origem){
 
         }
 
+        // =====================================
+        // MATA-MATA
+        // =====================================
 
-// =====================================
-// MATA-MATA
-// =====================================
+        else{
 
-else{
+            const fase =
+                document.getElementById(
+                    "filtroFase"
+                ).value;
 
-    const fase =
-        document.getElementById("filtroFase").value;
+            const confronto =
+                JOGOS_MATA[fase]
+                    .find(j =>
+                        j.jogo == Number(id)
+                    );
 
-    const confronto =
-        JOGOS_MATA[fase]
-            .find(j => j.jogo == Number(id));
+            if(!confronto){
 
-    if(!confronto){
+                alert(
+                    "Confronto não encontrado."
+                );
 
-        alert("Confronto não encontrado.");
+                return;
 
-        return;
+            }
 
-    }
+            const escolha =
+                escolhasResultado[id];
 
-    const escolha =
-        escolhasResultado[id];
+            if(!escolha){
 
-    if(!escolha){
+                alert(
+                    "Selecione o vencedor."
+                );
 
-        alert("Selecione o vencedor.");
+                return;
 
-        return;
+            }
 
-    }
+            const vencedor =
 
-    const vencedor =
+                escolha.lado=="A"
 
-        escolha.lado=="A"
+                ?{
 
-        ?{
+                    time:confronto.timeA,
 
-            time:confronto.timeA,
+                    nome:confronto.nomeA
 
-            nome:confronto.nomeA
+                }
+
+                :{
+
+                    time:confronto.timeB,
+
+                    nome:confronto.nomeB
+
+                };
+
+            const perdedor =
+
+                escolha.lado=="A"
+
+                ?{
+
+                    time:confronto.timeB,
+
+                    nome:confronto.nomeB
+
+                }
+
+                :{
+
+                    time:confronto.timeA,
+
+                    nome:confronto.nomeA
+
+                };
+
+            const ref =
+                window.doc(
+                    window.dbMata,
+                    "resultados",
+                    fase
+                );
+
+            const snap =
+                await window.getDoc(ref);
+
+            let resultados = {};
+
+            if(snap.exists()){
+
+                resultados =
+                    snap.data().resultados || {};
+
+            }
+
+            resultados[id]={
+
+                vencedor,
+
+                forma:
+                    escolha.forma || "N",
+
+                atualizadoEm:
+                    new Date().toISOString()
+
+            };
+
+            await window.setDoc(
+
+                ref,
+
+                {
+
+                    fase,
+
+                    resultados,
+
+                    atualizadoEm:
+                        window.serverTimestamp()
+
+                },
+
+                {
+
+                    merge:true
+
+                }
+
+            );
+
+            // Atualiza chaveamento
+            await atualizarProximoConfronto(
+                Number(id),
+                vencedor
+            );
+
+            // Atualiza disputa do 3º lugar
+            await atualizarTerceiroLugar(
+                Number(id),
+                perdedor
+            );
+
+            // Recalcula apenas esta fase
+            await recalcularRankingFase(
+                fase
+            );
 
         }
 
-        :{
+        const botao =
+            document.querySelector(
+                `button[onclick="salvarResultadoNovo('${id}','${origem}')"]`
+            );
 
-            time:confronto.timeB,
+        if(botao){
 
-            nome:confronto.nomeB
+            botao.innerHTML =
+                "✅ Salvo";
 
-        };
+            botao.style.background =
+                "#0A8F3C";
 
-const perdedor =
+        }
 
-    escolha.lado=="A"
+        await carregarResultadosNovo();
 
-    ?{
+    }catch(erro){
 
-        time:confronto.timeB,
+        console.error(erro);
 
-        nome:confronto.nomeB
-
-    }
-
-    :{
-
-        time:confronto.timeA,
-
-        nome:confronto.nomeA
-
-    };
-
-
-    const ref =
-        window.doc(
-            window.dbMata,
-            "resultados",
-            fase
+        alert(
+            "Erro ao salvar resultado."
         );
 
-    const snap =
-        await window.getDoc(ref);
-
-    let resultados = {};
-
-    if(snap.exists()){
-
-        resultados =
-            snap.data().resultados || {};
-
     }
-
-    resultados[id]={
-
-        vencedor,
-
-        forma:
-            escolha.forma || "N",
-
-        atualizadoEm:
-            new Date().toISOString()
-
-    };
-
-    await window.setDoc(
-
-        ref,
-
-        {
-
-            fase,
-
-            resultados,
-
-            atualizadoEm:
-                window.serverTimestamp()
-
-        },
-
-        {
-
-            merge:true
-
-        }
-
-    );
-
-    // ===========================
-    // AVANÇA O VENCEDOR
-    // ===========================
-
-    await atualizarProximoConfronto(
-
-        Number(id),
-
-        vencedor
-
-    );
-
-await atualizarTerceiroLugar(
-
-    Number(id),
-
-    perdedor
-
-);
-
-}
-
-const botao =
-    document.querySelector(
-        `button[onclick="salvarResultadoNovo('${id}','${origem}')"]`
-    );
-
-if(botao){
-
-    botao.innerHTML =
-        "✅ Salvo";
-
-    botao.style.background =
-        "#0A8F3C";
-
-}
-
-carregarResultadosNovo();
-
-}catch(erro){
-
-    console.error(erro);
-
-    alert(
-        "Erro ao salvar resultado."
-    );
-
-}
 
 }
 
