@@ -778,12 +778,57 @@ async function salvarResultadoNovo(id,origem){
 // MATA-MATA
 // =====================================
 
+// =====================================
+// MATA-MATA
+// =====================================
+
 else{
 
     const fase =
-        document.getElementById(
-            "filtroFase"
-        ).value;
+        document.getElementById("filtroFase").value;
+
+    const confronto =
+        JOGOS_MATA[fase]
+            .find(j => j.jogo == Number(id));
+
+    if(!confronto){
+
+        alert("Confronto não encontrado.");
+
+        return;
+
+    }
+
+    const escolha =
+        escolhas[id];
+
+    if(!escolha){
+
+        alert("Selecione o vencedor.");
+
+        return;
+
+    }
+
+    const vencedor =
+
+        escolha.lado=="A"
+
+        ?{
+
+            time:confronto.timeA,
+
+            nome:confronto.nomeA
+
+        }
+
+        :{
+
+            time:confronto.timeB,
+
+            nome:confronto.nomeB
+
+        };
 
     const ref =
         window.doc(
@@ -806,12 +851,10 @@ else{
 
     resultados[id]={
 
-        placarRealA:placarA,
+        vencedor,
 
-        placarRealB:placarB,
-
-        decisao:
-            TIPO_RESULTADO[id] || "TN"
+        forma:
+            escolha.forma || "N"
 
     };
 
@@ -835,6 +878,14 @@ else{
             merge:true
 
         }
+
+    );
+
+    await avancarVencedor(
+
+        Number(id),
+
+        vencedor
 
     );
 
