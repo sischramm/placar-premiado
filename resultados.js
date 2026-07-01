@@ -269,10 +269,6 @@ async function carregarJogosGrupo(){
 // CARREGA JOGOS DO MATA-MATA
 // ======================================================
 
-// ======================================================
-// CARREGA JOGOS DO MATA-MATA
-// ======================================================
-
 async function carregarJogosMata(fase){
 
     try{
@@ -312,33 +308,21 @@ async function carregarJogosMata(fase){
 
                 grupo:jogo.fase,
 
-                // =====================
-                // Time A
-                // =====================
-
                 timeA:
-                    salvo.timeA ??
-                    jogo.timeA ??
-                    "ADEF",
+    salvo.timeA ??
+    jogo.timeA,
 
-                nomeA:
-                    salvo.nomeA ??
-                    jogo.nomeA ??
-                    "A definir",
+nomeA:
+    salvo.nomeA ??
+    jogo.nomeA,
 
-                // =====================
-                // Time B
-                // =====================
+timeB:
+    salvo.timeB ??
+    jogo.timeB,
 
-                timeB:
-                    salvo.timeB ??
-                    jogo.timeB ??
-                    "ADEF",
-
-                nomeB:
-                    salvo.nomeB ??
-                    jogo.nomeB ??
-                    "A definir",
+nomeB:
+    salvo.nomeB ??
+    jogo.nomeB,
 
                 data:jogo.data,
 
@@ -370,21 +354,33 @@ async function carregarJogosMata(fase){
 // ATUALIZA DASHBOARD
 // ======================================================
 
+// ======================================================
+// ATUALIZA DASHBOARD
+// ======================================================
+
 function atualizarDashboard(jogos,fase){
 
-    const total =
-        jogos.length;
+    const total = jogos.length;
 
-    const finalizados =
-        jogos.filter(j=>
+    const finalizados = jogos.filter(j=>{
 
-            j.placarRealA !== null &&
-            j.placarRealA !== undefined &&
+        if(fase=="GRUPOS"){
 
-            j.placarRealB !== null &&
-            j.placarRealB !== undefined
+            return (
 
-        ).length;
+                j.placarRealA !== null &&
+                j.placarRealA !== undefined &&
+
+                j.placarRealB !== null &&
+                j.placarRealB !== undefined
+
+            );
+
+        }
+
+        return j.vencedor != null;
+
+    }).length;
 
     const pendentes =
         total-finalizados;
@@ -413,7 +409,7 @@ function atualizarDashboard(jogos,fase){
 
         SEM:"Semifinal",
 
-        TER:"3º Lugar",
+        L3:"3º Lugar",
 
         FIN:"Final"
 
@@ -884,6 +880,27 @@ else{
 
         };
 
+const perdedor =
+
+    escolha.lado=="A"
+
+    ?{
+
+        time:confronto.timeB,
+
+        nome:confronto.nomeB
+
+    }
+
+    :{
+
+        time:confronto.timeA,
+
+        nome:confronto.nomeA
+
+    };
+
+
     const ref =
         window.doc(
             window.dbMata,
@@ -949,6 +966,14 @@ else{
         vencedor
 
     );
+
+await atualizarTerceiroLugar(
+
+    Number(id),
+
+    perdedor
+
+);
 
 }
 
