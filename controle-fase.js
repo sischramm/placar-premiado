@@ -6,7 +6,7 @@ const FASES = {
 
     SEG:{
 
-        nome:"16 Avos",
+        nome:"Segunda Fase",
 
         abre:"2026-06-26T08:00:00-03:00",
 
