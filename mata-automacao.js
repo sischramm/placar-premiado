@@ -1,68 +1,83 @@
 // ======================================================
 // MAPA DE AVANÇO DO MATA-MATA
+// COPA DO MUNDO FIFA 2026
 // ======================================================
 
 const MAPA_MATA = {
 
     // ===========================
-    // SEG -> OIT
+    // 32 AVOS -> OITAVAS
     // ===========================
 
-    73:{proximo:89,lado:"A"},
-    74:{proximo:89,lado:"B"},
+    // Oitavas 89
+    74:{proximo:89,lado:"A"},
+    77:{proximo:89,lado:"B"},
 
-    75:{proximo:90,lado:"A"},
-    76:{proximo:90,lado:"B"},
+    // Oitavas 90
+    73:{proximo:90,lado:"A"},
+    75:{proximo:90,lado:"B"},
 
-    77:{proximo:91,lado:"A"},
+    // Oitavas 91
+    76:{proximo:91,lado:"A"},
     78:{proximo:91,lado:"B"},
 
+    // Oitavas 92
     79:{proximo:92,lado:"A"},
     80:{proximo:92,lado:"B"},
 
-    81:{proximo:93,lado:"A"},
-    82:{proximo:93,lado:"B"},
+    // Oitavas 93
+    83:{proximo:93,lado:"A"},
+    84:{proximo:93,lado:"B"},
 
-    83:{proximo:94,lado:"A"},
-    84:{proximo:94,lado:"B"},
+    // Oitavas 94
+    81:{proximo:94,lado:"A"},
+    82:{proximo:94,lado:"B"},
 
-    85:{proximo:95,lado:"A"},
-    86:{proximo:95,lado:"B"},
+    // Oitavas 95
+    86:{proximo:95,lado:"A"},
+    88:{proximo:95,lado:"B"},
 
-    87:{proximo:96,lado:"A"},
-    88:{proximo:96,lado:"B"},
+    // Oitavas 96
+    85:{proximo:96,lado:"A"},
+    87:{proximo:96,lado:"B"},
 
 
     // ===========================
-    // OIT -> QUA
+    // OITAVAS -> QUARTAS
     // ===========================
 
+    // Quarta 97
     89:{proximo:97,lado:"A"},
     90:{proximo:97,lado:"B"},
 
-    91:{proximo:98,lado:"A"},
-    92:{proximo:98,lado:"B"},
+    // Quarta 98
+    93:{proximo:98,lado:"A"},
+    94:{proximo:98,lado:"B"},
 
-    93:{proximo:99,lado:"A"},
-    94:{proximo:99,lado:"B"},
+    // Quarta 99
+    91:{proximo:99,lado:"A"},
+    92:{proximo:99,lado:"B"},
 
+    // Quarta 100
     95:{proximo:100,lado:"A"},
     96:{proximo:100,lado:"B"},
 
 
     // ===========================
-    // QUA -> SEM
+    // QUARTAS -> SEMIFINAIS
     // ===========================
 
+    // Semifinal 101
     97:{proximo:101,lado:"A"},
     98:{proximo:101,lado:"B"},
 
+    // Semifinal 102
     99:{proximo:102,lado:"A"},
     100:{proximo:102,lado:"B"},
 
 
     // ===========================
-    // SEM -> FINAL
+    // SEMIFINAIS -> FINAL
     // ===========================
 
     101:{proximo:104,lado:"A"},
@@ -322,7 +337,19 @@ async function atualizarProximoConfronto(jogoAtual,vencedor){
 
     }
 
-    dados[mapa.proximo] ??= {};
+    if (!dados[mapa.proximo]) {
+
+    dados[mapa.proximo] = {
+
+        timeA: "",
+        nomeA: "",
+
+        timeB: "",
+        nomeB: ""
+
+    };
+
+}
 
     if(mapa.lado=="A"){
 
