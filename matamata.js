@@ -163,7 +163,7 @@ window.selecionarForma=selecionarForma;
 
 async function iniciarMata(){
 
-    const fase = "SEG";
+    const fase = obterFaseAtual() || "SEG";
 
     carregarFase(fase);
 
