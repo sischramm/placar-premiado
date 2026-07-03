@@ -240,7 +240,7 @@ if(nome === "resultados"){
     "abaResultados"
   ).style.display = "block";
 
-  carregarResultados();
+  abrirResultados();
 
 }
 
@@ -1775,17 +1775,9 @@ async function carregarResultados(){
 
   if(!div) return;
 
-  div.innerHTML = `
-    <div
-      id="gradeResultados"
-      style="
-        display:grid;
-        grid-template-columns:
-          repeat(auto-fit,minmax(350px,1fr));
-        gap:20px;
-      "
-    ></div>
-  `;
+div.innerHTML = `
+<div id="gradeResultados"></div>
+`;
 
   const snapshot =
     await getDocs(
@@ -1818,81 +1810,62 @@ async function carregarResultados(){
 
   jogos.forEach(jogo => {
 
-    grade.innerHTML += `
+grade.innerHTML += `
 
-      <div class="card">
+<div class="resultadoCard">
 
-        <h3>
-          ${jogo.timeA} x ${jogo.timeB}
-        </h3>
+    <div class="resultadoCabecalho">
 
-        <p>
-          Grupo ${jogo.grupo}
-        </p>
+        <span>
+            🏆 Grupo ${jogo.grupo}
+        </span>
 
-        <p>
-          🕒 ${jogo.dataHora}
-        </p>
+        <span>
+            🕒 ${jogo.dataHora}
+        </span>
 
-        <div
-          style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            gap:15px;
-            margin:25px 0;
-          "
-        >
+    </div>
 
-          <input
+    <div class="resultadoTime">
+
+        ${jogo.timeA}
+
+    </div>
+
+    <div class="resultadoPlacar">
+
+        <input
             id="realA_${jogo.docId}"
             type="number"
-            min="0"
             value="${jogo.placarRealA ?? ""}"
-            style="
-              width:70px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-              font-weight:bold;
-            "
-          >
+        >
 
-          <span
-            style="
-              color:white;
-              font-size:30px;
-              font-weight:bold;
-            "
-          >
-            X
-          </span>
+        <span>X</span>
 
-          <input
+        <input
             id="realB_${jogo.docId}"
             type="number"
-            min="0"
             value="${jogo.placarRealB ?? ""}"
-            style="
-              width:70px;
-              height:50px;
-              text-align:center;
-              font-size:24px;
-              font-weight:bold;
-            "
-          >
-
-        </div>
-
-        <button
-          onclick="salvarResultado('${jogo.docId}')"
         >
-          💾 Salvar Resultado
-        </button>
 
-      </div>
+    </div>
 
-    `;
+    <div class="resultadoTime">
+
+        ${jogo.timeB}
+
+    </div>
+
+    <button
+        class="btnResultado"
+        onclick="salvarResultado('${jogo.docId}')"
+    >
+        💾 Salvar Resultado
+    </button>
+
+</div>
+
+`;
 
   });
 
@@ -2641,4 +2614,3 @@ function carregarPaisesExtras(){
   }
 
 }
-
