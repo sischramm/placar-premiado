@@ -244,10 +244,10 @@ data:"04/07/2026",
 hora:"14:00",
 abre:"2026-07-03T12:00:00-03:00",
 fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+timeA:"CAN",
+nomeA:"Canadá",
+timeB:"MAR",
+nomeB:"Marrocos"
 },
 
 {
@@ -257,11 +257,11 @@ ordem:2,
 data:"04/07/2026",
 hora:"18:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+fecha:"2026-07-04T17:00:00-03:00",
+timeA:"PAR",
+nomeA:"Paraguai",
+timeB:"FRA",
+nomeB:"França"
 },
 
 {
@@ -271,11 +271,11 @@ ordem:3,
 data:"05/07/2026",
 hora:"17:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+fecha:"2026-07-05T16:00:00-03:00",
+timeA:"BRA",
+nomeA:"Brasil",
+timeB:"NOR",
+nomeB:"Noruega"
 },
 
 {
@@ -285,11 +285,11 @@ ordem:4,
 data:"05/07/2026",
 hora:"21:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+fecha:"2026-07-05T20:00:00-03:00",
+timeA:"MEX",
+nomeA:"México",
+timeB:"ENG",
+nomeB:"Inglaterra"
 },
 
 {
@@ -299,11 +299,11 @@ ordem:5,
 data:"06/07/2026",
 hora:"16:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+fecha:"2026-07-06T15:00:00-03:00",
+timeA:"POR",
+nomeA:"Portugal",
+timeB:"ESP",
+nomeB:"Espanha"
 },
 
 {
@@ -313,11 +313,11 @@ ordem:6,
 data:"06/07/2026",
 hora:"21:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+fecha:"2026-07-06T20:00:00-03:00",
+timeA:"USA",
+nomeA:"Estados Unidos",
+timeB:"BEL",
+nomeB:"Bélgica"
 },
 
 {
@@ -327,7 +327,7 @@ ordem:7,
 data:"07/07/2026",
 hora:"13:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
+fecha:"2026-07-07T12:00:00-03:00",
 timeA:"",
 nomeA:"A definir",
 timeB:"",
@@ -341,9 +341,9 @@ ordem:8,
 data:"07/07/2026",
 hora:"17:00",
 abre:"2026-07-03T12:00:00-03:00",
-fecha:"2026-07-04T13:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
+fecha:"2026-07-07T16:00:00-03:00",
+timeA:"SUI",
+nomeA:"Suíça",
 timeB:"",
 nomeB:"A definir"
 }],
