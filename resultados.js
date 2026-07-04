@@ -291,14 +291,6 @@ async function carregarJogosMata(fase){
             ? snap.data().resultados || {}
             : {};
 
-        // ==================================================
-        // SEG e OIT são cadastrados manualmente
-        // QUA, SEM, L3 e FIN são preenchidos automaticamente
-        // ==================================================
-
-        const usarCadastroManual =
-            fase === "SEG" || fase === "OIT";
-
         return confrontos.map(jogo=>{
 
             const salvo =
@@ -319,24 +311,20 @@ async function carregarJogosMata(fase){
                 ordem:jogo.ordem,
 
                 timeA:
-                    usarCadastroManual
-                        ? jogo.timeA
-                        : (salvo.timeA ?? jogo.timeA),
+                    salvo.timeA ??
+                    jogo.timeA,
 
                 nomeA:
-                    usarCadastroManual
-                        ? jogo.nomeA
-                        : (salvo.nomeA ?? jogo.nomeA),
+                    salvo.nomeA ??
+                    jogo.nomeA,
 
                 timeB:
-                    usarCadastroManual
-                        ? jogo.timeB
-                        : (salvo.timeB ?? jogo.timeB),
+                    salvo.timeB ??
+                    jogo.timeB,
 
                 nomeB:
-                    usarCadastroManual
-                        ? jogo.nomeB
-                        : (salvo.nomeB ?? jogo.nomeB),
+                    salvo.nomeB ??
+                    jogo.nomeB,
 
                 data:jogo.data,
 
@@ -367,6 +355,10 @@ async function carregarJogosMata(fase){
     }
 
 }
+
+// ======================================================
+// ATUALIZA DASHBOARD
+// ======================================================
 
 // ======================================================
 // ATUALIZA DASHBOARD
