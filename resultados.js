@@ -310,22 +310,12 @@ async function carregarJogosMata(fase){
 
                 ordem:jogo.ordem,
 
-                timeA:
-                    salvo.timeA ??
-                    jogo.timeA,
+                timeA: jogo.timeA,
+nomeA: jogo.nomeA,
 
-                nomeA:
-                    salvo.nomeA ??
-                    jogo.nomeA,
-
-                timeB:
-                    salvo.timeB ??
-                    jogo.timeB,
-
-                nomeB:
-                    salvo.nomeB ??
-                    jogo.nomeB,
-
+timeB: jogo.timeB,
+nomeB: jogo.nomeB,
+                
                 data:jogo.data,
 
                 hora:jogo.hora,
@@ -1039,17 +1029,21 @@ async function salvarResultadoNovo(id,origem){
 
             }
 
-            resultados[id]={
+resultados[id] = {
 
-                vencedor,
+    timeA: confronto.timeA,
+    nomeA: confronto.nomeA,
 
-                forma:
-                    escolha.forma || "N",
+    timeB: confronto.timeB,
+    nomeB: confronto.nomeB,
 
-                atualizadoEm:
-                    new Date().toISOString()
+    vencedor,
 
-            };
+    forma: escolha.forma || "N",
+
+    atualizadoEm: new Date().toISOString()
+
+};
 
             await window.setDoc(
 
