@@ -5,6 +5,48 @@
 
 let faseAtual = "SEG";
 
+// ==========================================
+// TROCA DE FASE
+// ==========================================
+
+function trocarFase(fase){
+
+    faseAtual = fase;
+
+    document
+        .querySelectorAll(".menuFasesMata button")
+        .forEach(btn => btn.classList.remove("ativa"));
+
+    document
+        .getElementById("btn" + fase)
+        ?.classList.add("ativa");
+
+    carregarFase(fase);
+
+    document.getElementById("faseAtual").innerHTML =
+        FASES[fase].nome;
+
+    atualizarCronometro(fase);
+
+    const usuario = JSON.parse(
+        localStorage.getItem("usuarioLogado")
+    );
+
+    if(usuario){
+
+        carregarPalpitesMata(
+            usuario.email,
+            fase
+        );
+
+    }
+
+}
+
+// ==========================================
+// CARREGA A FASE
+// ==========================================
+
 function carregarFase(fase = "SEG") {
 
     faseAtual = fase;
@@ -165,41 +207,15 @@ async function iniciarMata(){
 
     const fase = obterFaseAtual() || "SEG";
 
-    carregarFase(fase);
+    trocarFase(fase);
 
-    if(document.getElementById("faseAtual")){
+    clearInterval(window.timerMata);
 
-        document.getElementById("faseAtual").innerHTML =
-            FASES[fase].nome;
+    window.timerMata = setInterval(() => {
 
-    }
+        atualizarCronometro(faseAtual);
 
-    if(typeof atualizarCronometro === "function"){
-
-        atualizarCronometro(fase);
-
-        clearInterval(window.timerMata);
-
-        window.timerMata = setInterval(() => {
-
-            atualizarCronometro(fase);
-
-        },1000);
-
-    }
-
-    const usuario = JSON.parse(
-        localStorage.getItem("usuarioLogado")
-    );
-
-    if(usuario){
-
-        await carregarPalpitesMata(
-            usuario.email,
-            fase
-        );
-
-    }
+    },1000);
 
 }
 
