@@ -238,3 +238,64 @@
     color:#111;
 
 }
+
+
+/*==========================
+MENU DAS FASES
+==========================*/
+
+.menuFasesMata{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin:25px auto;
+
+}
+
+.menuFasesMata button{
+
+    background:#0a2b55;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 24px;
+
+    border-radius:40px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+
+}
+
+.menuFasesMata button:hover{
+
+    transform:translateY(-2px);
+
+    background:#0f4b8f;
+
+}
+
+.menuFasesMata button.ativa{
+
+    background:#FFD447;
+
+    color:#000;
+
+    box-shadow:0 0 18px rgba(255,212,71,.8);
+
+}
