@@ -328,10 +328,10 @@ data:"07/07/2026",
 hora:"13:00",
 abre:"2026-07-03T12:00:00-03:00",
 fecha:"2026-07-07T12:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+timeA:"ARG",
+nomeA:"Argentina",
+timeB:"EGY",
+nomeB:"Egito"
 },
 
 {
@@ -344,9 +344,11 @@ abre:"2026-07-03T12:00:00-03:00",
 fecha:"2026-07-07T16:00:00-03:00",
 timeA:"SUI",
 nomeA:"Suíça",
-timeB:"",
-nomeB:"A definir"
-}],
+timeB:"COL",
+nomeB:"Colômbia"
+}
+
+],
 
 QUA:[
 
