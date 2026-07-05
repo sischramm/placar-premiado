@@ -2063,7 +2063,7 @@ async function atualizarRanking(){
 
   });
 
-    // ==========================================
+      // ==========================================
   // SOMA PONTOS DO MATA-MATA
   // ==========================================
 
@@ -2076,83 +2076,76 @@ async function atualizarRanking(){
     "FIN"
   ];
 
-  for(const fase of fasesMata){
+  for (const fase of fasesMata) {
 
-    const resultadosRef =
-  await getDoc(
-  doc(
-    dbMata,
-    "resultados",
-    fase
-  )
-);
+    const resultadosRef = await getDoc(
+      doc(
+        dbMata,
+        "resultados",
+        fase
+      )
+    );
 
-    if(!resultadosRef.exists())
-      continue;
+    if (!resultadosRef.exists()) continue;
 
     const resultados =
       resultadosRef.data().resultados || {};
 
-    const palpitesSnap =
-      await getDocs(
+    const palpitesSnap = await getDocs(
       collection(
-  dbMata,
-  "palpites"
-)
-      );
+        dbMata,
+        "palpites"
+      )
+    );
 
-    palpitesSnap.forEach(docSnap=>{
+    palpitesSnap.forEach(docSnap => {
 
       const dados = docSnap.data();
 
-      if(dados.fase !== fase)
-        return;
+      if (dados.fase !== fase) return;
 
-      if(!estatisticas[dados.email]){
+      if (!estatisticas[dados.email]) {
 
-        estatisticas[dados.email]={
+        estatisticas[dados.email] = {
 
-          pontos:0,
-          placaresExatos:0,
-          vencedoresAcertados:0,
-          acertouCampeao:0
+          pontos: 0,
+          placaresExatos: 0,
+          vencedoresAcertados: 0,
+          acertouCampeao: 0
 
         };
 
       }
 
-      const palpites =
-        dados.palpites || {};
+      const palpites = dados.palpites || {};
 
-      Object.keys(palpites).forEach(id=>{
+      Object.keys(palpites).forEach(id => {
 
-        const palpite =
-          palpites[id];
+        const palpite = palpites[id];
 
-        const resultado =
-          resultados[id];
+        const resultado = resultados[id];
 
-        if(!resultado)
+        // jogo ainda não finalizado
+        if (
+          !resultado ||
+          !resultado.vencedor ||
+          !resultado.vencedor.time
+        ) {
           return;
+        }
 
         let pontos = 0;
 
-        // acertou o vencedor
-        if(
-          palpite.vencedor ==
-          resultado.vencedor.time
-        ){
+        // Acertou o vencedor
+        if (palpite.vencedor === resultado.vencedor.time) {
 
           pontos += 10;
 
           estatisticas[dados.email]
             .vencedoresAcertados++;
 
-          // acertou como venceu
-          if(
-            palpite.forma ==
-            resultado.forma
-          ){
+          // Acertou a forma da vitória
+          if (palpite.forma === resultado.forma) {
 
             pontos += 10;
 
@@ -2160,8 +2153,7 @@ async function atualizarRanking(){
 
         }
 
-        estatisticas[dados.email]
-          .pontos += pontos;
+        estatisticas[dados.email].pontos += pontos;
 
       });
 
