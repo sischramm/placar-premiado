@@ -2062,8 +2062,8 @@ async function atualizarRanking(){
       .pontos += pontos;
 
   });
-
-      // ==========================================
+  
+  // ==========================================
   // SOMA PONTOS DO MATA-MATA
   // ==========================================
 
@@ -2076,6 +2076,14 @@ async function atualizarRanking(){
     "FIN"
   ];
 
+  // Lê os palpites apenas uma vez
+  const palpitesMataSnap = await getDocs(
+    collection(
+      dbMata,
+      "palpites"
+    )
+  );
+
   for (const fase of fasesMata) {
 
     const resultadosRef = await getDoc(
@@ -2086,23 +2094,19 @@ async function atualizarRanking(){
       )
     );
 
-    if (!resultadosRef.exists()) continue;
+    if (!resultadosRef.exists())
+      continue;
 
     const resultados =
       resultadosRef.data().resultados || {};
 
-    const palpitesSnap = await getDocs(
-      collection(
-        dbMata,
-        "palpites"
-      )
-    );
-
-    palpitesSnap.forEach(docSnap => {
+    palpitesMataSnap.forEach(docSnap => {
 
       const dados = docSnap.data();
 
-      if (dados.fase !== fase) return;
+      // Apenas palpites desta fase
+      if (dados.fase !== fase)
+        return;
 
       if (!estatisticas[dados.email]) {
 
@@ -2117,15 +2121,18 @@ async function atualizarRanking(){
 
       }
 
-      const palpites = dados.palpites || {};
+      const palpites =
+        dados.palpites || {};
 
       Object.keys(palpites).forEach(id => {
 
-        const palpite = palpites[id];
+        const palpite =
+          palpites[id];
 
-        const resultado = resultados[id];
+        const resultado =
+          resultados[id];
 
-        // jogo ainda não finalizado
+        // Ainda não existe resultado deste jogo
         if (
           !resultado ||
           !resultado.vencedor ||
@@ -2137,7 +2144,10 @@ async function atualizarRanking(){
         let pontos = 0;
 
         // Acertou o vencedor
-        if (palpite.vencedor === resultado.vencedor.time) {
+        if (
+          palpite.vencedor ===
+          resultado.vencedor.time
+        ) {
 
           pontos += 10;
 
@@ -2145,7 +2155,10 @@ async function atualizarRanking(){
             .vencedoresAcertados++;
 
           // Acertou a forma da vitória
-          if (palpite.forma === resultado.forma) {
+          if (
+            palpite.forma ===
+            resultado.forma
+          ) {
 
             pontos += 10;
 
@@ -2153,14 +2166,15 @@ async function atualizarRanking(){
 
         }
 
-        estatisticas[dados.email].pontos += pontos;
+        estatisticas[dados.email]
+          .pontos += pontos;
 
       });
 
     });
 
   }
-
+    
   usuariosCache.forEach(u=>{
 
     const est =
@@ -2197,15 +2211,9 @@ async function carregarRanking(){
   if(!top5 || !rankingCompleto)
     return;
 
-  if(
-    usuariosCache.length === 0
-  ){
-
-    await carregarUsuarios();
+     await carregarUsuarios();
 
     await atualizarRanking();
-
-  }
 
   // Remove usuários duplicados pelo e-mail
   let usuarios = Object.values(
@@ -2229,12 +2237,13 @@ async function carregarRanking(){
   );
 
   // Compensação dos 4 primeiros jogos
-  usuarios.forEach(u=>{
+usuarios = usuarios.map(u => ({
 
-    u.pontos =
-      (u.pontos||0) + 40;
+    ...u,
 
-  });
+    pontos: (u.pontos || 0) + 40
+
+}));
 
   // Ordenação conforme regulamento
   usuarios.sort((a,b)=>{
@@ -2402,11 +2411,13 @@ async function carregarRankingEmpresas(){
 
   if(!tabela) return;
 
-await carregarUsuarios();
+  await carregarUsuarios();
 
-const empresas = {};
+  await atualizarRanking();
 
-usuariosCache.forEach(u => {
+  const empresas = {};
+
+  usuariosCache.forEach(u => {
 
     if(!u.empresa){
       return;
@@ -2506,12 +2517,13 @@ async function carregarPerfil(){
   );
 
   // +40 pontos dos 4 primeiros jogos
-  usuarios.forEach(u=>{
+usuarios = usuarios.map(u => ({
 
-    u.pontos =
-      (u.pontos||0) + 40;
+    ...u,
 
-  });
+    pontos: (u.pontos || 0) + 40
+
+}));
 
   // Mesma ordenação do ranking
   usuarios.sort((a,b)=>{
