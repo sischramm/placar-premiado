@@ -16,7 +16,7 @@ let meusPalpites = {};
 let usuariosCache = [];
 window.todosJogos = todosJogos;
 
-import { db } from "./firebase.js";
+import { db, dbMata } from "./firebase.js";
 
 window.onload = function() {
 
@@ -2062,6 +2062,112 @@ async function atualizarRanking(){
       .pontos += pontos;
 
   });
+
+    // ==========================================
+  // SOMA PONTOS DO MATA-MATA
+  // ==========================================
+
+  const fasesMata = [
+    "SEG",
+    "OIT",
+    "QUA",
+    "SEM",
+    "L3",
+    "FIN"
+  ];
+
+  for(const fase of fasesMata){
+
+    const resultadosRef =
+  await getDoc(
+  doc(
+    dbMata,
+    "resultados",
+    fase
+  )
+);
+
+    if(!resultadosRef.exists())
+      continue;
+
+    const resultados =
+      resultadosRef.data().resultados || {};
+
+    const palpitesSnap =
+      await getDocs(
+      collection(
+  dbMata,
+  "palpites"
+)
+      );
+
+    palpitesSnap.forEach(docSnap=>{
+
+      const dados = docSnap.data();
+
+      if(dados.fase !== fase)
+        return;
+
+      if(!estatisticas[dados.email]){
+
+        estatisticas[dados.email]={
+
+          pontos:0,
+          placaresExatos:0,
+          vencedoresAcertados:0,
+          acertouCampeao:0
+
+        };
+
+      }
+
+      const palpites =
+        dados.palpites || {};
+
+      Object.keys(palpites).forEach(id=>{
+
+        const palpite =
+          palpites[id];
+
+        const resultado =
+          resultados[id];
+
+        if(!resultado)
+          return;
+
+        let pontos = 0;
+
+        // acertou o vencedor
+        if(
+          palpite.vencedor ==
+          resultado.vencedor.time
+        ){
+
+          pontos += 10;
+
+          estatisticas[dados.email]
+            .vencedoresAcertados++;
+
+          // acertou como venceu
+          if(
+            palpite.forma ==
+            resultado.forma
+          ){
+
+            pontos += 10;
+
+          }
+
+        }
+
+        estatisticas[dados.email]
+          .pontos += pontos;
+
+      });
+
+    });
+
+  }
 
   usuariosCache.forEach(u=>{
 
