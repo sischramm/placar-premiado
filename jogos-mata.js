@@ -354,16 +354,16 @@ QUA:[
 
 {
 jogo:97,
-fase:"QUA",
-ordem:1,
-data:"09/07/2026",
-hora:"17:00",
-abre:"2026-07-08T12:00:00-03:00",
-fecha:"2026-07-09T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    fase:"QUA",
+    ordem:1,
+    data:"09/07/2026",
+    hora:"17:00",
+    abre:"2026-07-08T12:00:00-03:00",
+    fecha:"2026-07-09T16:00:00-03:00",
+    timeA:"FRA",
+    nomeA:"França",
+    timeB:"MAR",
+    nomeB:"Marrocos"
 },
 
 {
