@@ -389,7 +389,7 @@ hora:"18:00",
 abre:"2026-07-08T12:00:00-03:00",
 fecha:"2026-07-09T16:00:00-03:00",
 timeA:"NOR",
-nomeA:"Noruega"
+nomeA:"Noruega",
 timeB:"ENG",
 nomeB:"Inglaterra"
 },
