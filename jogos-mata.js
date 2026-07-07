@@ -350,10 +350,10 @@ nomeB:"Colômbia"
 
 ],
 
-QUA:[
+QUA: [
 
 {
-jogo:97,
+    jogo:97,
     fase:"QUA",
     ordem:1,
     data:"09/07/2026",
@@ -367,47 +367,49 @@ jogo:97,
 },
 
 {
-jogo:98,
-fase:"QUA",
-ordem:2,
-data:"10/07/2026",
-hora:"16:00",
-abre:"2026-07-08T12:00:00-03:00",
-fecha:"2026-07-09T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:98,
+    fase:"QUA",
+    ordem:2,
+    data:"10/07/2026",
+    hora:"16:00",
+    abre:"2026-07-08T12:00:00-03:00",
+    fecha:"2026-07-09T16:00:00-03:00",
+    timeA:"ESP",
+    nomeA:"Espanha",
+    timeB:"BEL",
+    nomeB:"Bélgica"
 },
 
 {
-jogo:99,
-fase:"QUA",
-ordem:3,
-data:"11/07/2026",
-hora:"18:00",
-abre:"2026-07-08T12:00:00-03:00",
-fecha:"2026-07-09T16:00:00-03:00",
-timeA:"NOR",
-nomeA:"Noruega",
-timeB:"ENG",
-nomeB:"Inglaterra"
+    jogo:99,
+    fase:"QUA",
+    ordem:3,
+    data:"11/07/2026",
+    hora:"18:00",
+    abre:"2026-07-08T12:00:00-03:00",
+    fecha:"2026-07-09T16:00:00-03:00",
+    timeA:"NOR",
+    nomeA:"Noruega",
+    timeB:"ENG",
+    nomeB:"Inglaterra"
 },
 
 {
-jogo:100,
-fase:"QUA",
-ordem:4,
-data:"11/07/2026",
-hora:"22:00",
-abre:"2026-07-08T12:00:00-03:00",
-fecha:"2026-07-09T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:100,
+    fase:"QUA",
+    ordem:4,
+    data:"11/07/2026",
+    hora:"22:00",
+    abre:"2026-07-08T12:00:00-03:00",
+    fecha:"2026-07-09T16:00:00-03:00",
+    timeA:"ARG",
+    nomeA:"Argentina",
+    timeB:"SUI",
+    nomeB:"Suíça"
 }
+
 ],
+
 
 SEM:[
 
