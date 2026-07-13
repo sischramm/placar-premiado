@@ -410,38 +410,38 @@ QUA: [
 
 ],
 
-
-
 SEM:[
 
 {
-jogo:101,
-fase:"SEM",
-ordem:1,
-data:"14/07/2026",
-hora:"16:00",
-abre:"2026-07-13T12:00:00-03:00",
-fecha:"2026-07-14T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:101,
+    fase:"SEM",
+    ordem:1,
+    data:"14/07/2026",
+    hora:"16:00",
+    abre:"2026-07-13T12:00:00-03:00",
+    fecha:"2026-07-14T16:00:00-03:00",
+    timeA:"FRA",
+    nomeA:"França",
+    timeB:"ESP",
+    nomeB:"Espanha"
 },
 
 {
-jogo:102,
-fase:"SEM",
-ordem:2,
-data:"15/07/2026",
-hora:"16:00",
-abre:"2026-07-13T12:00:00-03:00",
-fecha:"2026-07-14T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:102,
+    fase:"SEM",
+    ordem:2,
+    data:"15/07/2026",
+    hora:"16:00",
+    abre:"2026-07-13T12:00:00-03:00",
+    fecha:"2026-07-14T16:00:00-03:00",
+    timeA:"ENG",
+    nomeA:"Inglaterra",
+    timeB:"ARG",
+    nomeB:"Argentina"
 }
+
 ],
+
 
 L3:[
 
