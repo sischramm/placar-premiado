@@ -442,40 +442,42 @@ SEM:[
 
 ],
 
-
 L3:[
 
 {
-jogo:103,
-fase:"L3",
-ordem:1,
-data:"18/07/2026",
-hora:"18:00",
-abre:"2026-07-17T08:00:00-03:00",
-fecha:"2026-07-18T17:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:103,
+    fase:"L3",
+    ordem:1,
+    data:"18/07/2026",
+    hora:"18:00",
+    abre:"2026-07-17T08:00:00-03:00",
+    fecha:"2026-07-18T16:00:00-03:00",
+    timeA:"FRA",
+    nomeA:"França",
+    timeB:"ENG",
+    nomeB:"Inglaterra"
 }
+
 ],
 
 FIN:[
 
 {
-jogo:104,
-fase:"FIN",
-ordem:1,
-data:"19/07/2026",
-hora:"16:00",
-abre:"2026-07-18T08:00:00-03:00",
-fecha:"2026-07-19T16:00:00-03:00",
-timeA:"",
-nomeA:"A definir",
-timeB:"",
-nomeB:"A definir"
+    jogo:104,
+    fase:"FIN",
+    ordem:1,
+    data:"19/07/2026",
+    hora:"16:00",
+    abre:"2026-07-18T08:00:00-03:00",
+    fecha:"2026-07-19T14:00:00-03:00",
+    timeA:"ESP",
+    nomeA:"Espanha",
+    timeB:"ARG",
+    nomeB:"Argentina"
 }
+
 ]
+
 
 };
 
