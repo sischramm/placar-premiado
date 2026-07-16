@@ -97,7 +97,7 @@ function abrirResultados(){
                     🏆 Semifinal
                 </option>
 
-                <option value="TER">
+                <option value="L3">
                     🥉 3º Lugar
                 </option>
 
@@ -739,7 +739,7 @@ function formatarFase(fase){
 
         SEM:"Semifinal",
 
-        TER:"3º Lugar",
+        L3:"3º Lugar",
 
         FIN:"Final"
 
