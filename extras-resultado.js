@@ -81,3 +81,106 @@ async function salvarResultadoExtras(){
 
 window.salvarResultadoExtras =
     salvarResultadoExtras;
+
+
+// ======================================
+// CARREGA LISTA DE SELEÇÕES
+// ======================================
+
+function carregarSelecoesExtras(){
+
+    const paises=[
+
+        "África do Sul",
+        "Alemanha",
+        "Arábia Saudita",
+        "Argélia",
+        "Argentina",
+        "Austrália",
+        "Áustria",
+        "Bélgica",
+        "Bósnia",
+        "Brasil",
+        "Cabo Verde",
+        "Canadá",
+        "Catar",
+        "Colômbia",
+        "Coreia do Sul",
+        "Costa do Marfim",
+        "Croácia",
+        "Curaçao",
+        "Egito",
+        "Equador",
+        "Escócia",
+        "Espanha",
+        "EUA",
+        "França",
+        "Gana",
+        "Haiti",
+        "Holanda",
+        "Inglaterra",
+        "Irã",
+        "Iraque",
+        "Japão",
+        "Jordânia",
+        "Marrocos",
+        "México",
+        "Noruega",
+        "Nova Zelândia",
+        "Panamá",
+        "Paraguai",
+        "Portugal",
+        "RD Congo",
+        "República Tcheca",
+        "Senegal",
+        "Suécia",
+        "Suíça",
+        "Tunísia",
+        "Turquia",
+        "Uruguai",
+        "Uzbequistão"
+
+    ];
+
+    paises.sort(
+        (a,b)=>a.localeCompare(b,"pt-BR")
+    );
+
+    const html =
+        '<option value="">Selecione</option>' +
+
+        paises.map(p=>
+
+            `<option value="${p}">${p}</option>`
+
+        ).join("");
+
+    const campeao =
+        document.getElementById("resCampeao");
+
+    const vice =
+        document.getElementById("resVice");
+
+    if(campeao)
+        campeao.innerHTML = html;
+
+    if(vice)
+        vice.innerHTML = html;
+
+}
+
+window.carregarSelecoesExtras =
+    carregarSelecoesExtras;
+
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    ()=>{
+
+        carregarSelecoesExtras();
+
+    }
+
+);
