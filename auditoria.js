@@ -10,6 +10,41 @@ import {
 import { db, dbMata } from "./firebase.js";
 
 // ======================================
+// FUNÇÕES AUXILIARES
+// ======================================
+
+function normalizarTexto(texto){
+
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^\w\s]/g,"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+}
+
+function compararNome(a,b){
+
+    a = normalizarTexto(a);
+    b = normalizarTexto(b);
+
+    return (
+        a === b ||
+        a.includes(b) ||
+        b.includes(a)
+    );
+
+}
+
+function compararSelecao(a,b){
+
+    return normalizarTexto(a) === normalizarTexto(b);
+
+}
+
+// ======================================
 // USUÁRIO LOGADO
 // ======================================
 
