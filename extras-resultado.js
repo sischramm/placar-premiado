@@ -173,13 +173,64 @@ window.carregarSelecoesExtras =
     carregarSelecoesExtras;
 
 
+
+// ======================================
+// CARREGA RESULTADO OFICIAL
+// ======================================
+
+async function carregarResultadoExtras(){
+
+    const snap =
+        await getDoc(
+            REF_EXTRAS
+        );
+
+    if(!snap.exists())
+        return;
+
+    const dados =
+        snap.data();
+
+    document.getElementById(
+        "resCampeao"
+    ).value =
+        dados.campeao || "";
+
+    document.getElementById(
+        "resVice"
+    ).value =
+        dados.vice || "";
+
+    document.getElementById(
+        "resArtilheiro"
+    ).value =
+        dados.artilheiro || "";
+
+    document.getElementById(
+        "resGolsBrasil"
+    ).value =
+        dados.golsBrasil ?? "";
+
+    document.getElementById(
+        "resFaseBrasil"
+    ).value =
+        dados.faseBrasil || "";
+
+}
+
+window.carregarResultadoExtras =
+    carregarResultadoExtras;
+
+
 document.addEventListener(
 
     "DOMContentLoaded",
 
-    ()=>{
+    async ()=>{
 
         carregarSelecoesExtras();
+
+        await carregarResultadoExtras();
 
     }
 
