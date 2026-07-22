@@ -73,6 +73,12 @@ async function salvarResultadoExtras(){
 
     );
 
+if(window.recalcularRankingExtras){
+
+    await window.recalcularRankingExtras();
+
+}
+
     alert(
         "✅ Resultado oficial salvo!"
     );
