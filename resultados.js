@@ -881,25 +881,18 @@ async function carregarResultadosNovo(){
 
     if(faseSelecionada=="EXTRAS"){
 
-        grade.style.display = "none";
+    grade.style.display = "none";
 
-        if(extras)
-            extras.style.display = "none";
+    if(extras)
+        extras.style.display = "block";
 
-        atualizarDashboard(
-            [],
-            "EXTRAS"
-        );
+    atualizarDashboard([], "EXTRAS");
 
-        if(typeof carregarResultadoExtras=="function"){
+    carregarSelecoesExtras();
+    await carregarResultadoExtras();
 
-            await carregarResultadoExtras();
-
-        }
-
-        return;
-
-    }
+    return;
+}
 
     // =====================================
     // DEMAIS FASES
@@ -908,7 +901,7 @@ async function carregarResultadosNovo(){
     grade.style.display = "grid";
 
     if(extras)
-        extras.style.display = "block";
+        extras.style.display = "none";
 
     let jogos = [];
 
