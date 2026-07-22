@@ -105,6 +105,10 @@ function abrirResultados(){
                     🏆 Final
                 </option>
 
+<option value="EXTRAS">
+    ⭐ Resultado dos Extras
+</option>
+
             </select>
 
         </div>
@@ -408,6 +412,8 @@ function atualizarDashboard(jogos,fase){
         L3:"3º Lugar",
 
         FIN:"Final"
+
+EXTRAS:"Resultado dos Extras"
 
     };
 
@@ -772,6 +778,7 @@ function selecionarTipoResultado(id,tipo,botao){
 
 }
 
+
 // ======================================================
 // CARREGA RESULTADOS
 // ======================================================
@@ -780,6 +787,53 @@ async function carregarResultadosNovo(){
 
     const faseSelecionada =
         document.getElementById("filtroFase")?.value || "GRUPOS";
+
+    const grade =
+        document.getElementById(
+            "gradeResultados"
+        );
+
+    const extras =
+        document.querySelector(
+            ".resultadoExtras"
+        );
+
+    if(!grade) return;
+
+    // =====================================
+    // RESULTADO DOS EXTRAS
+    // =====================================
+
+    if(faseSelecionada=="EXTRAS"){
+
+        grade.style.display = "none";
+
+        if(extras)
+            extras.style.display = "block";
+
+        atualizarDashboard(
+            [],
+            "EXTRAS"
+        );
+
+        if(typeof carregarResultadoExtras=="function"){
+
+            await carregarResultadoExtras();
+
+        }
+
+        return;
+
+    }
+
+    // =====================================
+    // DEMAIS FASES
+    // =====================================
+
+    grade.style.display = "grid";
+
+    if(extras)
+        extras.style.display = "block";
 
     let jogos = [];
 
@@ -802,14 +856,7 @@ async function carregarResultadosNovo(){
         faseSelecionada
     );
 
-    const grade =
-        document.getElementById(
-            "gradeResultados"
-        );
-
-    if(!grade) return;
-
-    grade.innerHTML="";
+    grade.innerHTML = "";
 
     jogos.forEach(jogo=>{
 
