@@ -1,7 +1,10 @@
 import {
     collection,
     getDocs,
-    query
+    getDoc,
+    doc,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { db, dbMata } from "./firebase.js";
