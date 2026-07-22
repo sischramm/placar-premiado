@@ -1087,22 +1087,22 @@ async function carregarExtras(email){
         },
 
         {
+    titulo:"🇧🇷 Gols do Brasil",
 
-            titulo:"🇧🇷 Gols do Brasil",
+    palpite: palpite.golsBrasil,
 
-            palpite:palpite.golsBrasil,
+    oficial: oficial.golsBrasil,
 
-            oficial:oficial.golsBrasil,
-
-            pontos:10,
-
-            ok:Number(
-                palpite.golsBrasil
-            )===Number(
-                oficial.golsBrasil
-            )
-
-        },
+    pontos:
+        Number(palpite.golsBrasil) === Number(oficial.golsBrasil)
+        ? 10
+        : Math.abs(
+            Number(palpite.golsBrasil) -
+            Number(oficial.golsBrasil)
+          ) === 1
+          ? 5
+          : 0
+},
 
         {
 
@@ -1128,10 +1128,9 @@ async function carregarExtras(email){
 
     itens.forEach(item=>{
 
-        if(item.ok)
-            total += item.pontos;
+    total += item.pontos;
 
-        div.innerHTML += `
+    div.innerHTML += `
 
         <div class="cardAuditoriaJogo">
 
@@ -1162,9 +1161,8 @@ async function carregarExtras(email){
                 color:${item.ok?"green":"red"};
             ">
 
-                ${item.ok?"✔":"❌"}
-
-                ${item.ok?item.pontos:0} pts
+                ${item.pontos > 0 ? "✔" : "❌"}
+                ${item.pontos} pts
 
             </p>
 
