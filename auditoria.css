@@ -492,3 +492,48 @@ body{
     }
 
 }
+
+.tabelaAuditoria{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+.tabelaAuditoria th{
+    background:#111;
+    color:#fff;
+    padding:12px;
+    text-align:center;
+}
+
+.tabelaAuditoria td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+.verde{color:#198754;font-weight:bold;}
+.vermelho{color:#dc3545;font-weight:bold;}
+.azul{color:#0d6efd;font-weight:bold;}
+.amarelo{color:#d97706;font-weight:bold;}
+.laranja{color:#ff7a00;font-weight:bold;}
+.cinza{color:#666;}
+
+.resumoJogos{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.resumoJogos div{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
