@@ -4,7 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-<title>VAR do Bolão</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VAR do Bolão | Placar Premiado 2026</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="auditoria.css">
@@ -13,30 +15,243 @@
 
 <body>
 
-<header class="topo">
+<header class="topoSistema">
 
-<h1>🔒 VAR DO BOLÃO</h1>
+    <div class="logoSistema">
 
-<p>Auditoria Oficial</p>
+        🏆 PLACAR PREMIADO 2026
+
+    </div>
+
+    <div class="tituloSistema">
+
+        🔒 VAR DO BOLÃO
+
+        <div class="subtitulo">
+
+            Auditoria Oficial
+
+        </div>
+
+    </div>
+
+    <button
+        class="btnVoltar"
+        onclick="location.href='index.html'">
+
+        ⬅ Voltar
+
+    </button>
 
 </header>
 
-<div class="painelBusca">
 
-<input
-id="buscaParticipante"
-type="text"
-placeholder="Nome, e-mail, empresa ou filial">
+<main class="containerAuditoria">
 
-<button onclick="pesquisarParticipante()">
+    <!-- BUSCA -->
 
-🔍 Pesquisar
+    <section class="cardAuditoria">
 
-</button>
+        <h2>
+
+            🔍 Pesquisar Participante
+
+        </h2>
+
+        <input
+            id="buscaParticipante"
+            class="campoBusca"
+            type="text"
+            placeholder="Nome, e-mail, empresa ou filial">
+
+        <div id="resultadoPesquisa"></div>
+
+    </section>
+
+
+    <!-- PAINEL -->
+
+    <section
+        id="painelAuditoria"
+        class="cardAuditoria"
+        style="display:none;">
+
+        <div class="abasAuditoria">
+
+            <button
+                id="btnDados"
+                class="aba ativa"
+                onclick="abrirAbaAuditoria('dados')">
+
+                👤 Dados
+
+            </button>
+
+            <button
+                id="btnResumo"
+                class="aba"
+                onclick="abrirAbaAuditoria('resumo')">
+
+                📊 Resumo
+
+            </button>
+
+            <button
+                id="btnJogos"
+                class="aba"
+                onclick="abrirAbaAuditoria('jogos')">
+
+                ⚽ Jogos
+
+            </button>
+
+            <button
+                id="btnMata"
+                class="aba"
+                onclick="abrirAbaAuditoria('mata')">
+
+                🏆 Mata
+
+            </button>
+
+            <button
+                id="btnExtras"
+                class="aba"
+                onclick="abrirAbaAuditoria('extras')">
+
+                ⭐ Extras
+
+            </button>
+
+        </div>
+
+
+        <!-- DADOS -->
+
+        <div
+            id="abaDados"
+            class="conteudoAba">
+
+            <h2>
+
+                👤 Dados do Participante
+
+            </h2>
+
+            <div id="dadosParticipante"></div>
+
+        </div>
+
+
+        <!-- RESUMO -->
+
+        <div
+            id="abaResumo"
+            class="conteudoAba"
+            style="display:none;">
+
+            <h2>
+
+                📊 Resumo da Pontuação
+
+            </h2>
+
+            <div id="resumoParticipante"></div>
+
+        </div>
+
+
+        <!-- JOGOS -->
+
+        <div
+            id="abaJogos"
+            class="conteudoAba"
+            style="display:none;">
+
+            <h2>
+
+                ⚽ Jogos
+
+            </h2>
+
+            <div id="listaJogos"></div>
+
+        </div>
+
+
+        <!-- MATA -->
+
+        <div
+            id="abaMata"
+            class="conteudoAba"
+            style="display:none;">
+
+            <h2>
+
+                🏆 Mata-Mata
+
+            </h2>
+
+            <div id="listaMata"></div>
+
+        </div>
+
+
+        <!-- EXTRAS -->
+
+        <div
+            id="abaExtras"
+            class="conteudoAba"
+            style="display:none;">
+
+            <h2>
+
+                ⭐ Extras
+
+            </h2>
+
+            <div id="listaExtras"></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="rodapeSistema">
+
+    <strong>
+
+        Grupo Shark
+
+    </strong>
+
+    <br>
+
+    Placar Premiado 2026
+
+</footer>
+
+
+<div
+    id="loadingAuditoria"
+    style="display:none;">
+
+    <div class="loadingBox">
+
+        <div class="spinner"></div>
+
+        <p>
+
+            Carregando auditoria...
+
+        </p>
+
+    </div>
 
 </div>
 
-<div id="resultadoAuditoria"></div>
 
 <script type="module" src="auditoria.js"></script>
 
