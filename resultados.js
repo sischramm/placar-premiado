@@ -113,7 +113,86 @@ function abrirResultados(){
 
         </div>
 
-        <div id="gradeResultados">
+        <div id="gradeResultados"></div>
+
+<hr style="margin:40px 0;border:1px solid rgba(255,255,255,.15);">
+
+<div class="resultadoExtras" style="display:none;">
+
+    <h2>🏆 Resultado Oficial dos Extras</h2>
+
+    <div class="extrasGrid">
+
+        <div class="extraCampo">
+
+            <label>Campeão</label>
+
+            <select id="resCampeao"></select>
+
+        </div>
+
+        <div class="extraCampo">
+
+            <label>Vice-Campeão</label>
+
+            <select id="resVice"></select>
+
+        </div>
+
+        <div class="extraCampo">
+
+            <label>Artilheiro</label>
+
+            <input
+                id="resArtilheiro"
+                type="text"
+                placeholder="Nome do jogador">
+
+        </div>
+
+        <div class="extraCampo">
+
+            <label>Gols do Brasil</label>
+
+            <input
+                id="resGolsBrasil"
+                type="number"
+                min="0">
+
+        </div>
+
+        <div class="extraCampo">
+
+            <label>Fase do Brasil</label>
+
+            <select id="resFaseBrasil">
+
+                <option value="">Selecione</option>
+                <option value="Grupos">Fase de Grupos</option>
+                <option value="SEG">16 Avos</option>
+                <option value="OIT">Oitavas</option>
+                <option value="QUA">Quartas</option>
+                <option value="SEM">Semifinal</option>
+                <option value="VICE">Vice-Campeão</option>
+                <option value="CAMPEAO">Campeão</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <button
+        class="btnSalvarNovo"
+        onclick="salvarResultadoExtras()">
+
+        💾 Salvar Resultado Oficial
+
+    </button>
+
+</div>
+
+</div>
 
         </div>
 
@@ -411,7 +490,7 @@ function atualizarDashboard(jogos,fase){
 
         L3:"3º Lugar",
 
-        FIN:"Final"
+        FIN:"Final",
 
 EXTRAS:"Resultado dos Extras"
 
@@ -809,7 +888,7 @@ async function carregarResultadosNovo(){
         grade.style.display = "none";
 
         if(extras)
-            extras.style.display = "block";
+            extras.style.display = "none";
 
         atualizarDashboard(
             [],
