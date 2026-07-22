@@ -9,72 +9,100 @@ import {
   where
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
+import { db, dbMata } from "./firebase.js";
+
+function normalizarTexto(texto){
+
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^\w\s]/g,"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+}
+
+function compararNome(a,b){
+
+    a = normalizarTexto(a);
+    b = normalizarTexto(b);
+
+    return (
+        a === b ||
+        a.includes(b) ||
+        b.includes(a)
+    );
+
+}
+
+function compararSelecao(a,b){
+
+    return normalizarTexto(a) ===
+           normalizarTexto(b);
+
+}
+
 let indiceDataAtual = 0;
 let datasJogos = [];
 let todosJogos = [];
 let meusPalpites = {};
 let usuariosCache = [];
+
 window.todosJogos = todosJogos;
 
-import { db, dbMata } from "./firebase.js";
+window.onload = function(){
 
-window.onload = function() {
+    const home =
+        document.getElementById("homeInicial");
 
-  const home = document.getElementById("homeInicial");
-  const login = document.getElementById("loginSistema");
-  const topo = document.getElementById("topoSistema");
+    const login =
+        document.getElementById("loginSistema");
 
-  if(home) home.style.display = "flex";
-  if(login) login.style.display = "none";
-  if(topo) topo.style.display = "none";
+    const topo =
+        document.getElementById("topoSistema");
 
-  const usuario =
-JSON.parse(
-  localStorage.getItem(
-    "usuarioLogado"
-  )
-);
+    if(home) home.style.display = "flex";
+    if(login) login.style.display = "none";
+    if(topo) topo.style.display = "none";
 
-if(usuario){
-
-  home.style.display = "none";
-
-  login.style.display = "none";
-
-  document.getElementById(
-    "painel"
-  ).style.display = "block";
-
-  document.getElementById(
-    "topoSistema"
-  ).style.display = "block";
-
-  const btnImportar =
-    document.getElementById(
-      "btnImportarJogos"
+    const usuario = JSON.parse(
+        localStorage.getItem(
+            "usuarioLogado"
+        )
     );
 
-  if(btnImportar){
+    if(usuario){
 
-    if(
-      usuario.email ===
-      "simone.schramm@equagril.com.br"
-    ){
+        home.style.display = "none";
+        login.style.display = "none";
 
-      btnImportar.style.display =
-        "inline-block";
+        document.getElementById(
+            "painel"
+        ).style.display = "block";
 
-    }else{
+        document.getElementById(
+            "topoSistema"
+        ).style.display = "block";
 
-      btnImportar.style.display =
-        "none";
+        const btnImportar =
+            document.getElementById(
+                "btnImportarJogos"
+            );
+
+        if(btnImportar){
+
+            btnImportar.style.display =
+                usuario.email ===
+                "simone.schramm@equagril.com.br"
+                ? "inline-block"
+                : "none";
+
+        }
 
     }
 
-  }
-
-}
-  carregarJogos();
+    carregarJogos();
 
 };
 
