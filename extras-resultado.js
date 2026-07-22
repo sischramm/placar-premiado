@@ -221,17 +221,3 @@ async function carregarResultadoExtras(){
 window.carregarResultadoExtras =
     carregarResultadoExtras;
 
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    async ()=>{
-
-        carregarSelecoesExtras();
-
-        await carregarResultadoExtras();
-
-    }
-
-);
