@@ -267,6 +267,8 @@ async function abrirAuditoria(email){
 
     await carregarExtras(email);
 
+abrirAbaAuditoria("dados");
+
 }
 
 window.abrirAuditoria =
@@ -276,138 +278,255 @@ window.abrirAuditoria =
 // RESUMO
 // ======================================
 
-async function carregarResumo(email){
+async function calcularPontuacaoParticipante(email){
 
-    let jogos = 0;
-    let mata = 0;
-    let extras = 0;
+    let jogosPontos = 0;
+    let placaresExatos = 0;
+    let vencedores = 0;
 
-    // Jogos
-    const usuarioRanking =
-        usuarios.find(
-            u => u.email === email
-        );
+    // Jogos oficiais
+    const jogosSnap = await getDocs(
+        collection(db,"jogos")
+    );
 
-    if(usuarioRanking){
+    const jogos = {};
 
-        jogos =
-            (usuarioRanking.pontos || 0)
-            -
-            (usuarioRanking.pontosExtras || 0);
+    jogosSnap.forEach(docSnap=>{
 
-    }
-
-    // Mata
-    const mataSnap =
-        await getDocs(
-            collection(
-                dbMata,
-                "palpites"
-            )
-        );
-
-    mataSnap.forEach(docSnap=>{
-
-        const dados =
-            docSnap.data();
-
-        if(
-            dados.email !== email
-        ) return;
-
-        const palpites =
-            dados.palpites || {};
-
-        Object.values(palpites)
-        .forEach(p=>{
-
-            if(p.pontos){
-
-                mata +=
-                    Number(
-                        p.pontos
-                    );
-
-            }
-
-        });
+        jogos[docSnap.data().id] = docSnap.data();
 
     });
 
-    extras =
-        usuarioRanking?.pontosExtras || 0;
+    // Palpites do participante
+    const palpitesSnap = await getDocs(
+        query(
+            collection(db,"palpites"),
+            where("usuario","==",email)
+        )
+    );
 
-    const total =
-        jogos +
-        mata +
-        extras +
-        40;
+    palpitesSnap.forEach(docSnap=>{
 
-    document.getElementById(
-        "resumoParticipante"
-    ).innerHTML = `
+        const p = docSnap.data();
+        const jogo = jogos[p.jogoId];
+
+        if(!jogo) return;
+
+        if(
+            jogo.placarRealA == null ||
+            jogo.placarRealB == null
+        ) return;
+
+        const pA = Number(p.placarA);
+        const pB = Number(p.placarB);
+
+        const rA = Number(jogo.placarRealA);
+        const rB = Number(jogo.placarRealB);
+
+        const resultadoPalpite = Math.sign(pA-pB);
+        const resultadoReal = Math.sign(rA-rB);
+
+        const saldoPalpite = Math.abs(pA-pB);
+        const saldoReal = Math.abs(rA-rB);
+
+        let pontos = 0;
+
+        if(pA===rA && pB===rB){
+
+            pontos = 10;
+            placaresExatos++;
+            vencedores++;
+
+        }else if(resultadoReal===0 && resultadoPalpite===0){
+
+            pontos = 5;
+            vencedores++;
+
+        }else if(
+            resultadoPalpite===resultadoReal &&
+            (pA===rA || pB===rB)
+        ){
+
+            pontos = 7;
+            vencedores++;
+
+        }else if(
+            resultadoPalpite===resultadoReal &&
+            saldoPalpite===saldoReal
+        ){
+
+            pontos = 5;
+            vencedores++;
+
+        }else if(resultadoPalpite===resultadoReal){
+
+            pontos = 3;
+            vencedores++;
+
+        }
+
+        jogosPontos += pontos;
+
+    });
+
+    // Mata
+    let mata = 0;
+
+    const fases = [
+        "SEG",
+        "OIT",
+        "QUA",
+        "SEM",
+        "L3",
+        "FIN"
+    ];
+
+    for(const fase of fases){
+
+        const resultadoRef = await getDoc(
+            doc(dbMata,"resultados",fase)
+        );
+
+        if(!resultadoRef.exists()) continue;
+
+        const resultados =
+            resultadoRef.data().resultados || {};
+
+        const palpiteSnap = await getDocs(
+            query(
+                collection(dbMata,"palpites"),
+                where("email","==",email),
+                where("fase","==",fase)
+            )
+        );
+
+        palpiteSnap.forEach(docSnap=>{
+
+            const palpites =
+                docSnap.data().palpites || {};
+
+            Object.keys(palpites).forEach(id=>{
+
+                const p = palpites[id];
+                const r = resultados[id];
+
+                if(!r) return;
+
+                if(
+                    p.vencedor ===
+                    r.vencedor.time
+                ){
+
+                    mata += 10;
+
+                    if(
+                        p.forma === r.forma
+                    ){
+
+                        mata += 10;
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    }
+
+    // Extras
+    let extras = 0;
+
+    const oficialRef =
+        await getDoc(
+            doc(db,"extras_resultado","oficial")
+        );
+
+    if(oficialRef.exists()){
+
+        const oficial =
+            oficialRef.data();
+
+        const extraRef =
+            await getDoc(
+                doc(db,"extras",email)
+            );
+
+        if(extraRef.exists()){
+
+            const e =
+                extraRef.data();
+
+            if(compararSelecao(e.campeao,oficial.campeao))
+                extras += 20;
+
+            if(compararSelecao(e.vice,oficial.vice))
+                extras += 10;
+
+            if(compararNome(e.artilheiro,oficial.artilheiro))
+                extras += 15;
+
+            if(Number(e.golsBrasil)===Number(oficial.golsBrasil))
+                extras += 10;
+
+            if(normalizarTexto(e.faseBrasil)===normalizarTexto(oficial.faseBrasil))
+                extras += 10;
+
+        }
+
+    }
+
+    return{
+
+        jogos:jogosPontos,
+
+        mata,
+
+        extras,
+
+        compensacao:40,
+
+        total:
+            jogosPontos +
+            mata +
+            extras +
+            40,
+
+        placaresExatos,
+
+        vencedores
+
+    };
+
+}
+
+async function carregarResumo(email){
+
+    const r =
+        await calcularPontuacaoParticipante(email);
+
+    document.getElementById("resumoParticipante").innerHTML = `
 
     <div class="resumoCard">
 
-        <div>
+        <div>⚽ Jogos <strong>${r.jogos} pts</strong></div>
 
-            ⚽ Jogos
+        <div>🏆 Mata <strong>${r.mata} pts</strong></div>
 
-            <strong>
+        <div>⭐ Extras <strong>${r.extras} pts</strong></div>
 
-                ${jogos} pts
+        <div>🎁 Compensação <strong>40 pts</strong></div>
 
-            </strong>
+        <div>🎯 Placares Exatos <strong>${r.placaresExatos}</strong></div>
 
-        </div>
-
-        <div>
-
-            🏆 Mata
-
-            <strong>
-
-                ${mata} pts
-
-            </strong>
-
-        </div>
-
-        <div>
-
-            ⭐ Extras
-
-            <strong>
-
-                ${extras} pts
-
-            </strong>
-
-        </div>
-
-        <div>
-
-            🎁 Compensação
-
-            <strong>
-
-                40 pts
-
-            </strong>
-
-        </div>
+        <div>✅ Vencedores <strong>${r.vencedores}</strong></div>
 
         <hr>
 
-        <div
-            style="
-                font-size:28px;
-                font-weight:bold;
-            ">
+        <div style="font-size:30px;font-weight:bold;">
 
-            TOTAL
-
-            ${total} pts
+            TOTAL: ${r.total} pts
 
         </div>
 
@@ -420,38 +539,22 @@ async function carregarResumo(email){
 // ======================================
 // JOGOS
 // ======================================
-
 async function carregarJogos(email){
 
-    const lista =
-        document.getElementById(
-            "listaJogos"
-        );
+    const lista = document.getElementById("listaJogos");
 
     lista.innerHTML = "";
 
-    const jogosSnap =
-        await getDocs(
-            collection(
-                db,
-                "jogos"
-            )
-        );
+    const jogosSnap = await getDocs(
+        collection(db,"jogos")
+    );
 
-    const palpitesSnap =
-        await getDocs(
-            query(
-                collection(
-                    db,
-                    "palpites"
-                ),
-                where(
-                    "usuario",
-                    "==",
-                    email
-                )
-            )
-        );
+    const palpitesSnap = await getDocs(
+        query(
+            collection(db,"palpites"),
+            where("usuario","==",email)
+        )
+    );
 
     const jogos = {};
 
@@ -461,70 +564,76 @@ async function carregarJogos(email){
 
     });
 
+    let html = `
+
+    <table class="tabelaAuditoria">
+
+        <thead>
+
+            <tr>
+
+                <th>Jogo</th>
+                <th>Palpite</th>
+                <th>Resultado</th>
+                <th>Critério</th>
+                <th>Pontos</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+    `;
+
+    let totalPontos = 0;
+    let placaresExatos = 0;
+    let vencedores = 0;
+    let jogosAvaliados = 0;
+
     palpitesSnap.forEach(docSnap=>{
 
         const p = docSnap.data();
+        const jogo = jogos[p.jogoId];
 
-        const jogo =
-            jogos[p.jogoId];
+        if(!jogo) return;
 
-        if(!jogo)
-            return;
-
+        let criterio = "Aguardando";
         let pontos = 0;
+        let classe = "cinza";
 
-        let regra =
-            "Sem Pontos";
+        let resultado = "- x -";
 
         if(
-            jogo.placarRealA == null ||
-            jogo.placarRealB == null
+            jogo.placarRealA != null &&
+            jogo.placarRealB != null
         ){
 
-            regra =
-                "Aguardando Resultado";
+            jogosAvaliados++;
 
-        }else{
+            resultado =
+                `${jogo.placarRealA} x ${jogo.placarRealB}`;
 
-            const pA =
-                Number(p.placarA);
+            const pA = Number(p.placarA);
+            const pB = Number(p.placarB);
 
-            const pB =
-                Number(p.placarB);
+            const rA = Number(jogo.placarRealA);
+            const rB = Number(jogo.placarRealB);
 
-            const rA =
-                Number(jogo.placarRealA);
+            const resultadoPalpite = Math.sign(pA-pB);
+            const resultadoReal = Math.sign(rA-rB);
 
-            const rB =
-                Number(jogo.placarRealB);
+            const saldoPalpite = Math.abs(pA-pB);
+            const saldoReal = Math.abs(rA-rB);
 
-            const resultadoPalpite =
-                Math.sign(
-                    pA-pB
-                );
+            if(pA===rA && pB===rB){
 
-            const resultadoReal =
-                Math.sign(
-                    rA-rB
-                );
-
-            const saldoPalpite =
-                Math.abs(
-                    pA-pB
-                );
-
-            const saldoReal =
-                Math.abs(
-                    rA-rB
-                );
-
-            if(
-                pA===rA &&
-                pB===rB
-            ){
-
+                criterio = "🏆 Placar Exato";
                 pontos = 10;
-                regra = "Placar Exato";
+                classe = "verde";
+
+                placaresExatos++;
+                vencedores++;
 
             }
 
@@ -533,106 +642,130 @@ async function carregarJogos(email){
                 resultadoPalpite===0
             ){
 
+                criterio = "🤝 Empate";
                 pontos = 5;
-                regra = "Empate";
+                classe = "azul";
+
+                vencedores++;
 
             }
 
             else if(
 
                 resultadoPalpite===resultadoReal &&
-
-                (
-                    pA===rA ||
-                    pB===rB
-                )
+                (pA===rA || pB===rB)
 
             ){
 
+                criterio = "🟢 Vencedor + Gols";
                 pontos = 7;
-                regra = "Vencedor + Gols";
+                classe = "verde";
+
+                vencedores++;
 
             }
 
             else if(
 
                 resultadoPalpite===resultadoReal &&
-
                 saldoPalpite===saldoReal
 
             ){
 
+                criterio = "🟡 Saldo de Gols";
                 pontos = 5;
-                regra = "Saldo de Gols";
+                classe = "laranja";
+
+                vencedores++;
 
             }
 
-            else if(
+            else if(resultadoPalpite===resultadoReal){
 
-                resultadoPalpite===resultadoReal
-
-            ){
-
+                criterio = "✅ Vencedor";
                 pontos = 3;
-                regra = "Vencedor";
+                classe = "amarelo";
+
+                vencedores++;
+
+            }
+
+            else{
+
+                criterio = "❌ Errou";
+                pontos = 0;
+                classe = "vermelho";
 
             }
 
         }
 
-        lista.innerHTML += `
+        totalPontos += pontos;
 
-        <div class="cardAuditoriaJogo">
+        html += `
 
-            <h3>
+        <tr>
 
-                ${jogo.timeA}
+            <td>
 
-                ${jogo.placarRealA ?? "-"}
+                ${jogo.timeA} x ${jogo.timeB}
 
-                x
+            </td>
 
-                ${jogo.placarRealB ?? "-"}
+            <td>
 
-                ${jogo.timeB}
+                ${p.placarA} x ${p.placarB}
 
-            </h3>
+            </td>
 
-            <p>
+            <td>
 
-                <strong>Palpite:</strong>
+                ${resultado}
 
-                ${p.placarA}
+            </td>
 
-                x
+            <td class="${classe}">
 
-                ${p.placarB}
+                ${criterio}
 
-            </p>
+            </td>
 
-            <p>
+            <td>
 
-                <strong>Critério:</strong>
+                <strong>${pontos}</strong>
 
-                ${regra}
+            </td>
 
-            </p>
-
-            <p>
-
-                <strong>Pontos:</strong>
-
-                ${pontos}
-
-            </p>
-
-        </div>
+        </tr>
 
         `;
 
     });
 
+    html += `
+
+        </tbody>
+
+    </table>
+
+    <div class="resumoJogos">
+
+        <div>⚽ Jogos Avaliados <strong>${jogosAvaliados}</strong></div>
+
+        <div>🏆 Placares Exatos <strong>${placaresExatos}</strong></div>
+
+        <div>✅ Vencedores <strong>${vencedores}</strong></div>
+
+        <div>🎯 Pontos dos Jogos <strong>${totalPontos} pts</strong></div>
+
+    </div>
+
+    `;
+
+    lista.innerHTML = html;
+
 }
+
 // ======================================
 // MATA-MATA
 // ======================================
@@ -1068,3 +1201,55 @@ async function carregarExtras(email){
     `;
 
 }
+
+
+// ======================================
+// ABAS
+// ======================================
+
+function abrirAbaAuditoria(nome){
+
+    document.getElementById("abaDados").style.display = "none";
+    document.getElementById("abaResumo").style.display = "none";
+    document.getElementById("abaJogos").style.display = "none";
+    document.getElementById("abaMata").style.display = "none";
+    document.getElementById("abaExtras").style.display = "none";
+
+    document.getElementById("btnDados").classList.remove("ativa");
+    document.getElementById("btnResumo").classList.remove("ativa");
+    document.getElementById("btnJogos").classList.remove("ativa");
+    document.getElementById("btnMata").classList.remove("ativa");
+    document.getElementById("btnExtras").classList.remove("ativa");
+
+    switch(nome){
+
+        case "dados":
+            document.getElementById("abaDados").style.display = "block";
+            document.getElementById("btnDados").classList.add("ativa");
+            break;
+
+        case "resumo":
+            document.getElementById("abaResumo").style.display = "block";
+            document.getElementById("btnResumo").classList.add("ativa");
+            break;
+
+        case "jogos":
+            document.getElementById("abaJogos").style.display = "block";
+            document.getElementById("btnJogos").classList.add("ativa");
+            break;
+
+        case "mata":
+            document.getElementById("abaMata").style.display = "block";
+            document.getElementById("btnMata").classList.add("ativa");
+            break;
+
+        case "extras":
+            document.getElementById("abaExtras").style.display = "block";
+            document.getElementById("btnExtras").classList.add("ativa");
+            break;
+
+    }
+
+}
+
+window.abrirAbaAuditoria = abrirAbaAuditoria;
