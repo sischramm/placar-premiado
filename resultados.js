@@ -194,10 +194,6 @@ function abrirResultados(){
 
 </div>
 
-        </div>
-
-    </div>
-
     `;
 
     carregarResultadosNovo();
