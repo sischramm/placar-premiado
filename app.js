@@ -2174,6 +2174,125 @@ async function atualizarRanking(){
     });
 
   }
+
+// ==========================================
+// SOMA PONTOS DOS EXTRAS
+// ==========================================
+
+const extrasResultadoSnap =
+    await getDoc(
+        doc(
+            db,
+            "extras_resultado",
+            "oficial"
+        )
+    );
+
+if(extrasResultadoSnap.exists()){
+
+    const oficial =
+        extrasResultadoSnap.data();
+
+    const extrasUsuarios =
+        await getDocs(
+            collection(
+                db,
+                "extras"
+            )
+        );
+
+    extrasUsuarios.forEach(docSnap=>{
+
+        const email = docSnap.id;
+
+        const palpite =
+            docSnap.data();
+
+        if(!estatisticas[email]){
+
+            estatisticas[email] = {
+
+                pontos:0,
+                placaresExatos:0,
+                vencedoresAcertados:0,
+                acertouCampeao:0
+
+            };
+
+        }
+
+        let pontosExtras = 0;
+
+        // Campeão
+        if(
+            compararSelecao(
+                palpite.campeao,
+                oficial.campeao
+            )
+        ){
+
+            pontosExtras += 20;
+
+            estatisticas[email]
+                .acertouCampeao++;
+
+        }
+
+        // Vice
+        if(
+            compararSelecao(
+                palpite.vice,
+                oficial.vice
+            )
+        ){
+
+            pontosExtras += 10;
+
+        }
+
+        // Artilheiro
+        if(
+            compararNome(
+                palpite.artilheiro,
+                oficial.artilheiro
+            )
+        ){
+
+            pontosExtras += 15;
+
+        }
+
+        // Gols do Brasil
+        if(
+            Number(palpite.golsBrasil) ===
+            Number(oficial.golsBrasil)
+        ){
+
+            pontosExtras += 10;
+
+        }
+
+        // Fase do Brasil
+        if(
+            normalizarTexto(
+                palpite.faseBrasil
+            ) ===
+            normalizarTexto(
+                oficial.faseBrasil
+            )
+        ){
+
+            pontosExtras += 10;
+
+        }
+
+        estatisticas[email].pontos += pontosExtras;
+
+        estatisticas[email].pontosExtras = pontosExtras;
+
+    });
+
+}
     
   usuariosCache.forEach(u=>{
 
@@ -2181,7 +2300,10 @@ async function atualizarRanking(){
       estatisticas[u.email];
 
     u.pontos =
-      est?.pontos || 0;
+    est?.pontos || 0;
+
+u.pontosExtras =
+    est?.pontosExtras || 0;
 
     u.placaresExatos =
       est?.placaresExatos || 0;
