@@ -329,7 +329,6 @@ async function carregarResumo(){
 // ======================================
 // JOGOS
 // ======================================
-
 async function carregarJogos(){
 
     const lista =
@@ -372,6 +371,14 @@ async function carregarJogos(){
 
     });
 
+    let totalPontos = 0;
+
+    let jogosAvaliados = 0;
+
+    let placaresExatos = 0;
+
+    let vencedores = 0;
+
     let html = `
 
         <table class="tabelaAuditoria">
@@ -405,7 +412,7 @@ async function carregarJogos(){
         if(!jogo)
             return;
 
-                let criterio = "Aguardando";
+        let criterio = "Aguardando";
 
         let pontos = 0;
 
@@ -413,6 +420,8 @@ async function carregarJogos(){
             jogo.placarRealA != null &&
             jogo.placarRealB != null
         ){
+
+            jogosAvaliados++;
 
             const pA = Number(p.placarA);
             const pB = Number(p.placarB);
@@ -432,20 +441,30 @@ async function carregarJogos(){
             const saldoReal =
                 Math.abs(rA - rB);
 
-            if(pA === rA && pB === rB){
+            if(
+                pA === rA &&
+                pB === rB
+            ){
 
                 criterio = "🏆 Placar Exato";
                 pontos = 10;
 
+                placaresExatos++;
+                vencedores++;
+
             }
 
             else if(
+
                 resultadoReal === 0 &&
                 resultadoPalpite === 0
+
             ){
 
                 criterio = "🤝 Empate";
                 pontos = 5;
+
+                vencedores++;
 
             }
 
@@ -463,6 +482,8 @@ async function carregarJogos(){
                 criterio = "🟢 Vencedor + Gols";
                 pontos = 7;
 
+                vencedores++;
+
             }
 
             else if(
@@ -476,6 +497,8 @@ async function carregarJogos(){
                 criterio = "🟡 Saldo de Gols";
                 pontos = 5;
 
+                vencedores++;
+
             }
 
             else if(
@@ -487,6 +510,8 @@ async function carregarJogos(){
                 criterio = "✅ Vencedor";
                 pontos = 3;
 
+                vencedores++;
+
             }
 
             else{
@@ -495,7 +520,10 @@ async function carregarJogos(){
 
             }
 
+            totalPontos += pontos;
+
         }
+
 
         html += `
 
@@ -516,17 +544,11 @@ async function carregarJogos(){
                 <td>
 
                     ${
-
                         jogo.placarRealA == null
-
                         ?
-
                         "- x -"
-
                         :
-
                         `${jogo.placarRealA} x ${jogo.placarRealB}`
-
                     }
 
                 </td>
@@ -555,13 +577,47 @@ async function carregarJogos(){
 
         </table>
 
+        <div class="resumoJogos">
+
+            <div>
+
+                ⚽ Jogos Avaliados
+
+                <strong>${jogosAvaliados}</strong>
+
+            </div>
+
+            <div>
+
+                🏆 Placares Exatos
+
+                <strong>${placaresExatos}</strong>
+
+            </div>
+
+            <div>
+
+                ✅ Vencedores
+
+                <strong>${vencedores}</strong>
+
+            </div>
+
+            <div>
+
+                🎯 Pontos dos Jogos
+
+                <strong>${totalPontos} pts</strong>
+
+            </div>
+
+        </div>
+
     `;
 
     lista.innerHTML = html;
 
 }
-
-
 // ======================================
 // MATA-MATA
 // ======================================
