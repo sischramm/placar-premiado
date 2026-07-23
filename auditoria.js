@@ -1415,33 +1415,35 @@ async function carregarExtras(){
 
         },
 
-        {
+       {
 
-            titulo:"🇧🇷 Gols do Brasil",
+    titulo:"🇧🇷 Gols do Brasil",
 
-            palpite:palpite.golsBrasil,
+    palpite: palpite.golsBrasil,
 
-            oficial:oficial.golsBrasil,
+    oficial: oficial.golsBrasil,
 
-            pontos:
+    pontos:(()=>{
 
-                Number(
-                    palpite.golsBrasil
-                ) ===
+        const diferenca = Math.abs(
 
-                Number(
-                    oficial.golsBrasil
-                )
+            Number(palpite.golsBrasil) -
 
-                ?
+            Number(oficial.golsBrasil)
 
-                10
+        );
 
-                :
+        if(diferenca === 0)
+            return 10;
 
-                0
+        if(diferenca === 1)
+            return 5;
 
-        },
+        return 0;
+
+    })()
+
+},
 
         {
 
