@@ -1885,3 +1885,83 @@ body{
     min-height:100vh;
 
 }
+
+.hero{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+}
+
+.card{
+
+    width:100%;
+
+    max-width:900px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:25px;
+
+    padding:60px;
+
+    text-align:center;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+}
+
+.copa{
+
+    color:#FFD54F;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    margin-bottom:20px;
+
+}
+
+h1{
+
+    font-size:56px;
+
+    line-height:1.2;
+
+    margin-bottom:30px;
+
+}
+
+.subtitulo{
+
+    font-size:26px;
+
+    color:#FFD54F;
+
+    margin-bottom:30px;
+
+}
+
+.texto{
+
+    font-size:22px;
+
+    line-height:1.8;
+
+    color:#f0f0f0;
+
+}
