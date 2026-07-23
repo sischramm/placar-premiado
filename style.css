@@ -1878,11 +1878,14 @@ body{
 
     font-family:Arial,Helvetica,sans-serif;
 
-    background:#07192f;
+    background:
+    radial-gradient(circle at top,#0d4c8f,#04152b 65%);
 
     color:#fff;
 
     min-height:100vh;
+
+    overflow-x:hidden;
 
 }
 
@@ -1938,11 +1941,23 @@ body{
 
 h1{
 
-    font-size:56px;
+    font-size:58px;
 
     line-height:1.2;
 
     margin-bottom:30px;
+
+    color:#FFD54F;
+
+    text-shadow:
+
+        0 0 10px rgba(255,215,0,.8),
+
+        0 0 30px rgba(255,215,0,.5),
+
+        0 0 60px rgba(255,215,0,.3);
+
+    animation:brilho 2s infinite alternate;
 
 }
 
@@ -1996,5 +2011,141 @@ h1{
 .fotoVencedores img:hover{
 
     transform:scale(1.02);
+
+}
+
+.informacoes{
+
+    margin-top:60px;
+
+}
+
+.bloco{
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:18px;
+
+    padding:30px;
+
+    margin-bottom:25px;
+
+}
+
+.bloco h2{
+
+    color:#FFD54F;
+
+    margin-bottom:18px;
+
+    font-size:30px;
+
+}
+
+.bloco p{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    color:#f3f3f3;
+
+}
+
+.botao{
+
+    display:inline-block;
+
+    margin-top:25px;
+
+    padding:18px 40px;
+
+    background:#d71920;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border-radius:50px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.botao:hover{
+
+    background:#b90f1b;
+
+    transform:scale(1.05);
+
+}
+
+footer{
+
+    margin-top:60px;
+
+    text-align:center;
+
+    color:#ddd;
+
+    font-size:18px;
+
+}
+
+@keyframes brilho{
+
+    from{
+
+        text-shadow:
+
+            0 0 10px #FFD54F,
+
+            0 0 25px #FFD54F;
+
+    }
+
+    to{
+
+        text-shadow:
+
+            0 0 20px #FFD54F,
+
+            0 0 50px #FFD54F,
+
+            0 0 80px #FFD54F;
+
+    }
+
+}
+
+.card{
+
+    animation:subir 1s ease;
+
+}
+
+@keyframes subir{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(60px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
 
 }
