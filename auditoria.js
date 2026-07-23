@@ -248,6 +248,377 @@ window.abrirAuditoria = abrirAuditoria;
 
 async function carregarResumo(){
 
+    const jogosSnap = await getDocs(
+        collection(db,"jogos")
+    );
+
+    const palpitesSnap = await getDocs(
+
+        query(
+
+            collection(
+                db,
+                "palpites"
+            ),
+
+            where(
+                "usuario",
+                "==",
+                participanteAtual.email
+            )
+
+        )
+
+    );
+
+    const jogos = {};
+
+    jogosSnap.forEach(docSnap=>{
+
+        const jogo =
+            docSnap.data();
+
+        jogos[jogo.id] = jogo;
+
+    });
+
+    let pontosJogos = 0;
+    let pontosMata = 0;
+    let pontosExtras = 0;
+
+    let placaresExatos = 0;
+    let vencedores = 0;
+    let acertouCampeao = 0;
+
+    palpitesSnap.forEach(docSnap=>{
+
+        const p = docSnap.data();
+
+        const jogo =
+            jogos[p.jogoId];
+
+        if(!jogo)
+            return;
+
+        if(
+            jogo.placarRealA == null ||
+            jogo.placarRealB == null
+        ){
+            return;
+        }
+
+        const pA =
+            Number(p.placarA);
+
+        const pB =
+            Number(p.placarB);
+
+        const rA =
+            Number(jogo.placarRealA);
+
+        const rB =
+            Number(jogo.placarRealB);
+
+        const resultadoPalpite =
+            Math.sign(pA-pB);
+
+        const resultadoReal =
+            Math.sign(rA-rB);
+
+        const saldoPalpite =
+            Math.abs(pA-pB);
+
+        const saldoReal =
+            Math.abs(rA-rB);
+
+        if(
+            pA===rA &&
+            pB===rB
+        ){
+
+            pontosJogos += 10;
+
+            placaresExatos++;
+
+            vencedores++;
+
+        }
+
+        else if(
+
+            resultadoReal===0 &&
+            resultadoPalpite===0
+
+        ){
+
+            pontosJogos += 5;
+
+            vencedores++;
+
+        }
+
+        else if(
+
+            resultadoPalpite===resultadoReal &&
+
+            (
+                pA===rA ||
+                pB===rB
+            )
+
+        ){
+
+            pontosJogos += 7;
+
+            vencedores++;
+
+        }
+
+        else if(
+
+            resultadoPalpite===resultadoReal &&
+
+            saldoPalpite===saldoReal
+
+        ){
+
+            pontosJogos += 5;
+
+            vencedores++;
+
+        }
+
+        else if(
+
+            resultadoPalpite===resultadoReal
+
+        ){
+
+            pontosJogos += 3;
+
+            vencedores++;
+
+        }
+
+    });
+
+    const fases = [
+
+        "SEG",
+        "OIT",
+        "QUA",
+        "SEM",
+        "L3",
+        "FIN"
+
+    ];
+
+    for(const fase of fases){
+
+        const palpitesSnap = await getDocs(
+
+            query(
+
+                collection(
+                    dbMata,
+                    "palpites"
+                ),
+
+                where(
+                    "email",
+                    "==",
+                    participanteAtual.email
+                ),
+
+                where(
+                    "fase",
+                    "==",
+                    fase
+                )
+
+            )
+
+        );
+
+        if(palpitesSnap.empty)
+            continue;
+
+        const resultadoRef = await getDoc(
+
+            doc(
+                dbMata,
+                "resultados",
+                fase
+            )
+
+        );
+
+        if(!resultadoRef.exists())
+            continue;
+
+        const resultados =
+            resultadoRef.data().resultados || {};
+
+        palpitesSnap.forEach(docSnap=>{
+
+            const palpites =
+                docSnap.data().palpites || {};
+
+            Object.keys(palpites).forEach(id=>{
+
+                const p =
+                    palpites[id];
+
+                const r =
+                    resultados[id];
+
+                if(
+                    !r ||
+                    !r.vencedor ||
+                    !r.vencedor.time
+                ){
+                    return;
+                }
+
+                if(
+                    p.vencedor ===
+                    r.vencedor.time
+                ){
+
+                    pontosMata += 10;
+
+                    vencedores++;
+
+                    if(
+                        p.forma ===
+                        r.forma
+                    ){
+
+                        pontosMata += 10;
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    }
+
+    const oficialRef = await getDoc(
+
+        doc(
+            db,
+            "extras_resultado",
+            "oficial"
+        )
+
+    );
+
+    if(oficialRef.exists()){
+
+        const usuarioRef = await getDoc(
+
+            doc(
+                db,
+                "extras",
+                participanteAtual.email
+            )
+
+        );
+
+        if(usuarioRef.exists()){
+
+            const oficial =
+                oficialRef.data();
+
+            const palpite =
+                usuarioRef.data();
+
+            // Campeão
+            if(
+                compararSelecao(
+                    palpite.campeao,
+                    oficial.campeao
+                )
+            ){
+
+                pontosExtras += 20;
+                acertouCampeao++;
+
+            }
+
+            // Vice
+            if(
+                compararSelecao(
+                    palpite.vice,
+                    oficial.vice
+                )
+            ){
+
+                pontosExtras += 10;
+
+            }
+
+            // Artilheiro
+            if(
+                compararNome(
+                    palpite.artilheiro,
+                    oficial.artilheiro
+                )
+            ){
+
+                pontosExtras += 15;
+
+            }
+
+            // Gols do Brasil
+            if(
+
+                Number(
+                    palpite.golsBrasil
+                ) ===
+
+                Number(
+                    oficial.golsBrasil
+                )
+
+            ){
+
+                pontosExtras += 10;
+
+            }
+
+            // Fase do Brasil
+            if(
+
+                normalizarTexto(
+                    palpite.faseBrasil
+                ) ===
+
+                normalizarTexto(
+                    oficial.faseBrasil
+                )
+
+            ){
+
+                pontosExtras += 10;
+
+            }
+
+        }
+
+    }
+
+    const compensacao = 40;
+
+    const total =
+        pontosJogos +
+        pontosMata +
+        pontosExtras +
+        compensacao;
+
     document.getElementById(
         "resumoParticipante"
     ).innerHTML = `
@@ -255,35 +626,103 @@ async function carregarResumo(){
         <div class="resumoCard">
 
             <div>
-                👤 Participante
+
+                ⚽ Jogos
+
+                <strong>
+
+                    ${pontosJogos} pts
+
+                </strong>
+
             </div>
 
-            <h2>${participanteAtual.nome}</h2>
+            <div>
+
+                🏆 Mata-mata
+
+                <strong>
+
+                    ${pontosMata} pts
+
+                </strong>
+
+            </div>
+
+            <div>
+
+                ⭐ Extras
+
+                <strong>
+
+                    ${pontosExtras} pts
+
+                </strong>
+
+            </div>
+
+            <div>
+
+                🎁 Compensação
+
+                <strong>
+
+                    ${compensacao} pts
+
+                </strong>
+
+            </div>
 
             <hr>
 
             <div>
-                📧
-                <strong>${participanteAtual.email}</strong>
+
+                🎯 Placares Exatos
+
+                <strong>
+
+                    ${placaresExatos}
+
+                </strong>
+
             </div>
 
             <div>
-                🏢
-                <strong>${participanteAtual.empresa}</strong>
+
+                ✅ Vencedores
+
+                <strong>
+
+                    ${vencedores}
+
+                </strong>
+
             </div>
 
             <div>
-                📍
-                <strong>${participanteAtual.filial}</strong>
+
+                👑 Campeão
+
+                <strong>
+
+                    ${acertouCampeao}
+
+                </strong>
+
             </div>
 
             <hr>
 
-            <div>
-                A pontuação detalhada pode ser conferida
-                nas abas <strong>Jogos</strong>,
-                <strong>Mata</strong> e
-                <strong>Extras</strong>.
+            <div
+                style="
+                    font-size:30px;
+                    font-weight:bold;
+                    text-align:center;
+                "
+            >
+
+                TOTAL: ${total} pts
+
             </div>
 
         </div>
@@ -291,6 +730,10 @@ async function carregarResumo(){
     `;
 
 }
+
+
+
+
 // ======================================
 // JOGOS
 // ======================================
