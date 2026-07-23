@@ -1965,3 +1965,36 @@ h1{
     color:#f0f0f0;
 
 }
+
+.fotoVencedores{
+
+    margin-top:50px;
+
+}
+
+.fotoVencedores img{
+
+    width:100%;
+
+    max-width:850px;
+
+    display:block;
+
+    margin:auto;
+
+    border-radius:20px;
+
+    border:4px solid #FFD54F;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.45);
+
+    transition:.4s;
+
+}
+
+.fotoVencedores img:hover{
+
+    transform:scale(1.02);
+
+}
