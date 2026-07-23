@@ -67,6 +67,48 @@
 
 </div>
 
+<div class="destaque">
+
+    <h2>
+
+        🏆 Os Grandes Campeões do Placar Premiado 2026
+
+    </h2>
+
+    <div class="linha"></div>
+
+    <p>
+
+        Mais de <strong>700 participantes</strong> aceitaram o desafio.
+
+    </p>
+
+    <p>
+
+        ⚽ 64 jogos disputados.
+
+    </p>
+
+    <p>
+
+        🎯 Milhares de palpites enviados.
+
+    </p>
+
+    <p>
+
+        🏅 Apenas <strong>5 vencedores</strong> chegaram ao topo.
+
+    </p>
+
+    <p>
+
+        ❤️ Obrigado a todos que fizeram desta campanha um grande sucesso!
+
+    </p>
+
+</div>
+
 <div class="informacoes">
 
     <div class="bloco">
@@ -143,6 +185,51 @@
     </div>
 
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<script>
+
+window.onload=function(){
+
+    const fim=Date.now()+5000;
+
+    const intervalo=setInterval(()=>{
+
+        if(Date.now()>fim){
+
+            clearInterval(intervalo);
+
+            return;
+
+        }
+
+        confetti({
+
+            particleCount:6,
+
+            spread:80,
+
+            origin:{x:0}
+
+        });
+
+        confetti({
+
+            particleCount:6,
+
+            spread:80,
+
+            origin:{x:1}
+
+        });
+
+    },250);
+
+};
+
+</script>
 
 </body>
 
