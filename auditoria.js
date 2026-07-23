@@ -811,14 +811,23 @@ async function carregarJogos(){
 
     palpitesSnap.forEach(docSnap=>{
 
-        const p =
-            docSnap.data();
+    const p =
+        docSnap.data();
 
-        const jogo =
-            jogos[p.jogoId];
+    const jogo =
+        jogos[p.jogoId];
 
-        if(!jogo)
-            return;
+    if(!jogo)
+        return;
+
+    // Os 4 primeiros jogos foram compensados com +40 pontos
+    if(Number(p.jogoId) <= 4){
+        return;
+    }
+
+    let criterio = "Aguardando";
+
+    let pontos = 0;
 
         let criterio = "Aguardando";
 
