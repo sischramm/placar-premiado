@@ -300,6 +300,11 @@ async function carregarResumo(){
         if(!jogo)
             return;
 
+        // Os quatro primeiros jogos foram compensados
+if(Number(p.jogoId) <= 4){
+    return;
+}
+
         if(
             jogo.placarRealA == null ||
             jogo.placarRealB == null
@@ -574,22 +579,21 @@ async function carregarResumo(){
             }
 
             // Gols do Brasil
-            if(
+            
+const diferenca = Math.abs(
+    Number(palpite.golsBrasil) -
+    Number(oficial.golsBrasil)
+);
 
-                Number(
-                    palpite.golsBrasil
-                ) ===
+if(diferenca === 0){
 
-                Number(
-                    oficial.golsBrasil
-                )
+    pontosExtras += 10;
 
-            ){
+}else if(diferenca === 1){
 
-                pontosExtras += 10;
+    pontosExtras += 5;
 
-            }
-
+}
             // Fase do Brasil
             if(
 
@@ -828,10 +832,6 @@ async function carregarJogos(){
     let criterio = "Aguardando";
 
     let pontos = 0;
-
-        let criterio = "Aguardando";
-
-        let pontos = 0;
 
         if(
             jogo.placarRealA != null &&
