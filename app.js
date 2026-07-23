@@ -2346,6 +2346,26 @@ u.pontosExtras =
 
 }
 
+window.atualizarRanking = atualizarRanking;
+
+window.getUsuariosRanking = function(){
+
+    return usuariosCache;
+
+};
+
+window.getParticipanteRanking = async function(email){
+
+    await atualizarRanking();
+
+    return usuariosCache.find(
+        u => u.email === email
+    );
+
+};
+
+
+
 async function carregarRanking(){
 
   const top5 =
