@@ -227,30 +227,51 @@ async function abrirAuditoria(email){
 
     `;
 
+    await carregarResumo();
+
+    await carregarJogos();
+
+    await carregarMata();
+
+    await carregarExtras();
+
+    abrirAbaAuditoria("dados");
+
+
 }
+
+window.abrirAuditoria = abrirAuditoria;
+
+// ======================================
+// RESUMO
+// ======================================
 
 async function carregarResumo(){
 
     await window.atualizarRanking();
 
-    const usuarios =
+    const ranking =
         window.getUsuariosRanking();
 
     const participante =
-        usuarios.find(
-            u => u.email === participanteAtual.email
+        ranking.find(
+            u=>u.email===participanteAtual.email
         );
 
     if(!participante){
 
         document.getElementById(
             "resumoParticipante"
-        ).innerHTML =
-            "<p>Participante não encontrado.</p>";
+        ).innerHTML = `
+            <p>Participante não encontrado.</p>
+        `;
 
         return;
 
     }
+
+    const total =
+        (participante.pontos || 0) + 40;
 
     document.getElementById(
         "resumoParticipante"
@@ -258,22 +279,45 @@ async function carregarResumo(){
 
         <div class="resumoCard">
 
-            <div>⚽ Jogos <strong>${participante.pontos - (participante.pontosExtras || 0)} pts</strong></div>
+            <div>
+                🏆 Pontuação Total
+            </div>
 
-            <div>⭐ Extras <strong>${participante.pontosExtras || 0} pts</strong></div>
-
-            <div>🎁 Compensação <strong>40 pts</strong></div>
-
-            <div>🎯 Placares Exatos <strong>${participante.placaresExatos || 0}</strong></div>
-
-            <div>✅ Vencedores <strong>${participante.vencedoresAcertados || 0}</strong></div>
+            <h1>${total} pts</h1>
 
             <hr>
 
-            <div style="font-size:30px;font-weight:bold;">
+            <div>
+                🎯 Placares Exatos:
+                <strong>
+                    ${participante.placaresExatos || 0}
+                </strong>
+            </div>
 
-                TOTAL ${(participante.pontos || 0) + 40} pts
+            <div>
+                ✅ Vencedores:
+                <strong>
+                    ${participante.vencedoresAcertados || 0}
+                </strong>
+            </div>
 
+            <div>
+                ⭐ Extras:
+                <strong>
+                    ${participante.pontosExtras || 0} pts
+                </strong>
+            </div>
+
+            <div>
+                👑 Campeão:
+                <strong>
+                    ${participante.acertouCampeao || 0}
+                </strong>
+            </div>
+
+            <div>
+                🎁 Compensação:
+                <strong>40 pts</strong>
             </div>
 
         </div>
@@ -282,3 +326,819 @@ async function carregarResumo(){
 
 }
 
+// ======================================
+// JOGOS
+// ======================================
+
+async function carregarJogos(){
+
+    const lista =
+        document.getElementById(
+            "listaJogos"
+        );
+
+    lista.innerHTML = "";
+
+    const jogosSnap =
+        await getDocs(
+            collection(db,"jogos")
+        );
+
+    const palpitesSnap =
+        await getDocs(
+
+            query(
+
+                collection(db,"palpites"),
+
+                where(
+                    "usuario",
+                    "==",
+                    participanteAtual.email
+                )
+
+            )
+
+        );
+
+    const jogos = {};
+
+    jogosSnap.forEach(docSnap=>{
+
+        const jogo =
+            docSnap.data();
+
+        jogos[jogo.id] = jogo;
+
+    });
+
+    let html = `
+
+        <table class="tabelaAuditoria">
+
+            <thead>
+
+                <tr>
+
+                    <th>Jogo</th>
+                    <th>Palpite</th>
+                    <th>Resultado</th>
+                    <th>Critério</th>
+                    <th>Pontos</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+    palpitesSnap.forEach(docSnap=>{
+
+        const p =
+            docSnap.data();
+
+        const jogo =
+            jogos[p.jogoId];
+
+        if(!jogo)
+            return;
+
+                let criterio = "Aguardando";
+
+        let pontos = 0;
+
+        if(
+            jogo.placarRealA != null &&
+            jogo.placarRealB != null
+        ){
+
+            const pA = Number(p.placarA);
+            const pB = Number(p.placarB);
+
+            const rA = Number(jogo.placarRealA);
+            const rB = Number(jogo.placarRealB);
+
+            const resultadoPalpite =
+                Math.sign(pA - pB);
+
+            const resultadoReal =
+                Math.sign(rA - rB);
+
+            const saldoPalpite =
+                Math.abs(pA - pB);
+
+            const saldoReal =
+                Math.abs(rA - rB);
+
+            if(pA === rA && pB === rB){
+
+                criterio = "🏆 Placar Exato";
+                pontos = 10;
+
+            }
+
+            else if(
+                resultadoReal === 0 &&
+                resultadoPalpite === 0
+            ){
+
+                criterio = "🤝 Empate";
+                pontos = 5;
+
+            }
+
+            else if(
+
+                resultadoPalpite === resultadoReal &&
+
+                (
+                    pA === rA ||
+                    pB === rB
+                )
+
+            ){
+
+                criterio = "🟢 Vencedor + Gols";
+                pontos = 7;
+
+            }
+
+            else if(
+
+                resultadoPalpite === resultadoReal &&
+
+                saldoPalpite === saldoReal
+
+            ){
+
+                criterio = "🟡 Saldo de Gols";
+                pontos = 5;
+
+            }
+
+            else if(
+
+                resultadoPalpite === resultadoReal
+
+            ){
+
+                criterio = "✅ Vencedor";
+                pontos = 3;
+
+            }
+
+            else{
+
+                criterio = "❌ Errou";
+
+            }
+
+        }
+
+        html += `
+
+            <tr>
+
+                <td>
+
+                    ${jogo.timeA} x ${jogo.timeB}
+
+                </td>
+
+                <td>
+
+                    ${p.placarA} x ${p.placarB}
+
+                </td>
+
+                <td>
+
+                    ${
+
+                        jogo.placarRealA == null
+
+                        ?
+
+                        "- x -"
+
+                        :
+
+                        `${jogo.placarRealA} x ${jogo.placarRealB}`
+
+                    }
+
+                </td>
+
+                <td>
+
+                    ${criterio}
+
+                </td>
+
+                <td>
+
+                    <strong>${pontos}</strong>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+    lista.innerHTML = html;
+
+}
+
+
+// ======================================
+// MATA-MATA
+// ======================================
+
+async function carregarMata(){
+
+    const lista =
+        document.getElementById(
+            "listaMata"
+        );
+
+    lista.innerHTML = "";
+
+    const fases = [
+
+        "SEG",
+        "OIT",
+        "QUA",
+        "SEM",
+        "L3",
+        "FIN"
+
+    ];
+
+    for(const fase of fases){
+
+        const palpitesSnap =
+            await getDocs(
+
+                query(
+
+                    collection(
+                        dbMata,
+                        "palpites"
+                    ),
+
+                    where(
+                        "email",
+                        "==",
+                        participanteAtual.email
+                    ),
+
+                    where(
+                        "fase",
+                        "==",
+                        fase
+                    )
+
+                )
+
+            );
+
+        if(palpitesSnap.empty)
+            continue;
+
+        const resultadoRef =
+            await getDoc(
+
+                doc(
+                    dbMata,
+                    "resultados",
+                    fase
+                )
+
+            );
+
+        const resultados =
+            resultadoRef.exists()
+
+            ?
+
+            resultadoRef.data().resultados || {}
+
+            :
+
+            {};
+
+        palpitesSnap.forEach(docSnap=>{
+
+            const dados =
+                docSnap.data();
+
+            const palpites =
+                dados.palpites || {};
+
+            Object.keys(palpites).forEach(id=>{
+
+                const p =
+                    palpites[id];
+
+                const r =
+                    resultados[id];
+
+                let pontos = 0;
+
+                let criterio =
+                    "Aguardando";
+
+                if(
+
+                    r &&
+                    r.vencedor &&
+                    r.vencedor.time
+
+                ){
+
+                    if(
+
+                        p.vencedor ===
+                        r.vencedor.time
+
+                    ){
+
+                        pontos += 10;
+
+                        criterio =
+                            "Acertou vencedor";
+
+                        if(
+
+                            p.forma ===
+                            r.forma
+
+                        ){
+
+                            pontos += 10;
+
+                            criterio =
+                                "Vencedor + Forma";
+
+                        }
+
+                    }
+
+                    else{
+
+                        criterio =
+                            "Errou";
+
+                    }
+
+                }
+
+                lista.innerHTML += `
+
+                    <div class="cardAuditoriaJogo">
+
+                        <h3>
+
+                            ${fase}
+
+                        </h3>
+
+                        <p>
+
+                            <strong>Palpite:</strong>
+
+                            ${p.vencedor}
+
+                        </p>
+
+                        <p>
+
+                            <strong>Forma:</strong>
+
+                            ${p.forma}
+
+                        </p>
+
+                        <p>
+
+                            <strong>Resultado:</strong>
+
+                            ${
+
+                                r
+
+                                ?
+
+                                r.vencedor.time
+
+                                :
+
+                                "-"
+
+                            }
+
+                        </p>
+
+                        <p>
+
+                            <strong>Forma Oficial:</strong>
+
+                            ${
+
+                                r
+
+                                ?
+
+                                r.forma
+
+                                :
+
+                                "-"
+
+                            }
+
+                        </p>
+
+                        <p>
+
+                            <strong>Critério:</strong>
+
+                            ${criterio}
+
+                        </p>
+
+                        <p>
+
+                            <strong>Pontos:</strong>
+
+                            ${pontos}
+
+                        </p>
+
+                    </div>
+
+                `;
+
+            });
+
+        });
+
+    }
+
+}
+
+// ======================================
+// EXTRAS
+// ======================================
+
+async function carregarExtras(){
+
+    const div =
+        document.getElementById(
+            "listaExtras"
+        );
+
+    div.innerHTML = "";
+
+    const oficialRef =
+        await getDoc(
+
+            doc(
+                db,
+                "extras_resultado",
+                "oficial"
+            )
+
+        );
+
+    if(!oficialRef.exists()){
+
+        div.innerHTML = `
+
+            <p>
+
+                Resultado oficial ainda
+                não cadastrado.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+    const usuarioRef =
+        await getDoc(
+
+            doc(
+                db,
+                "extras",
+                participanteAtual.email
+            )
+
+        );
+
+    if(!usuarioRef.exists()){
+
+        div.innerHTML = `
+
+            <p>
+
+                Participante não enviou
+                palpites extras.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+    const oficial =
+        oficialRef.data();
+
+    const palpite =
+        usuarioRef.data();
+
+    const itens = [
+
+        {
+
+            titulo:"🏆 Campeão",
+
+            palpite:palpite.campeao,
+
+            oficial:oficial.campeao,
+
+            pontos:
+
+                compararSelecao(
+                    palpite.campeao,
+                    oficial.campeao
+                )
+
+                ?
+
+                20
+
+                :
+
+                0
+
+        },
+
+        {
+
+            titulo:"🥈 Vice",
+
+            palpite:palpite.vice,
+
+            oficial:oficial.vice,
+
+            pontos:
+
+                compararSelecao(
+                    palpite.vice,
+                    oficial.vice
+                )
+
+                ?
+
+                10
+
+                :
+
+                0
+
+        },
+
+        {
+
+            titulo:"👟 Artilheiro",
+
+            palpite:palpite.artilheiro,
+
+            oficial:oficial.artilheiro,
+
+            pontos:
+
+                compararNome(
+                    palpite.artilheiro,
+                    oficial.artilheiro
+                )
+
+                ?
+
+                15
+
+                :
+
+                0
+
+        },
+
+        {
+
+            titulo:"🇧🇷 Gols do Brasil",
+
+            palpite:palpite.golsBrasil,
+
+            oficial:oficial.golsBrasil,
+
+            pontos:
+
+                Number(
+                    palpite.golsBrasil
+                ) ===
+
+                Number(
+                    oficial.golsBrasil
+                )
+
+                ?
+
+                10
+
+                :
+
+                0
+
+        },
+
+        {
+
+            titulo:"🇧🇷 Fase do Brasil",
+
+            palpite:palpite.faseBrasil,
+
+            oficial:oficial.faseBrasil,
+
+            pontos:
+
+                normalizarTexto(
+                    palpite.faseBrasil
+                )
+
+                ===
+
+                normalizarTexto(
+                    oficial.faseBrasil
+                )
+
+                ?
+
+                10
+
+                :
+
+                0
+
+        }
+
+    ];
+
+    let total = 0;
+
+    itens.forEach(item=>{
+
+        total += item.pontos;
+
+        div.innerHTML += `
+
+            <div class="cardAuditoriaJogo">
+
+                <h3>
+
+                    ${item.titulo}
+
+                </h3>
+
+                <p>
+
+                    <strong>Palpite:</strong>
+
+                    ${item.palpite || "-"}
+
+                </p>
+
+                <p>
+
+                    <strong>Oficial:</strong>
+
+                    ${item.oficial || "-"}
+
+                </p>
+
+                <p>
+
+                    <strong>Pontos:</strong>
+
+                    ${item.pontos}
+
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+    div.innerHTML += `
+
+        <div
+            class="cardAuditoriaJogo"
+            style="
+                background:#111;
+                color:#fff;
+            "
+        >
+
+            <h2>
+
+                TOTAL EXTRAS
+
+            </h2>
+
+            <h1>
+
+                ${total} pts
+
+            </h1>
+
+        </div>
+
+    `;
+
+}
+
+// ======================================
+// ABAS
+// ======================================
+
+function abrirAbaAuditoria(nome){
+
+    const abas = {
+
+        dados: document.getElementById("abaDados"),
+
+        resumo: document.getElementById("abaResumo"),
+
+        jogos: document.getElementById("abaJogos"),
+
+        mata: document.getElementById("abaMata"),
+
+        extras: document.getElementById("abaExtras")
+
+    };
+
+    const botoes = {
+
+        dados: document.getElementById("btnDados"),
+
+        resumo: document.getElementById("btnResumo"),
+
+        jogos: document.getElementById("btnJogos"),
+
+        mata: document.getElementById("btnMata"),
+
+        extras: document.getElementById("btnExtras")
+
+    };
+
+    Object.values(abas).forEach(aba=>{
+
+        if(aba)
+            aba.style.display = "none";
+
+    });
+
+    Object.values(botoes).forEach(botao=>{
+
+        if(botao)
+            botao.classList.remove("ativa");
+
+    });
+
+    if(abas[nome])
+        abas[nome].style.display = "block";
+
+    if(botoes[nome])
+        botoes[nome].classList.add("ativa");
+
+}
+
+window.abrirAbaAuditoria = abrirAbaAuditoria;
