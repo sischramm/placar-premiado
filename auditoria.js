@@ -248,31 +248,6 @@ window.abrirAuditoria = abrirAuditoria;
 
 async function carregarResumo(){
 
-    await window.atualizarRanking();
-
-    const ranking =
-        window.getUsuariosRanking();
-
-    const participante =
-        ranking.find(
-            u=>u.email===participanteAtual.email
-        );
-
-    if(!participante){
-
-        document.getElementById(
-            "resumoParticipante"
-        ).innerHTML = `
-            <p>Participante não encontrado.</p>
-        `;
-
-        return;
-
-    }
-
-    const total =
-        (participante.pontos || 0) + 40;
-
     document.getElementById(
         "resumoParticipante"
     ).innerHTML = `
@@ -280,44 +255,35 @@ async function carregarResumo(){
         <div class="resumoCard">
 
             <div>
-                🏆 Pontuação Total
+                👤 Participante
             </div>
 
-            <h1>${total} pts</h1>
+            <h2>${participanteAtual.nome}</h2>
 
             <hr>
 
             <div>
-                🎯 Placares Exatos:
-                <strong>
-                    ${participante.placaresExatos || 0}
-                </strong>
+                📧
+                <strong>${participanteAtual.email}</strong>
             </div>
 
             <div>
-                ✅ Vencedores:
-                <strong>
-                    ${participante.vencedoresAcertados || 0}
-                </strong>
+                🏢
+                <strong>${participanteAtual.empresa}</strong>
             </div>
 
             <div>
-                ⭐ Extras:
-                <strong>
-                    ${participante.pontosExtras || 0} pts
-                </strong>
+                📍
+                <strong>${participanteAtual.filial}</strong>
             </div>
 
-            <div>
-                👑 Campeão:
-                <strong>
-                    ${participante.acertouCampeao || 0}
-                </strong>
-            </div>
+            <hr>
 
             <div>
-                🎁 Compensação:
-                <strong>40 pts</strong>
+                A pontuação detalhada pode ser conferida
+                nas abas <strong>Jogos</strong>,
+                <strong>Mata</strong> e
+                <strong>Extras</strong>.
             </div>
 
         </div>
@@ -325,7 +291,6 @@ async function carregarResumo(){
     `;
 
 }
-
 // ======================================
 // JOGOS
 // ======================================
