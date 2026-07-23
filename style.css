@@ -1863,3 +1863,25 @@ body::before{
   }
 
 }
+
+
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:#07192f;
+
+    color:#fff;
+
+    min-height:100vh;
+
+}
