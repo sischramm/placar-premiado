@@ -2291,14 +2291,21 @@ if(extrasResultadoSnap.exists()){
         }
 
         // Gols do Brasil
-        if(
-            Number(palpite.golsBrasil) ===
-            Number(oficial.golsBrasil)
-        ){
+        
+const diferencaGols = Math.abs(
+    Number(palpite.golsBrasil) -
+    Number(oficial.golsBrasil)
+);
 
-            pontosExtras += 10;
+if(diferencaGols === 0){
 
-        }
+    pontosExtras += 10;
+
+}else if(diferencaGols === 1){
+
+    pontosExtras += 5;
+
+}
 
         // Fase do Brasil
         if(
